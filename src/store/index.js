@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    hasLogin: false
+    hasLogin: false,
+    products: []
   },
   mutations: {
     HAS_LOGIN(state) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     LOGOUT(state) {
       state.hasLogin = false;
+    },
+    SET_PRODUCTS(state, payload) {
+      state.products = payload;
     }
   },
   actions: {
@@ -29,6 +33,12 @@ export default new Vuex.Store({
         method: 'POST',
         url: '/login',
         data: payload
+      });
+    },
+    fetchAllProducts() {
+      return axios({
+        method: 'GET',
+        url: '/products'
       });
     }
   },

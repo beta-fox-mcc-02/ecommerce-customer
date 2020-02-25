@@ -1,8 +1,8 @@
 <template>
   <v-card :loading="loading" class="mx-auto my-5" max-width="374">
-    <v-img height="150" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+    <v-img height="200" :src="product.image_url"></v-img>
 
-    <v-card-title>Nama Product</v-card-title>
+    <v-card-title>{{product.name}}</v-card-title>
 
     <v-card-text>
       <v-row align="center" class="mx-0">
@@ -10,11 +10,11 @@
         <div class="grey--text ml-4">{{randomNumber}} (rating)</div>
       </v-row>
       <div class="my-4 subtitle-1">
-        <h4>Stock Barang</h4>
+        <h4>Stock : {{productStock}}</h4>
       </div>
     </v-card-text>
     <v-divider class="mx-4"></v-divider>
-    <v-card-title>Harga Barang</v-card-title>
+    <v-card-title>{{productPrice}}</v-card-title>
 
     <v-card-actions>
       <v-btn color="teal" class="ml-auto" text @click="onAddToCart">Add To Cart</v-btn>
@@ -25,6 +25,9 @@
 <script>
 export default {
   name: "ProductPage",
+  props: {
+    product: Object
+  },
   data: () => ({
     loading: false,
     selection: 1,
@@ -42,6 +45,13 @@ export default {
   computed: {
     randomNumber() {
       return +(Math.random() * 5).toFixed(1);
+    },
+    productStock() {
+      const item = this.product.stock === 1 ? 'item' : 'items';
+      return `${this.product.stock} ${item}`;
+    },
+    productPrice() {
+      return `Rp${this.product.price.toLocaleString('id-ID', 'currency')}`;
     }
   }
 }

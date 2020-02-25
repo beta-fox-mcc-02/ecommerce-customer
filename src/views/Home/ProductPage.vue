@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="4" v-for="n in 10" :key="n">
-        <ProductCard />
+      <v-col cols="4" v-for="product in products" :key="product.id">
+        <ProductCard :product="product" />
       </v-col>
     </v-row>
   </v-container>
@@ -14,6 +14,21 @@ export default {
   name: "CartPage",
   components: {
     ProductCard
+  },
+  computed: {
+    products() {
+      return this.$store.state.products;
+    }
+  },
+  created() {
+    this.$store.dispatch('fetchAllProducts')
+      .then(({ data }) => {
+        console.log(data.data);
+        this.$store.commit('SET_PRODUCTS', data.data);
+      })
+      .catch(({ response }) => {
+        console.log(response);
+      });
   }
 }
 </script>

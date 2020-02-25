@@ -44,7 +44,9 @@
         </div>
 
         <v-toolbar-title v-if="hasLogin" class="logout">
-          <v-icon @click="logout">fas fa-sign-out-alt</v-icon>
+          <div class @click="logout">
+            <v-icon class="mr-1">fas fa-sign-out-alt</v-icon>Logout
+          </div>
         </v-toolbar-title>
       </div>
     </v-app-bar>
@@ -53,7 +55,7 @@
       <router-view></router-view>
     </v-content>
 
-    <v-footer color="teal" app class="justify-center">
+    <v-footer color="teal" app class="justify-center py-0" max-height="28">
       <span class="white--text">&copy; 2020 - Ulrich Wake</span>
     </v-footer>
   </v-app>
@@ -92,11 +94,8 @@ export default {
     }
   },
   created() {
-    console.log('created');
     if (localStorage.access_token) {
       this.$store.commit('HAS_LOGIN');
-      console.log('ada access_token');
-      // fetch data to product page
     }
   }
 }
