@@ -63,6 +63,10 @@ export default new Vuex.Store({
       context.commit('setLoading');
       return userAPI.post('/register', payload);
     },
+    fetchUserData(context, id) {
+      context.commit('setLoading');
+      return userAPI.get(`/findUser/${id}`);
+    },
   },
   modules: {
   },

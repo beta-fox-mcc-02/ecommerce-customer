@@ -79,14 +79,12 @@ export default {
             successMessage: 'Successfully Login',
             interval: 2000,
           });
-          const payload = {
-            id: response.data.id,
-            email: response.data.email,
-            user_role: response.data.user_role,
-          };
-          this.$store.commit('setLogin', payload);
           localStorage.token = response.data.token;
           localStorage.person_id = response.data.id;
+          return this.$store.dispatch('fetchUserData', response.data.id);
+        })
+        .then((res) => {
+          this.$store.commit('setLogin', res.data);
           this.$router.push('/');
         })
         .catch((err) => {

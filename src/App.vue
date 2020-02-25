@@ -11,7 +11,6 @@
 import Alert from './components/Alert.vue';
 import Loading from './components/Loading.vue';
 import Navbar from './components/Navbar.vue';
-import userAPI from './API/userAPI';
 
 export default {
   name: 'App',
@@ -27,12 +26,15 @@ export default {
   },
   created() {
     if (localStorage.token) {
-      userAPI.get(`/findUser/${localStorage.person_id}`)
+      this.$store.dispatch('fetchUserData', localStorage.person_id)
         .then((response) => {
           this.$store.commit('setLogin', response.data);
         })
         .catch((err) => {
           console.log(err.response);
+        })
+        .finally(() => {
+          this.$store.commit('stopLoading');
         });
     }
   },
