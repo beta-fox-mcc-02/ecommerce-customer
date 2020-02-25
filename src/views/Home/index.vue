@@ -21,9 +21,9 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app color="indigo" dark>
+    <v-app-bar app color="teal" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Menu</v-toolbar-title>
+      <v-toolbar-title>Toko Murah</v-toolbar-title>
       <div class="ml-auto d-inline-flex">
         <div class="text-center" v-if="notLogin">
           <v-menu transition="fade-transition">
@@ -53,7 +53,7 @@
       <router-view></router-view>
     </v-content>
 
-    <v-footer color="indigo" app class="justify-center">
+    <v-footer color="teal" app class="justify-center">
       <span class="white--text">&copy; 2020 - Ulrich Wake</span>
     </v-footer>
   </v-app>

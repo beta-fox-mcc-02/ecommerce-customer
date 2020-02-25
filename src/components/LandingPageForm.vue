@@ -5,7 +5,7 @@
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
-              <v-toolbar color="primary" dark flat>
+              <v-toolbar color="teal" dark flat>
                 <v-toolbar-title>{{title}}</v-toolbar-title>
                 <v-spacer />
                 <v-tooltip right>
@@ -38,7 +38,7 @@
                   ></v-text-field>
 
                   <div class>
-                    <v-btn :disabled="!valid" type="submit">{{title}}</v-btn>
+                    <v-btn color="teal" :disabled="!valid" type="submit">{{title}}</v-btn>
                     <v-btn @click="routeTo" class="float-right">{{moveTo}}</v-btn>
                   </div>
                 </v-form>
