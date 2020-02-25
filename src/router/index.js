@@ -39,4 +39,16 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.name === 'CartPage' && from.name === 'ProductPage') {
+    if (!localStorage.access_token) {
+      next('/register');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
 export default router;

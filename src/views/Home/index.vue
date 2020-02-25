@@ -10,7 +10,7 @@
             <v-list-item-title>Products</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="toCartPage">
+        <v-list-item @click="toCartPage" v-if="hasLogin">
           <v-list-item-action>
             <v-icon>fas fa-shopping-cart</v-icon>
           </v-list-item-action>
@@ -25,8 +25,8 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Toko Murah</v-toolbar-title>
       <div class="ml-auto d-inline-flex">
-        <div class="text-center" v-if="notLogin">
-          <v-menu transition="fade-transition">
+        <div class="text-center" v-if="!hasLogin">
+          <v-menu transition="fade-transition" min-width="200px">
             <template v-slot:activator="{ on }">
               <v-btn dark v-on="on" color="white" text icon>
                 <v-icon>fas fa-user</v-icon>
@@ -84,9 +84,6 @@ export default {
   computed: {
     hasLogin() {
       return false;
-    },
-    notLogin() {
-      return true;
     }
   }
 }

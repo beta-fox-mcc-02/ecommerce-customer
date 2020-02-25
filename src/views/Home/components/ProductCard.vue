@@ -33,6 +33,10 @@ export default {
   methods: {
     onAddToCart() {
       console.log('onnAddToCart');
+      if (!localStorage.access_token) {
+        this.$router.push('/register');
+        console.log('you must register first');
+      }
     }
   },
   computed: {
