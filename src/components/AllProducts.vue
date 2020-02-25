@@ -1,0 +1,75 @@
+<template>
+  <div id="Allproducts">
+    <Loading v-if="loading"/>
+    <div class="container my-5" v-if="!loading">
+      <div class="row" style="display: flex; justify-content: space-around">
+        <div class="content" v-for="product in allProducts" :key="product.id">
+          <div class="card" style="width: 18rem; cursor: pointer" @click="getDetail(product.id)">
+            <img
+              id="image-card"
+              class="align-self-center shadow my-3"
+              :src="product.image_url"
+              style="display: block;
+            max-width:250px;
+            min-height:250px;
+            width: auto;
+            height: auto"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{product.name}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Stock {{product.stock}}</h6>
+              <p
+                class="card-text text-right"
+              ><strong>Rp. {{product.price}}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import Loading from '../components/Loading'
+export default {
+  name: "AllProduct",
+  components: {
+     Loading
+  },
+  data() {
+    return {};
+  },
+  methods: {
+     getDetail(productId) {
+        this.$router.push(`/admin/${productId}`)
+     }
+  },
+  created() {
+    this.$store.dispatch("getAllItem");
+  },
+  computed: {
+    allProducts() {
+      return this.$store.state.allProduct;
+    },
+    loading() {
+      return this.$store.state.loading
+    }
+  }
+};
+</script>
+
+<style scoped>
+.card {
+  border: none;
+}
+
+#image-card {
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+  transition: transform .5s;
+  overflow: hidden;
+}
+
+#image-card:hover{
+   transform: scale(1.2);
+}
+</style>
