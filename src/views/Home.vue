@@ -1,18 +1,45 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <Header /> -->
+    <banner />
+    <product />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+// import Header from '../components/Header'
+import Banner from '../components/Banner'
+import Product from '../components/Product'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    // Header,
+    Banner,
+    Product
+  },
+  methods: {
+    fetchProducts () {
+      this.$store.dispatch('fetchProducts')
+        .then(({ data }) => {
+          this.$store.commit('SET_PRODUCTS', data.data)
+        })
+        .catch(({ response }) => {
+          console.log(response.data)
+        })
+    }
+  },
+  created () {
+    this.fetchProducts()
   }
 }
 </script>
+
+<style scoped>
+.home {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center
+}
+</style>
