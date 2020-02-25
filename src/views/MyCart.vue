@@ -1,10 +1,11 @@
 <template>
   <div id="mycart">
-     
+     <h1>hehoooo</h1>
   </div>
 </template>
 
 <script>
+import store from '../store/index'
 export default {
    name: `MyCart`,
    data () {
@@ -28,6 +29,7 @@ export default {
          next()
       }
       else {
+         store.commit('NOTIFICATION', `You need to login first`)
          next('/login')
       }
    }
