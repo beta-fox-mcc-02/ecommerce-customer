@@ -78,7 +78,6 @@ export default {
       console.log('submitted');
     },
     routeTo() {
-      console.log('moveto');
       if (this.title === 'Login') this.$router.push('/register');
       if (this.title === 'Register') this.$router.push('/login');
     },

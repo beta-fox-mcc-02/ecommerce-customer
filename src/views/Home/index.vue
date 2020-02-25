@@ -7,7 +7,7 @@
             <v-icon>fas fa-store</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Products</v-list-item-title>
+            <v-list-item-title @click="toProductPage">Products</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link>
@@ -15,7 +15,7 @@
             <v-icon>fas fa-shopping-cart</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Cart</v-list-item-title>
+            <v-list-item-title @click="toCartPage">Cart</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -73,6 +73,12 @@ export default {
     },
     toLoginPage() {
       this.$router.push('/login');
+    },
+    toProductPage() {
+      this.$router.push('/');
+    },
+    toCartPage() {
+      this.$router.push('/cart');
     }
   },
   computed: {
