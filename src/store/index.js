@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     allProduct: [],
     detailProduct: {},
-    loading: true
+    loading: true,
+    notification: 'coba'
   },
   mutations: {
     SET_ALL_PRODUCT (state, payload) {
@@ -40,6 +41,14 @@ export default new Vuex.Store({
             className: "info"
           }).showToast();
         })
+    },
+    notification ({commit}) {
+
+      Toastify({
+        text: `${state.notification}`,
+        backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
+        className: "info"
+      }).showToast()
     }
   },
   modules: {

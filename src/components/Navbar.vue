@@ -16,7 +16,7 @@
                 <router-link to="/" class="nav-link">Store</router-link>
               </li>
               <li class="navbar-item mx-1">
-                <router-link to="/" class="nav-link" v-if="loginStatus">My Cart</router-link>
+                <router-link to="/mycart" class="nav-link" >My Cart</router-link>
               </li>
               <li class="navbar-item mx-1">
                 <router-link to="/about" class="nav-link">About</router-link>
