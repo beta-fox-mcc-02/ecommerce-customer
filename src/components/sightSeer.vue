@@ -51,7 +51,7 @@ a {
 }
 
 a:hover {
-  background-color: rgb(12, 78, 12);
+  background-color: #374d69;
 }
 
 </style>

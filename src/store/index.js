@@ -8,9 +8,12 @@ const serverUrl = 'http://localhost:3000'
 
 export default new Vuex.Store({
   state: {
+    products: [],
+    categories: [],
     username: '',
     email: '',
-    password: ''
+    password: '',
+    loginStatus: false
   },
   mutations: {
     setUsername (state, value) {
@@ -22,10 +25,20 @@ export default new Vuex.Store({
     setPassword (state, value) {
       state.password = value
     },
+    setLoginStatus (state, value) {
+      state.loginStatus = value
+    },
+    setProducts (state, value) {
+      state.products = value
+    },
+    setCategories (state, value) {
+      state.categories = value
+    },
     clearAll (state) {
       state.username = ''
       state.email = ''
       state.password = ''
+      state.loginStatus = false
     }
   },
   actions: {
@@ -49,8 +62,32 @@ export default new Vuex.Store({
           password: state.password
         }
       })
+    },
+    fetchProductsAsync ({ state, commit }) {
+      axios({
+        method: 'GET',
+        url: `${serverUrl}/products`
+      })
+        .then((result) => {
+          commit('setProducts', result.data.products)
+          return axios({
+            method: 'GET',
+            url: `${serverUrl}/category`
+          })
+        })
+        .then((result) => {
+          commit('setCategories', result.data.data)
+        })
+        .catch((err) => console.log(err))
+    },
+    getProductAsync ({ state }, categoryId) {
+      return axios({
+        method: 'GET',
+        url: `${serverUrl}/product/${categoryId}`
+      })
+    },
+    checkoutAsync ({ state }, { token, itemId }) {
+      console.log(token, itemId)
     }
-  },
-  modules: {
   }
 })

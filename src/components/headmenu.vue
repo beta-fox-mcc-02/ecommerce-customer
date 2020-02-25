@@ -18,9 +18,9 @@ import ShopperMenu from '../components/shopper.vue'
 import SightSeer from '../components/sightSeer.vue'
 
 export default {
-  data () {
-    return {
-      isLoggedIn: false
+  computed: {
+    isLoggedIn () {
+      return this.$store.state.loginStatus
     }
   },
   components: { ShopperMenu, SightSeer }
@@ -35,7 +35,7 @@ nav#headmenu {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(5, 117, 5);
+    background-color: #4b698e;
 }
 
 section#right-menu, section#center-menu, section#left-menu {

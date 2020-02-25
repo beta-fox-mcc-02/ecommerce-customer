@@ -51,6 +51,8 @@ export default {
         .then((result) => {
           this.clear()
           localStorage.setItem('token', result.data.token)
+          this.$store.commit('setLoginStatus', true)
+          this.$store.commit('setUsername', result.data.username)
           this.$router.push('/')
         })
         .catch(() => {
@@ -97,7 +99,7 @@ section#login {
 }
 
 .form-header {
-    background-color: #176b07;
+    background-color: #4b698e;
     color: white;
     flex-direction: column;
     justify-content: space-evenly;

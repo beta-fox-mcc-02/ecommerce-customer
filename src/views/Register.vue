@@ -3,7 +3,7 @@
     <div class="form-container">
       <div class="form-header">
         <h1>Registration Form</h1>
-        <p v-if="notification">{{ message }}</p>
+        <p v-if="notification" id="notification">{{ message }}</p>
         <p v-else>Please fill in the form below</p>
       </div>
       <form v-on:submit.prevent="register">
@@ -63,7 +63,7 @@ export default {
         .catch(() => {
           this.clear()
           this.notification = true
-          this.message = 'Input email or password invalid'
+          this.message = 'Input invalid or email is already taken'
         })
     },
     clear () {
@@ -104,7 +104,7 @@ section#register {
 }
 
 .form-header {
-    background-color: #176b07;
+    background-color: #4b698e;
     color: white;
     flex-direction: column;
     justify-content: space-evenly;
@@ -154,6 +154,22 @@ button {
     width: 30%;
     height: 2.5rem;
     font-size: 20pt;
+}
+
+p#notification {
+    animation: bounce 1s;
+}
+
+@keyframes bounce {
+  0%{
+    transform: scale(0)
+  }
+  50%{
+    transform: scale(1.5)
+  }
+  100%{
+    transform: scale(1)
+  }
 }
 
 </style>

@@ -5,9 +5,9 @@
       <span>
         <div id="user-profile-detail">
           <h1>HELLO</h1>
-          <p style="font-style: italic">username</p>
+          <p style="font-style: italic">{{ username }}</p>
         </div>
-        <button id="logout">logout</button>
+        <button id="logout" v-on:click="logout">logout</button>
       </span>
     </div>
     <div id="shopping-cart">
@@ -18,7 +18,18 @@
 
 <script>
 export default {
-
+  computed: {
+    username () {
+      return this.$store.state.username
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.commit('clearAll')
+      // tambah commit clear satu lagi jika "username" masih ada
+      localStorage.clear()
+    }
+  }
 }
 </script>
 
@@ -45,7 +56,7 @@ a.far.fa-user-circle, a.fas.fa-shopping-cart {
 }
 
 a:hover{
-  background-color: rgb(9, 84, 9)
+  background-color: #374d69
 }
 
 div#user-profile {
