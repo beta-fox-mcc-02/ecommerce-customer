@@ -75,7 +75,34 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log('submitted');
+      const payload = {
+        email: this.email,
+        password: this.password
+      };
+      if (this.title === 'Register') {
+        payload.role = 'customer';
+        this.$store.dispatch('registerCustomer', payload)
+          .then(({ data }) => {
+            this.$store.commit('HAS_LOGIN');
+            this.$router.push('/');
+            localStorage.setItem('access_token', data.access_token);
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
+      }
+
+      if (this.title === 'Login') {
+        this.$store.dispatch('loginCustomer', payload)
+          .then(({ data }) => {
+            this.$store.commit('HAS_LOGIN');
+            this.$router.push('/');
+            localStorage.setItem('access_token', data.access_token);
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
+      }
     },
     routeTo() {
       if (this.title === 'Login') this.$router.push('/register');

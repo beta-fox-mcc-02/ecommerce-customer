@@ -44,7 +44,7 @@
         </div>
 
         <v-toolbar-title v-if="hasLogin" class="logout">
-          <v-icon>fas fa-sign-out-alt</v-icon>
+          <v-icon @click="logout">fas fa-sign-out-alt</v-icon>
         </v-toolbar-title>
       </div>
     </v-app-bar>
@@ -79,11 +79,24 @@ export default {
     },
     toCartPage() {
       this.$router.push('/cart');
+    },
+    logout() {
+      console.log('KENA');
+      localStorage.removeItem('access_token');
+      this.$store.commit('LOGOUT');
     }
   },
   computed: {
     hasLogin() {
-      return false;
+      return this.$store.state.hasLogin;
+    }
+  },
+  created() {
+    console.log('created');
+    if (localStorage.access_token) {
+      this.$store.commit('HAS_LOGIN');
+      console.log('ada access_token');
+      // fetch data to product page
     }
   }
 }
