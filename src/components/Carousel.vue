@@ -10,38 +10,16 @@
     img-height="480"
     indicators
   >
+
     <b-carousel-slide
-      caption="Follow Keeping Through Technology">
+      :caption="slide.caption"
+      v-for="(slide, index) in slides" :key="index">
       <template v-slot:img>
         <img
           class="d-block img-carousel img-fluid w-100"
           width="1024"
           height="480"
-          src="../assets/images/slide-1.jpg"
-        >
-      </template>
-    </b-carousel-slide>
-    <b-carousel-slide
-      caption="Yours Precision Crafted Performance"
-    >
-     <template v-slot:img>
-        <img
-          class="d-block img-carousel img-fluid w-100"
-          width="1024"
-          height="480"
-          src="../assets/images/slide-2.jpg"
-        >
-      </template>
-    </b-carousel-slide>
-    <b-carousel-slide
-      caption="Always Choose Original Parts"
-    >
-      <template v-slot:img>
-        <img
-          class="d-block img-carousel img-fluid w-100"
-          width="1024"
-          height="480"
-          src="../assets/images/slide-3.jpg"
+          :src="slide.image"
         >
       </template>
     </b-carousel-slide>
@@ -51,12 +29,30 @@
 
 <script>
 export default {
-  name: 'Carousel'
+  name: 'Carousel',
+  data () {
+    return {
+      slides: [
+        {
+          image: require('../assets/images/slide-1.jpg'), caption: 'Follow Keeping Through Technology'
+        },
+        {
+          image: require('../assets/images/slide-2.jpg'), caption: 'Yours Precision Crafted Performance'
+        },
+        {
+          image: require('../assets/images/slide-3.jpg'), caption: 'Always Choose Original Parts'
+        }
+      ]
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   .img-carousel {
     filter: brightness(60%);
+  }
+  .carousel-caption {
+    top: 50%;
   }
 </style>

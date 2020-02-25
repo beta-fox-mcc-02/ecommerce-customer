@@ -18,13 +18,23 @@
             <b-dropdown-item href="#">FA</b-dropdown-item>
           </b-nav-item-dropdown> -->
 
-          <b-nav-item-dropdown right>
-            <template v-slot:button-content>
-              <em>User</em>
-            </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-          </b-nav-item-dropdown>
+          <li class="btn-link">
+              <router-link class="btn-cart" to="/cart" tag="div">
+                <a><i class="fa fa-shopping-cart fa-5" aria-hidden="true"></i></a>
+              </router-link>
+              <router-link
+                  tag="div" to="/login"
+                  v-if="!isAuthenticated">
+                <a class="btn color-white btn-outline-primary">Login</a>
+              </router-link>
+              <b-nav-item-dropdown v-if="isAuthenticated" right>
+                <template v-slot:button-content>
+                  <em>{{ user.username }}</em>
+                </template>
+                <b-dropdown-item href="#">Profile</b-dropdown-item>
+                <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+              </b-nav-item-dropdown>
+          </li>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -33,7 +43,15 @@
 
 <script>
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  computed: {
+    isAuthenticated () {
+      return this.$store.state.isAuthenticated
+    },
+    user () {
+      return this.$store.state.user
+    }
+  }
 }
 </script>
 
@@ -49,6 +67,27 @@ export default {
       width: 100%;
       display: flex;
       justify-content: space-between;
+    }
+  }
+
+  .btn-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fa-shopping-cart {
+    padding-right: 20px;
+    font-size: 30px !important;
+    color: #fff
+  }
+
+  .btn-outline-primary {
+    color: #fff !important;
+    border-color: #fff !important;
+    &:hover {
+      background-color: #fff;
+      color: #212529 !important;
     }
   }
 </style>

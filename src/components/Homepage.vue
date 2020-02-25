@@ -73,6 +73,7 @@ export default {
 <style lang="scss" scoped>
   .special-deals {
     margin-top: 20px;
+    text-align: center;
   }
 
   .features {

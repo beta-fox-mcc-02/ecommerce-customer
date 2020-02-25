@@ -11,9 +11,13 @@ export default new Vuex.Store({
     message: '',
     isLoading: null,
     isAuthenticated: null,
-    isLoadingAuthenticated: null
+    isLoadingAuthenticated: null,
+    user: {}
   },
   mutations: {
+    SET_USER (state, payload) {
+      state.user = payload
+    },
     SET_PRODUCTS (state, payload) {
       state.products = payload
     },
@@ -46,7 +50,36 @@ export default new Vuex.Store({
       commit('SET_LOADING_AUTHENTICATION', true)
       return api({
         method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        },
         url: '/users'
+      })
+    },
+    register ({ commit }, payload) {
+      commit('SET_LOADING', true)
+      return api({
+        method: 'POST',
+        url: '/users',
+        data: {
+          first_name: payload.first_name,
+          last_name: payload.last_name,
+          username: payload.username,
+          password: payload.password,
+          phone_number: payload.phone_number,
+          email: payload.email
+        }
+      })
+    },
+    login ({ commit }, payload) {
+      commit('SET_LOADING', true)
+      return api({
+        method: 'POST',
+        url: '/users/login',
+        data: {
+          email: payload.email,
+          password: payload.password
+        }
       })
     }
   },

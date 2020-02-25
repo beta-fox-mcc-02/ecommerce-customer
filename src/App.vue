@@ -19,15 +19,15 @@ export default {
   created () {
     this.$store.dispatch('checkAuthenticated')
       .then(response => {
-        console.log(response.data)
         this.$store.commit('SET_AUTHENTICATED', true)
         this.$store.commit('SET_LOADING_AUTHENTICATION', false)
+        this.$store.commit('SET_USER', response.data)
       })
       .catch((err) => {
         this.$store.commit('SET_AUTHENTICATED', false)
         this.$store.commit('SET_LOADING_AUTHENTICATION', false)
+        this.$store.commit('SET_USER', {})
         this.$store.commit('SET_ERRORS', err.body)
-        this.$router.push('/login')
       })
   },
   computed: {
@@ -43,7 +43,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
@@ -52,5 +51,9 @@ export default {
   padding: 0;
   box-sizing: border-box;
   outline: none !important;
+}
+
+.carousel-caption {
+  top: 50%;
 }
 </style>
