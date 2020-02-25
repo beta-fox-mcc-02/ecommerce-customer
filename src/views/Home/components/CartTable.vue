@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+  <v-data-table :headers="headers" :items="desserts" sort-by="name" class="elevation-2">
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>My Cart</v-toolbar-title>
@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">Checkout</v-btn>
+            <v-btn color="teal" dark class="mb-2" v-on="on">Checkout</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -35,9 +35,6 @@
       <v-icon small class="mr-3" @click="onRemoveItem(item)">fas fa-minus</v-icon>
       <v-icon small @click="onAddItem(item)">fas fa-plus</v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
   </v-data-table>
 </template>
 
@@ -49,7 +46,6 @@ export default {
     headers: [
       {
         text: 'Product Name',
-        align: 'start',
         sortable: false,
         value: 'name',
       },
@@ -63,9 +59,6 @@ export default {
   }),
 
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
-    },
   },
 
   watch: {
