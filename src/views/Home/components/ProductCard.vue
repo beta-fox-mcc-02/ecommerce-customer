@@ -1,6 +1,6 @@
 <template>
   <v-card :loading="loading" class="mx-auto my-5" max-width="374">
-    <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+    <v-img height="150" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
 
     <v-card-title>Nama Product</v-card-title>
 
