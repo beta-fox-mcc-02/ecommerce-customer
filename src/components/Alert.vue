@@ -25,6 +25,7 @@ export default {
 <style scoped>
   .custom-alert{
     position: fixed;
+    top: 0;
     width: 100%;
     opacity: .9;
     z-index: 999;

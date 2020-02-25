@@ -13,6 +13,9 @@ export default new Vuex.Store({
     isLoading: false,
     // error
     error: '',
+    // login logout
+    isLogin: false,
+    personData: {},
   },
   mutations: {
     // alert
@@ -34,11 +37,27 @@ export default new Vuex.Store({
     setError(state, error) {
       state.error = error;
     },
+    // login logout
+    setLogin(state, payload) {
+      state.isLogin = true;
+      state.personData = payload;
+    },
+    setLogout(state) {
+      state.isLogin = false;
+      state.personData = {};
+      state.isMaster = false;
+    },
   },
   actions: {
+    // login logout
     login(context, payload) {
       context.commit('setLoading');
       return userAPI.post('/login', payload);
+    },
+    logout(context) {
+      context.commit('setLoading');
+      context.commit('setLogout');
+      context.commit('stopLoading');
     },
     registerUser(context, payload) {
       context.commit('setLoading');

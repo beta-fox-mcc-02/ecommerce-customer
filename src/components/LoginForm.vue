@@ -86,7 +86,7 @@ export default {
           };
           this.$store.commit('setLogin', payload);
           localStorage.token = response.data.token;
-          // localStorage.person_id = response.data.id;
+          localStorage.person_id = response.data.id;
           this.$router.push('/');
         })
         .catch((err) => {
@@ -140,23 +140,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700&display=swap');
-
-body {
-  background: #f6f5f7;
-}
-
-h1 {
-  font-weight: 700;
-  margin: 15px 0;
-}
-p {
-  font-size: 14px;
-  font-weight: 100;
-  line-height: 20px;
-  letter-spacing: 0.5px;
-  margin: 20px 0 30px;
-}
 button {
   border-radius: 20px;
   border: 1px solid #ff4b2b;

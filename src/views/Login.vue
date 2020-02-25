@@ -9,6 +9,13 @@ export default {
   components: {
     LoginForm,
   },
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.token) {
+      next('/');
+    } else {
+      next();
+    }
+  },
 };
 </script>
 
