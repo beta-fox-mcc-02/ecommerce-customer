@@ -24,20 +24,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   {
-    path: '/admin',
-    component: () => import(/* webpackChunkName: "about" */ '../views/DashboardAdmin.vue'),
-    children: [
-      {
-        path: '',
-        name: 'Dashboard admin',
-        component: () => import(/* webpackChunkName: "about" */ '../components/AllProducts.vue')
-      },
-      {
-        path: ':productId',
-        name: 'product detail',
-        component: () => import(/* webpackChunkName: "about" */ '../components/ProductDetail.vue')
-      }
-    ]
+    path: '/register',
+    name: 'Register',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
+  },
+  {
+    path: '/store',
+    name: 'Store',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Store.vue')
   }
 ]
 

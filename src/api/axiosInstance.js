@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-   baseURL: 'https://secret-journey-78862.herokuapp.com',
+   baseURL: 'http://localhost:3000',
 })
 
 export default axiosInstance

@@ -16,16 +16,13 @@
                 <router-link to="/" class="nav-link">Store</router-link>
               </li>
               <li class="navbar-item mx-1">
-                <router-link to="/" class="nav-link" v-if="!adminStatus">My Cart</router-link>
+                <router-link to="/" class="nav-link" v-if="loginStatus">My Cart</router-link>
               </li>
               <li class="navbar-item mx-1">
                 <router-link to="/about" class="nav-link">About</router-link>
               </li>
               <li class="navbar-item mx-1">
                 <router-link to="/login" class="nav-link" v-if="!loginStatus">Login</router-link>
-              </li>
-              <li class="navbar-item mx-1">
-                <router-link to="/admin" class="nav-link" v-if="adminStatus">Dashboard</router-link>
               </li>
               <li class="navbar-item mx-1">
                 <p @click="logout" class="nav-link" v-if="loginStatus" style="cursor:pointer">Logout</p>
@@ -76,6 +73,7 @@ export default {
 </script>
 
 <style scoped>
+
 header {
   justify-content: center;
   display: flex;

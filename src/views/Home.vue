@@ -80,14 +80,6 @@ export default {
     pindah () {
       this.$router.push('/haha')
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    if (localStorage.isAdmin) {
-      next('/admin')
-    }
-    else {
-      next()
-    }
   }
 }
 </script>

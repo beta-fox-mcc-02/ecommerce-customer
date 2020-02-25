@@ -9,16 +9,31 @@
               <div class="d-flex justify-content-center">
                 <div class="brand_logo_container">
                   <img
-                    src="../assets/login.gif"
+                    src="../assets/register.gif"
                     class="brand_logo"
                     alt="Logo"
                     @click="home"
-                    style="cursor: pointer"
+                    style="cursor: pointer;"
+                    
                   />
                 </div>
               </div>
               <div class="d-flex justify-content-center form_container">
-                <form id="login-form" @submit.prevent="login">
+                <form id="login-form" @submit.prevent="register">
+                   <div class="input-group mb-3">
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      id="form-email-login"
+                      class="form-control input_user"
+                      placeholder="name"
+                      v-model="name"
+                    />
+                  </div>
                   <div class="input-group mb-3">
                     <div class="input-group-append">
                       <span class="input-group-text">
@@ -47,20 +62,14 @@
                       v-model="password"
                     />
                   </div>
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="customControlInline" />
-                      <label class="custom-control-label" for="customControlInline">Remember me</label>
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-center mt-3 login_container">
-                    <button type="submit" name="button" class="btn login_btn">Login</button>
+                  <div class="d-flex justify-content-center login_container">
+                    <button type="submit" name="button" class="btn login_btn mt-3">Register</button>
                   </div>
                 </form>
               </div>
               <span class="mt-4" style="margin-left: auto; margin-right: auto">
-                Don't have an account?
-                <router-link class="register-link" to="/register">Click to register</router-link>
+                Back to
+                <router-link class="register-link" to="/login">login</router-link>
               </span>
             </div>
           </div>
@@ -77,6 +86,7 @@ export default {
   name: `Login`,
   data() {
     return {
+      name: '',
       email: "",
       password: "",
       loading: false
@@ -86,34 +96,35 @@ export default {
     home() {
        this.$router.push('/')
     },
-    login() {
+    register() {
       this.loading = true;
       axios({
         method: `POST`,
-        url: `/users/login`,
+        url: `/users/register`,
         data: {
+          name: this.name,
           email: this.email,
           password: this.password
         }
       })
         .then(({ data }) => {
-          localStorage.setItem("token", data.token)
-          localStorage.setItem("name", data.name)
-
             Toastify({
-              text: `Login success, welcome ${localStorage.name}`,
+              text: "Registered successfully, welcome to G&N",
               backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
               className: "info"
             }).showToast()
   
             setTimeout(() => {
-              this.$router.push("/")
-            }, 2000)
+              this.$router.push("/login")
+            }, 1500)
+          
         })
-        .catch(err => {
+        .catch(err => {         
           this.loading = false;
+
+          let error = err.response.data.errors
           Toastify({
-            text: "Email / password wrong",
+            text: `${error}`,
             backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
             className: "info"
           }).showToast()
