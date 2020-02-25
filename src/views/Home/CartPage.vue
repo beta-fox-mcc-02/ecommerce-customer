@@ -1,12 +1,17 @@
 <template>
   <div class>
-    <h1>Cart Page</h1>
+    <CartTable />
   </div>
 </template>
 
 <script>
-export default {
+import CartTable from './components/CartTable';
 
+export default {
+  name: 'CartPage',
+  components: {
+    CartTable
+  }
 }
 </script>
 

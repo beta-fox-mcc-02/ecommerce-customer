@@ -11,12 +11,12 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Product',
+        name: 'ProductPage',
         component: () => import('../views/Home/ProductPage')
       },
       {
         path: 'cart',
-        name: 'Cart',
+        name: 'CartPage',
         component: () => import('../views/Home/CartPage')
       }
     ]

@@ -2,20 +2,20 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
       <v-list dense>
-        <v-list-item link>
+        <v-list-item @click="toProductPage">
           <v-list-item-action>
             <v-icon>fas fa-store</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title @click="toProductPage">Products</v-list-item-title>
+            <v-list-item-title>Products</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item @click="toCartPage">
           <v-list-item-action>
             <v-icon>fas fa-shopping-cart</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title @click="toCartPage">Cart</v-list-item-title>
+            <v-list-item-title>My Cart</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -33,11 +33,11 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item>
-                <v-list-item-title class="register" @click="toRegisterPage">Register</v-list-item-title>
+              <v-list-item @click="toRegisterPage">
+                <v-list-item-title class="register">Register</v-list-item-title>
               </v-list-item>
-              <v-list-item>
-                <v-list-item-title class="login" @click="toLoginPage">Login</v-list-item-title>
+              <v-list-item @click="toLoginPage">
+                <v-list-item-title class="login">Login</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
