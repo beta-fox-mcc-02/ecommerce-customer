@@ -1,0 +1,9 @@
+.bg {
+    background-image: url("https://wallpaperplay.com/walls/full/c/f/1/342017.jpg");
+    /* background-image: url("https://66.media.tumblr.com/6094cf11d9e52372fabae77e79e6615f/tumblr_o091zw1UiV1qd4yt6o1_1280.jpg"); */
+    height: 100vh;
+    /* background-position: center; */
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: auto;
+}
