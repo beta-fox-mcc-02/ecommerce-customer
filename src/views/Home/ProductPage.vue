@@ -31,7 +31,6 @@ export default {
       .catch(({ response }) => {
         this.$store.commit('SET_LOADING', false);
         this.$store.commit('SET_ERROR', response.data);
-        console.log(response);
       });
 
 

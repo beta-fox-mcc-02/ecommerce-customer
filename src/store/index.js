@@ -23,6 +23,7 @@ export default new Vuex.Store({
       state.hasLogin = false;
     },
     SET_PRODUCTS(state, payload) {
+      payload.sort((a, b) => a.id - b.id);
       state.products = payload;
     },
     SET_CARTS(state, payload) {
