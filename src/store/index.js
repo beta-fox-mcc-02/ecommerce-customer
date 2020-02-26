@@ -76,38 +76,40 @@ export default new Vuex.Store({
       });
     },
     fetchCarts(context) {
-      context.commit('SET_LOADING', true);
-      axios({
-        method: 'GET',
-        url: '/carts',
-        headers: {
-          access_token: localStorage.access_token
-        }
-      })
-        .then(({ data }) => {
-          context.commit('STOP_ERROR');
-          context.commit('SET_LOADING', false);
-          const payload = [];
-          data.forEach(el => {
-            payload.push({
-              id: el.id,
-              UserId: el.UserId,
-              ProductId: el.ProductId,
-              status: el.status,
-              quantity: el.quantity,
-              totalPrice: el.price,
-              name: el.Product.name,
-              price: el.Product.price
-            });
-          });
-          context.commit('SET_CARTS', payload);
+      if (localStorage.access_token) {
+        context.commit('SET_LOADING', true);
+        axios({
+          method: 'GET',
+          url: '/carts',
+          headers: {
+            access_token: localStorage.access_token
+          }
         })
-        .catch(({ response }) => {
-          context.commit('SET_ERROR', response.data);
-          context.commit('STOP_SUCCESS');
-          context.commit('SET_LOADING', false);
-          console.log(response);
-        });
+          .then(({ data }) => {
+            context.commit('STOP_ERROR');
+            context.commit('SET_LOADING', false);
+            const payload = [];
+            data.forEach(el => {
+              payload.push({
+                id: el.id,
+                UserId: el.UserId,
+                ProductId: el.ProductId,
+                status: el.status,
+                quantity: el.quantity,
+                totalPrice: el.price,
+                name: el.Product.name,
+                price: el.Product.price
+              });
+            });
+            context.commit('SET_CARTS', payload);
+          })
+          .catch(({ response }) => {
+            context.commit('SET_ERROR', response.data);
+            context.commit('STOP_SUCCESS');
+            context.commit('SET_LOADING', false);
+            console.log(response);
+          });
+      }
     },
     createNewCart(context, payload) {
       context.commit('SET_LOADING', true);
