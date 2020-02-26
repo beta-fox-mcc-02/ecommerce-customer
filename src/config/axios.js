@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const heroku = 'https://git.heroku.com/protected-taiga-69173.git';
+const heroku = 'https://protected-taiga-69173.herokuapp.com/';
 const instance = axios.create({
   baseURL: heroku,
 });
