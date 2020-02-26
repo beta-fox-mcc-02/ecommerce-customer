@@ -181,10 +181,14 @@ export default {
       };
       this.$store.dispatch('addItemToCart', payload)
         .then(({ data }) => {
+          this.$store.commit('STOP_ERROR');
+          this.$store.commit('SET_SUCCESS', 'Success Edit Item Quantity');
           console.log(data);
           this.$store.dispatch('fetchCarts');
         })
         .catch(({ response }) => {
+          this.$store.commit('SET_ERROR', response.data);
+          this.$store.commit('STOP_SUCCESS');
           console.log(response);
         });
       this.edit = false;
@@ -200,9 +204,13 @@ export default {
       };
       this.$store.dispatch('deleteItem', payload)
         .then(() => {
+          this.$store.commit('STOP_ERROR');
+          this.$store.commit('SET_SUCCESS', `Success Delete "${this.itemToDelete.name}"`);
           this.$store.dispatch('fetchCarts');
         })
         .catch(({ response }) => {
+          this.$store.commit('SET_ERROR', response.data);
+          this.$store.commit('STOP_SUCCESS');
           console.log(response);
         });
 

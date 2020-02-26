@@ -48,7 +48,7 @@ export default {
     onAddToCart(id) {
       if (!localStorage.access_token) {
         this.$router.push('/register');
-        console.log('you must register first');
+        this.$store.commit('SET_ERROR', 'You Must Register First');
       }
       const cart = this.$store.state.carts.filter(el => el.ProductId === id);
       if (cart.length) {
@@ -62,10 +62,14 @@ export default {
         };
         this.$store.dispatch('addItemToCart', payload)
           .then(() => {
+            this.$store.commit('STOP_ERROR');
+            this.$store.commit('SET_SUCCESS', 'Success Add Item To Cart');
             this.$store.dispatch('fetchCarts');
             this.$router.push('/cart');
           })
           .catch(({ response }) => {
+            this.$store.commit('SET_ERROR', response.data);
+            this.$store.commit('STOP_SUCCESS');
             console.log(response);
           });
       } else {
@@ -76,10 +80,14 @@ export default {
         };
         this.$store.dispatch('createNewCart', payload)
           .then(() => {
+            this.$store.commit('STOP_ERROR');
+            this.$store.commit('SET_SUCCESS', 'Success Add Item To Cart');
             this.$store.dispatch('fetchCarts');
             this.$router.push('/cart');
           })
           .catch(({ response }) => {
+            this.$store.commit('SET_ERROR', response.data);
+            this.$store.commit('STOP_SUCCESS');
             console.log(response);
           });
       }

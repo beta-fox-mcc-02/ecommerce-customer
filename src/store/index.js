@@ -9,7 +9,7 @@ export default new Vuex.Store({
     hasLogin: false,
     products: [],
     carts: [],
-    errorMessages: [],
+    errorMessage: '',
     errorStatus: false,
     successMessage: '',
     succesStatus: false
@@ -29,10 +29,8 @@ export default new Vuex.Store({
     },
     SET_ERROR(state, payload) {
       state.errorStatus = true;
-      if (Array.isArray(payload)) {
-        state.errorMessages = payload.join(' and ');
-      }
-      else state.errorMessages = payload;
+      if (Array.isArray(payload.message)) state.errorMessage = payload.message.join(' and ');
+      else state.errorMessage = payload.message;
     },
     STOP_ERROR(state) {
       state.errorStatus = false;
@@ -43,6 +41,10 @@ export default new Vuex.Store({
     },
     STOP_SUCCESS(state) {
       state.succesStatus = false;
+    },
+    STOP_SUCCESS_ERROR(state) {
+      state.succesStatus = false;
+      state.errorStatus = false;
     }
   },
   actions: {

@@ -68,7 +68,7 @@ export default {
       ],
       password: '',
       passwordRules: [
-        // v => v.length >= 5 || 'Password too short. Minimum 5 characters',
+        v => v.length >= 5 || 'Password too short. Minimum 5 characters',
         v => v.length <= 20 || 'Password too long. Maximum 20 characters',
       ],
       valid: false
@@ -125,7 +125,7 @@ export default {
       return this.$store.state.successStatus;
     },
     errorMessage() {
-      return this.$store.state.errorMessages;
+      return this.$store.state.errorMessage;
     }
   }
 }

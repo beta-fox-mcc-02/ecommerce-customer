@@ -52,8 +52,8 @@
     </v-app-bar>
 
     <v-content>
-      <v-alert type="error" class="mt-5" v-if="false">Error Message</v-alert>
-      <v-alert type="success" class="mt-5" v-if="false">Success Message</v-alert>
+      <v-alert type="error" class="mt-5" v-if="isError">{{errorMessage}}</v-alert>
+      <v-alert type="success" class="mt-5" v-if="isSuccess">{{successMessage}}</v-alert>
       <router-view></router-view>
     </v-content>
 
@@ -73,18 +73,23 @@ export default {
   },
   methods: {
     toRegisterPage() {
+      this.$store.commit('STOP_SUCCESS_ERROR');
       this.$router.push('/register');
     },
     toLoginPage() {
+      this.$store.commit('STOP_SUCCESS_ERROR');
       this.$router.push('/login');
     },
     toProductPage() {
+      this.$store.commit('STOP_SUCCESS_ERROR');
       this.$router.push('/');
     },
     toCartPage() {
+      this.$store.commit('STOP_SUCCESS_ERROR');
       this.$router.push('/cart');
     },
     logout() {
+      this.$store.commit('STOP_SUCCESS_ERROR');
       this.$router.push('/');
       localStorage.removeItem('access_token');
       this.$store.commit('LOGOUT');
@@ -93,6 +98,18 @@ export default {
   computed: {
     hasLogin() {
       return this.$store.state.hasLogin;
+    },
+    isError() {
+      return this.$store.state.errorStatus;
+    },
+    errorMessage() {
+      return this.$store.state.errorMessage;
+    },
+    isSuccess() {
+      return this.$store.state.succesStatus;
+    },
+    successMessage() {
+      return this.$store.state.successMessage;
     }
   },
   created() {
