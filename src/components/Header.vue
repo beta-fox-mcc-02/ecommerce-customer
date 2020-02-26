@@ -8,7 +8,9 @@
         <i class="fas fa-shopping-basket btn-2" v-if="currentPage !== 'Cart'" @click="toCart"></i>
       </div>
       <div class="border-left px-2 signIn-area">
-        <i class="fas fa-sign-in-alt btn-2" v-if="!isLogin"></i>
+        <router-link to="/signIn" class="anchor">
+          <i class="fas fa-sign-in-alt btn-2" v-if="!isLogin"></i>
+        </router-link>
         <i class="fas fa-sign-out-alt btn-2" v-if="isLogin"></i>
       </div>
     </div>
@@ -41,6 +43,7 @@ export default {
 }
 
 .header-container {
+  /* background-color: black; */
   height: 50px;
   width: 100vw;
   display: flex;

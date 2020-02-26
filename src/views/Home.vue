@@ -3,6 +3,7 @@
     <!-- <Header /> -->
     <banner />
     <product />
+    <router-view />
   </div>
 </template>
 
@@ -40,6 +41,7 @@ export default {
   width: 100vw;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center
 }
 </style>

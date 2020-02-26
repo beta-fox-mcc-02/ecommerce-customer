@@ -26,6 +26,12 @@ export default {
 </script>
 
 <style>
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -53,5 +59,13 @@ export default {
 
 .btn-2:hover {
   cursor: pointer;
+}
+
+.anchor {
+  color: #2c3e50
+}
+
+.anchor:hover {
+  color: #475766
 }
 </style>
