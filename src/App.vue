@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <Navbar :userEmail="personData.email" />
+    <Navbar :userEmail="personData.email" :userProducts="personData.Products" />
     <Alert />
     <Loading />
-    <router-view/>
+    <router-view style="margin-top: 80px" />
   </div>
 </template>
 
@@ -37,6 +37,7 @@ export default {
           this.$store.commit('stopLoading');
         });
     }
+    this.$store.dispatch('fetchListOfProducts');
   },
 };
 </script>

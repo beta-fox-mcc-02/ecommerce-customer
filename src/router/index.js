@@ -15,6 +15,11 @@ const routes = [
     name: 'Login',
     component: () => import('../views/Login.vue'),
   },
+  {
+    path: '/product/:productId',
+    name: 'Product',
+    component: () => import('../views/Product.vue'),
+  },
 ];
 
 const router = new VueRouter({

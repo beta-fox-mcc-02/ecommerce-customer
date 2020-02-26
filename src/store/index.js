@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import userAPI from '../API/userAPI';
+import productAPI from '../API/productAPI';
 
 Vue.use(Vuex);
 
@@ -16,6 +17,8 @@ export default new Vuex.Store({
     // login logout
     isLogin: false,
     personData: {},
+    // fetch products
+    listOfProducts: [],
   },
   mutations: {
     // alert
@@ -47,6 +50,10 @@ export default new Vuex.Store({
       state.personData = {};
       state.isMaster = false;
     },
+    // fetch products
+    setListOfProducts(state, payload) {
+      state.listOfProducts = payload;
+    },
   },
   actions: {
     // login logout
@@ -66,6 +73,20 @@ export default new Vuex.Store({
     fetchUserData(context, id) {
       context.commit('setLoading');
       return userAPI.get(`/findUser/${id}`);
+    },
+    // fetch products
+    fetchListOfProducts(context) {
+      context.commit('setLoading');
+      productAPI.get()
+        .then((response) => {
+          context.commit('setListOfProducts', response.data);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        })
+        .finally(() => {
+          context.commit('stopLoading');
+        });
     },
   },
   modules: {

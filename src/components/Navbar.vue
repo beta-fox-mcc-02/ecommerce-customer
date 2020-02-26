@@ -2,7 +2,9 @@
   <div>
     <b-navbar toggleable="lg"
     type="light"
-    variant="light">
+    variant="light"
+    fixed="top"
+    class="z-index-custom">
       <b-navbar-brand>E-Commerce</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -29,7 +31,26 @@
             <template v-slot:button-content>
               <i class="fa fa-shopping-cart"></i>
             </template>
-            <b-dropdown-text>Empty Cart</b-dropdown-text>
+            <b-dropdown-text v-if="!userProducts.length">Empty Cart</b-dropdown-text>
+            <b-dropdown-text v-if="userProducts.length">
+              <b-row class="">
+                <b-col><b>Qt</b></b-col>
+                <!-- <b-col cols="8">2 of 3 (wider)</!-->
+                <b-col><b>Name</b></b-col>
+              </b-row>
+            </b-dropdown-text>
+            <b-dropdown-text
+            v-for="product in userProducts"
+            :key="product.id">
+              <b-row class="custom">
+                <b-col>{{ product.Cart.quantity }}x</b-col>
+                <!-- <b-col cols="8">2 of 3 (wider)</!-->
+                <b-col>{{ product.name }}</b-col>
+              </b-row>
+            </b-dropdown-text>
+            <b-dropdown-text v-if="userProducts.length">
+              <b-button variant="outline-success" style="width: 160px">Checkout</b-button>
+            </b-dropdown-text>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right v-if="isLogin">
             <!-- Using 'button-content' slot -->
@@ -57,6 +78,7 @@ export default {
   },
   props: {
     userEmail: String,
+    userProducts: Array,
   },
   methods: {
     logout() {
@@ -77,5 +99,11 @@ export default {
 <style scoped>
   .b-dropdown-text{
     margin: 0
+  }
+  .custom{
+    font-size: 10px;
+  }
+  .z-index-custom{
+    z-index: 99;
   }
 </style>
