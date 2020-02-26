@@ -12,11 +12,11 @@
                     <h5 class="card-title">{{product.name}}</h5>
                         <div class="align-items-end">
                             <p class="card-text">
-                                Price : Rp {{product.price.toLocaleString('id')}}
+                                Price : {{product.price | currencyFormat}}
                                 <br>
                                 Stock : {{product.stock}}
                             </p>
-                            <router-link class="btn" :to="`product/${product.id}`"><i class="fas fa-cart-plus"></i></router-link>
+                            <router-link class="btn text-primary" :to="`product/${product.id}`">See Gundam</router-link>
                         </div>
                     </div>
                     <div></div>
@@ -30,6 +30,11 @@ export default {
   methods: {
     buy (id) {
       this.$router.push(`/${id}`)
+    }
+  },
+  filters: {
+    currencyFormat (val) {
+      return 'Rp. ' + val.toLocaleString('Id')
     }
   },
   computed: {

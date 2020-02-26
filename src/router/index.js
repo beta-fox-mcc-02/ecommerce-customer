@@ -27,7 +27,13 @@ const routes = [
       {
         path: '/product/:id',
         name: 'product',
-        component: Product
+        component: Product,
+        beforeEnter: (to, from, next) => {
+          // console.log(store.state.isLogin)
+          if (localStorage.token) {
+            next()
+          } else next('/login')
+        }
       }
     ]
   },

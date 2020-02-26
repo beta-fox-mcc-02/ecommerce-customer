@@ -16,28 +16,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><img src="https://wallpapercave.com/wp/wp1814640.jpg" style="max-width:50px; max-height:50px"/> </td>
-                            <td>{{costumer.email}}</td>
+                        <tr v-for="cart in costumer" :key="cart.id">
+                            <td><img :src="cart.Product.image_url" style="max-width:50px; max-height:50px"/> </td>
+                            <td>{{cart.Product.name}}</td>
                             <td>In stock</td>
-                            <td>1</td>
-                            <td class="text-right">124,90 €</td>
-                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                            <td>{{cart.quantity}}</td>
+                            <td class="text-right">Rp. {{cart.Product.price.toLocaleString('id')}}</td>
+                            <td class="text-right"><button @click="cancelProduct(cart.Cart.id, cart.Product.id)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
                         </tr>
                         <tr>
                             <td colspan="4"></td>
                             <td>Sub-Total</td>
-                            <td class="text-right">255,90 €</td>
+                            <td class="text-right">Rp. {{sumSubPrice | currencyFormat}}</td>
                         </tr>
                         <tr>
                             <td colspan="4"></td>
                             <td>Shipping</td>
-                            <td class="text-right">6,90 €</td>
+                            <td class="text-right">Rp. 50.000</td>
                         </tr>
                         <tr>
                             <td colspan="4"></td>
                             <td><strong>Total</strong></td>
-                            <td class="text-right"><strong>346,90 €</strong></td>
+                            <td class="text-right"><strong>Rp. {{totalPrice | currencyFormat}}</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -46,10 +46,10 @@
         <div class="col mb-2">
             <div class="row">
                 <div class="col-sm-12  col-md-6">
-                    <button class="btn btn-block btn-light">Continue Shopping</button>
+                    <router-link to="/"><button class="btn btn-block btn-light">Continue Shopping</button></router-link>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+                    <button @click="checkout" class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
                 </div>
             </div>
         </div>
@@ -59,13 +59,52 @@
 
 <script>
 export default {
+  data () {
+    return {
+    }
+  },
+  methods: {
+    cancelProduct (CartId, ProductId) {
+      const deleteProduct = {
+        CartId,
+        ProductId
+      }
+      //   console.log(id)
+      this.$store.dispatch('cancelProduct', deleteProduct)
+    },
+    checkout () {
+
+    }
+  },
   created () {
     this.$store.dispatch('fetchCostumer')
+    this.$store.dispatch('fetchCart')
+  },
+  filters: {
+    currencyFormat (val) {
+      return val.toLocaleString('id')
+    }
   },
   computed: {
     costumer () {
-      console.log(this.$store.state.costumer)
-      return this.$store.state.costumer
+      return this.$store.state.carts
+    },
+    price (quantity, price) {
+      return (quantity * price).toLocaleString('id')
+    },
+    sumSubPrice () {
+      const price = []
+      for (let i = 0; i < this.$store.state.carts.length; i++) {
+        const temp = this.$store.state.carts[i].Product.price * this.$store.state.carts[i].quantity
+        price.push(temp)
+      }
+      const subPrice = price.reduce((a, b) => {
+        return a + b
+      })
+      return subPrice
+    },
+    totalPrice () {
+      return this.sumSubPrice + 50000
     }
   }
 }

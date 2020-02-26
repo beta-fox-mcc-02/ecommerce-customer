@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    <div class="row">
+    <div class="row d-flex align-items-center">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <b-carousel
@@ -9,16 +9,19 @@
                 controls
                 indicators
                 background="#ababab"
-                img-width="920"
+                img-width="650"
                 img-height="350"
-                style="text-shadow: 1px 1px 2px #333;"
+                style="text-shadow: 1px 1px 2px #333; max-width: 650px"
             >
                 <b-carousel-slide v-for="gundam in gundams" :key="gundam.id"
-                    :caption="gundam.name"
-                    text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-                    style=" height: 350px; width: 920px; max-height: 350px; max-width: 920px"
+                    style=" height: 350px; width: 650px; max-height: 350px; max-width: 920px"
                     :img-src="gundam.image_url"
-                ></b-carousel-slide>
+                >
+                <a :href="gundam.url" class="text-light">
+                  <h1>{{gundam.title}}</h1>
+                </a>
+                  <p>{{gundam.synopsis}}</p>
+                </b-carousel-slide>
             </b-carousel>
         </div>
         <div class="col-sm-1"></div>
@@ -30,12 +33,15 @@
 export default {
   computed: {
     gundams () {
-      return this.$store.state.products
+      return this.$store.state.carousel
     }
   }
 }
 </script>
 
 <style>
+ .carousel-item img {
+   max-height: 350px
+ }
 
 </style>
