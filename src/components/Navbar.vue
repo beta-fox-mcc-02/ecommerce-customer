@@ -9,22 +9,19 @@
         <nav class="navbar navbar-expand-md p-0 shadow">
           <div class="collapse navbar-collapse d-md-flex justify-content-center" id="trigger">
             <ul class="navbar-nav">
-              <li class="navbar-item mx-1">
-                <router-link to="/" class="nav-link">Home</router-link>
+              <li class="navbar-item mx-2">
+                <router-link to="/store" class="nav-link">Store</router-link>
               </li>
-              <li class="navbar-item mx-1">
-                <router-link to="/" class="nav-link">Store</router-link>
-              </li>
-              <li class="navbar-item mx-1">
+              <li class="navbar-item mx-2">
                 <router-link to="/mycart" class="nav-link" >My Cart</router-link>
               </li>
-              <li class="navbar-item mx-1">
+              <li class="navbar-item mx-2">
                 <router-link to="/about" class="nav-link">About</router-link>
               </li>
-              <li class="navbar-item mx-1">
+              <li class="navbar-item mx-2">
                 <router-link to="/login" class="nav-link" v-if="!loginStatus">Login</router-link>
               </li>
-              <li class="navbar-item mx-1">
+              <li class="navbar-item mx-2">
                 <p @click="logout" class="nav-link" v-if="loginStatus" style="cursor:pointer">Logout</p>
               </li>
             </ul>
@@ -49,6 +46,8 @@ export default {
       console.log(`ke hit`);
       localStorage.removeItem("token");
       localStorage.removeItem("isAdmin");
+      localStorage.removeItem("name");
+
       this.loginStatus = false;
       this.adminStatus = false;
       Toastify({

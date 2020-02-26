@@ -9,7 +9,8 @@ export default new Vuex.Store({
     allProduct: [],
     detailProduct: {},
     loading: true,
-    notification: ''
+    notification: '',
+    myCarts: []
   },
   mutations: {
     SET_ALL_PRODUCT (state, payload) {
@@ -25,6 +26,9 @@ export default new Vuex.Store({
         backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
         className: "info"
       }).showToast()
+    },
+    SET_ALL_MY_CART(state, payload) {
+      state.myCarts = payload
     }
   },
   actions: {
@@ -42,12 +46,29 @@ export default new Vuex.Store({
           commit('SET_ALL_PRODUCT', data.data)
         })
         .catch(err => {
-          let error = err
+          let error = err.response.data.msg
            Toastify({
             text: `${error}`,
             backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
             className: "info"
           }).showToast();
+        })
+    },
+    getAllMyCart ({commit}) {
+      axios({
+        method: `GET`,
+        url: '/carts',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({data}) => {
+          
+          commit('SET_ALL_MY_CART', data)
+        })
+        .catch(err => {
+          console.log(err.response);
+          
         })
     }
   },

@@ -1,7 +1,7 @@
 <template>
   <div id="about">
     <Navbar style="margin-bottom: 130px"/>
-    <slot name="footer" class="text-light"></slot>
+    <slot name="footer"></slot>
   </div>
 </template>
 
@@ -21,5 +21,9 @@ export default {
     background-size: cover;
     background-position: 0px -30px; 
   }
-  
+
+  a {
+   color: white;
+   text-decoration: none
+}
 </style>

@@ -15,6 +15,7 @@
               src="../assets/1.jpg"
               alt="First slide"
               style="cursor: pointer"
+              @click="pindah"
             />
           </div>
           <div class="carousel-item">
@@ -23,6 +24,7 @@
               src="../assets/4.jpg"
               alt="Second slide"
               style="cursor: pointer"
+              @click="pindah"
             />
           </div>
         </div>
@@ -51,6 +53,7 @@
       src="../assets/3.jpg"
       alt="newArrival"
       style="cursor: pointer; max-width: 100%; position: center"
+      @click="pindah"
     />
 
     <div class="container my-4 d-flex justify-content-center">
@@ -60,6 +63,7 @@
           src="../assets/5.jpg"
           alt="newArrival"
           style="cursor: pointer;"
+          @click="pindah"
         />
       </div>
       </div>
@@ -78,7 +82,7 @@ export default {
   },
   methods: {
     pindah () {
-      this.$router.push('/haha')
+      this.$router.push('/store')
     }
   }
 }

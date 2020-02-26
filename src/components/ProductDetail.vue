@@ -2,7 +2,7 @@
   <div class="mt-5">
     <Loading v-if="loading" />
 
-    <div id="content" v-if="!loading">
+    <div id="content" v-if="!loading" style="margin-top: 100px; margin-bottom: 100px">
       <div class="container mt-5 mb-3">
         <div class="row">
           <div class="col">
@@ -42,86 +42,27 @@
                   <p>{{ product.Category.tag }}</p>
                 </div>
               </div>
-              <div class="row my-4" style="display: flex; justify-content: flex-end">
-                <button
-                  class="btn btn-secondary mx-2"
-                  data-toggle="modal"
-                  data-target="#editProduct"
-                >
-                  <i class="fas fa-pencil-alt"></i>
-                </button>
-                <button class="btn btn-dark mx-2" @click="deleteProduct">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
+              <div class="row my-4" style="display: flex; justify-content: center">
+                <form @submit.prevent="addCart">
+                  <div class="qty mt-3">
+                    <span class="minus bg-secondary" @click="addQuantity('kurang')">-</span>
+                    <input
+                      type="number"
+                      class="count"
+                      name="qty"
+                      min="1"
+                      :max="product.stock"
+                      v-model="quantity"
+                    />
+                    <span class="plus bg-secondary" @click="addQuantity('tambah')">+</span>
+                  </div>
+                  <button type="submit" class="btn btn-white mt-4">
+                    Add to cart
+                    <i class="fas fa-cart-plus ml-1"></i>
+                  </button>
+                </form>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- modal -->
-    <div
-      class="modal fade"
-      id="editProduct"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle">Upload product</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <input class="form-control" placeholder="product name" v-model="product.name" />
-              </div>
-              <div class="form-group">
-                <input class="form-control" placeholder="product price" v-model="product.price" />
-              </div>
-              <div class="form-group">
-                <input class="form-control" placeholder="product stock" v-model="product.stock" />
-              </div>
-              <div class="form-group">
-                <!-- <label for="exampleFormControlFile1">Example file input</label> -->
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  @change="processFile($event)"
-                />
-              </div>
-              <div class="form-group">
-                <select
-                  class="form-control"
-                  id="exampleFormControlSelect1"
-                  v-model="product.CategoryId"
-                >
-                  <option value="1">cloth</option>
-                  <option value="2">accessories</option>
-                  <option value="3">pants</option>
-                  <option value="4">jacket</option>
-                  <option value="5">suits</option>
-                  <option value="6">dress</option>
-                </select>
-                <small class="text-muted ml-2">
-                  <i>Select category for this product</i>
-                </small>
-              </div>
-              <button
-                type="submit"
-                class="btn btn-info shadow"
-                style="margin-left: 165px;"
-                data-dismiss="modal"
-                @click.prevent="submitEditProduct"
-              >Submit change</button>
-            </form>
           </div>
         </div>
       </div>
@@ -139,7 +80,8 @@ export default {
   },
   data() {
     return {
-      product: ""
+      product: "",
+      quantity: 0
     };
   },
   methods: {
@@ -157,79 +99,61 @@ export default {
           this.$store.commit("SET_LOADING", false);
         })
         .catch(err => {
+          console.log(err.response.data.msg);
+
           let error = err.response.data.msg;
           Toastify({
-            text: `${error}`,
+            text: `No item with id ${this.$route.params.productId}`,
             backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
             className: "info"
           }).showToast();
+          this.$router.push("/store");
         });
     },
-    deleteProduct() {
-      axios({
-        method: "DELETE",
-        url: `/products/${this.$route.params.productId}`,
-        headers: {
-          token: localStorage.getItem("token")
+    addQuantity(opt) {
+      if (opt === "tambah") {
+        if (this.quantity < this.product.stock) {
+          this.quantity++;
         }
-      })
-        .then(({ data }) => {
-          Toastify({
-            text: `Product with id ${this.$route.params.productId} has been deleted`,
-            backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
-            className: "info"
-          }).showToast();
-
-          this.$router.push("/admin");
-        })
-        .catch(err => {
-          let error = err.response.data.msg;
-          Toastify({
-            text: `${error}`,
-            backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
-            className: "info"
-          }).showToast();
-        });
-    },
-    submitEditProduct() {
-      const photoFormData = new FormData();
-      photoFormData.append("name", this.product.name);
-      photoFormData.append("image_url", this.product.image_url);
-      photoFormData.append("price", this.product.price);
-      photoFormData.append("stock", this.product.stock);
-      photoFormData.append("CategoryId", this.product.CategoryId);
-
-      this.$store.commit("SET_LOADING", true);
-
-      axios({
-        method: "PUT",
-        url: `/products/${this.$route.params.productId}`,
-        data: photoFormData,
-        headers: {
-          token: localStorage.getItem("token")
+      } else {
+        if (this.quantity > 0) {
+          this.quantity--;
         }
-      })
-        .then(({ data }) => {
-          this.getProduct();
-          Toastify({
-            text: "updated successfully!",
-            backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
-            className: "info"
-          }).showToast();
-        })
-        .catch(err => {
-          console.log(err.response);
-
-          let error = err.response.data.msg;
-          Toastify({
-            text: `${error}`,
-            backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
-            className: "info"
-          }).showToast();
-        });
+      }
     },
-    processFile(event) {
-      this.product.image_url = event.target.files[0];
+    addCart() {
+      if (!localStorage.token) {
+        this.$store.commit("NOTIFICATION", `you need to login first`);
+        this.$router.push("/login");
+      } else {
+        axios({
+          method: `POST`,
+          url: `/carts`,
+          data: {
+            ProductId: this.product.id,
+            quantity: this.quantity
+          },
+          headers: {
+            token: localStorage.token
+          }
+        })
+          .then(({data}) => {
+            
+            this.$router.push('/mycart')
+            Toastify({
+              text: `Successfully add product to cart!`,
+              backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
+              className: "info"
+            }).showToast();
+          })
+          .catch(err => {
+            Toastify({
+              text: `${err.response.data.msg}`,
+              backgroundColor: "linear-gradient(to right, #DA22FF, #9733EE)",
+              className: "info"
+            }).showToast();
+          });
+      }
     }
   },
   created() {
@@ -245,6 +169,7 @@ export default {
 
 <style scoped>
 #image-card {
+  cursor: none;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -260,5 +185,67 @@ export default {
 
 #image-card:hover {
   transform: scale(1.2);
+}
+
+.qty .count {
+  color: #000;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 30px;
+  padding: 0 2px;
+  min-width: 35px;
+  text-align: center;
+}
+.qty .plus {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  color: white;
+  width: 30px;
+  height: 30px;
+  font: 30px/1 Arial, sans-serif;
+  text-align: center;
+  border-radius: 50%;
+}
+.qty .minus {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  color: white;
+  width: 30px;
+  height: 30px;
+  font: 30px/1 Arial, sans-serif;
+  text-align: center;
+  border-radius: 50%;
+  background-clip: padding-box;
+}
+div {
+  text-align: center;
+}
+.minus:hover {
+  background-color: #717fe0 !important;
+}
+.plus:hover {
+  background-color: #717fe0 !important;
+}
+/*Prevent text selection*/
+span {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+input {
+  border: 0;
+  width: 2%;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input:disabled {
+  background-color: white;
 }
 </style>

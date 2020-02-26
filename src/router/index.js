@@ -30,13 +30,31 @@ const routes = [
   },
   {
     path: '/store',
-    name: 'Store',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Store.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Store.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Store',
+        component: () => import(/* webpackChunkName: "about" */ '../components/AllProducts.vue'),
+
+      },
+      {
+        path: ':productId',
+        name: 'detail product',
+        component: () => import(/* webpackChunkName: "about" */ '../components/ProductDetail.vue'),
+      }
+
+    ]
   },
   {
     path: '/mycart',
     name: 'MyCart',
     component: () => import(/* webpackChunkName: "about" */ '../views/MyCart.vue')
+  },
+  {
+    path: '/history',
+    name: 'Purchased history',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Purchased.vue')
   }
 ]
 
