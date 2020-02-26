@@ -47,6 +47,10 @@ export default {
     setProduct (product) {
       this.product = product
     },
+    reFetchProducts () {
+      this.$store.dispatch('fetchProducts')
+      this.setAllProducts()
+    },
     setAllProducts () {
       this.allProducts = this.products
     },
@@ -76,7 +80,7 @@ export default {
     ])
   },
   created () {
-    this.setAllProducts()
+    this.reFetchProducts()
   },
   watch: {
     products () {

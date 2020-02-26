@@ -17,7 +17,6 @@ export default {
   computed: mapState(['error', 'notification']),
   watch: {
     error (value) {
-      console.log('errornye', value)
       if (value) {
         const { errObj } = value.response.data
         if (errObj.errors) {

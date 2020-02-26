@@ -18,7 +18,7 @@
             </md-field>
           </div>
           <div class="text-center py-4 mt-3">
-            <b-button variant="outline-primary" style="width: 150px;" type="submit">Login</b-button>
+            <b-button variant="outline-primary" style="width: 150px;" type="submit">Register</b-button>
           </div>
           <p>Already a member? <span><a href="" @click.prevent="changeStatus(true)">Sign In</a></span></p>
         </form>
