@@ -18,6 +18,9 @@
       <template slot="end">
         <b-navbar-item tag="div">
           <div class="buttons">
+            <router-link to="/orders"  v-if="$store.state.token" class="button is-primary is-outlined">
+              My Order
+            </router-link>
             <router-link to="/cart" class="button">
               <span class="icon is-small">
                 <i class="mdi mdi-cart"></i>

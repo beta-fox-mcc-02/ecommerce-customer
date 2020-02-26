@@ -9,7 +9,9 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') || '',
     user: localStorage.getItem('user') || {},
     products: [],
-    cart: []
+    cart: { CartItems: [] },
+    orders: [],
+    transactionDetails: []
   },
   mutations: {
     // AUTH
@@ -39,9 +41,29 @@ export default new Vuex.Store({
       state.cart.push(product)
     },
     SET_CART(state, cart) {
-      state.cart = cart
-    }
+      if (cart) {
+        state.cart = cart
+      }
+    },
+    CHECKOUT(state) {
+      state.cart = { CartItems: [] }
+    },
     // END OF CART
+
+    // ORDERS
+
+    SET_ORDERS(state, orders) {
+      if (orders) {
+        state.orders = orders
+      }
+    },
+    SET_TRANSACTION_DETAILS(state, transactions) {
+      if(transactions) {
+        state.transactionDetails = transactions
+      }
+    }
+
+    // END OF ORDERS
   },
   actions: {
     // AUTH
@@ -73,7 +95,7 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       return new Promise(resolve => {
-        commit('logout')
+        commit('LOGOUT')
         resolve()
       })
     },
@@ -132,9 +154,65 @@ export default new Vuex.Store({
             reject('Error adding item to cart.')
           })
       })
-    }
+    },
+    checkout({ commit }, ShoppingCartId) {
+      const token = localStorage.token
+      return new Promise((resolve, reject) => {
+        client
+          .get(`/carts/checkout/${ShoppingCartId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then(response => {
+            commit('CHECKOUT', response.data)
+            resolve(response.data)
+          })
+          .catch(e => {
+            reject(e)
+          })
+      })
+    },
 
     // END OF CART ITEM
+
+    // ORDERS
+
+    getOrders({ commit }) {
+      const token = localStorage.token
+      return new Promise((resolve, reject) => {
+        client
+          .get(`/orders`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then(response => {
+            commit('SET_ORDERS', response.data)
+            resolve(response.data)
+          })
+          .catch(e => {
+            reject(e)
+          })
+      })
+    },
+
+    getOrderDetails({commit}, id) {
+      const token = localStorage.token
+      return new Promise((resolve, reject) => {
+        client
+          .get(`/orders/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then(response => {
+            commit('SET_TRANSACTION_DETAILS', response.data)
+            resolve(response.data)
+          })
+          .catch(e => {
+            reject(e)
+          })
+      })
+      
+      
+    }
+
+    // END OF ORDERS
   },
   getters: {
     isAuthenticated: function() {
@@ -142,6 +220,23 @@ export default new Vuex.Store({
     },
     token: function() {
       return localStorage.token
+    },
+    totalItems: function(state) {
+      let total = 0
+      state.cart.CartItems.forEach(el => {
+        total += el.quantity
+      })
+      return total
+    },
+    totalPrice: function(state) {
+      let total = 0
+      state.cart.CartItems.forEach(el => {
+        total += el.Product.price * el.quantity
+      })
+      return total
+    },
+    transactionDetails: function(state) {
+      return state.transactionDetails
     }
   }
 })
