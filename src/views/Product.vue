@@ -1,10 +1,9 @@
 <template>
-  <CardHorizontal :product="product" />
+  <CardHorizontal />
 </template>
 
 <script>
 import CardHorizontal from '../components/CardHorizontal.vue';
-import productAPI from '../API/productAPI';
 
 export default {
   components: {
@@ -12,21 +11,7 @@ export default {
   },
   data() {
     return {
-      product: null,
     };
-  },
-  created() {
-    this.$store.commit('setLoading');
-    productAPI.get(`/${this.$route.params.productId}`)
-      .then((response) => {
-        this.product = response.data;
-      })
-      .catch(() => {
-        this.$router.push('/');
-      })
-      .finally(() => {
-        this.$store.commit('stopLoading');
-      });
   },
 };
 </script>

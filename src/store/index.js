@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import userAPI from '../API/userAPI';
 import productAPI from '../API/productAPI';
+import cartAPI from '../API/cartAPI';
 
 Vue.use(Vuex);
 
@@ -87,6 +88,24 @@ export default new Vuex.Store({
         .finally(() => {
           context.commit('stopLoading');
         });
+    },
+    // edit cart
+    editCart(context, payload) {
+      context.commit('setLoading');
+      return cartAPI.put(`/${payload.PersonId}/${payload.ProductId}`, payload, {
+        headers: {
+          token: localStorage.token,
+        },
+      });
+    },
+    // add cart
+    addCart(context, payload) {
+      context.commit('setLoading');
+      return cartAPI.post('/', payload, {
+        headers: {
+          token: localStorage.token,
+        },
+      });
     },
   },
   modules: {
