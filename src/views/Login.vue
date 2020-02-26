@@ -19,6 +19,7 @@
       </form>
       <div class="form-footer">
         already a member? <a v-on:click="redirect">register</a> instead
+        or go to <router-link to="/">Home</router-link>
       </div>
     </div>
   </section>
@@ -58,7 +59,7 @@ export default {
           setTimeout(() => {
             this.clearNotification()
             this.$router.push('/')
-          }, 2000)
+          }, 3000)
         })
         .catch(() => {
           this.clear()
@@ -66,7 +67,7 @@ export default {
           this.message = 'Input email or password invalid'
           setTimeout(() => {
             this.clearNotification()
-          }, 2000)
+          }, 3000)
         })
     },
     clear () {
@@ -147,6 +148,11 @@ input[type="text"], input[type="email"], input[type="password"] {
 a {
     margin: 0 0.5rem;
     font-weight: bold;
+}
+
+a.router-link-active {
+    text-decoration: none;
+    color: black;
 }
 
 a:hover {

@@ -34,7 +34,7 @@ export default {
       const token = localStorage.getItem('token')
       if (token) {
         this.$router.push(`/${this.categoryId}/${itemId}/checkout`)
-      } else console.log('login first!')
+      } else this.$router.push('/registration')
     }
   },
   watch: {
@@ -64,6 +64,7 @@ div#show-product{
     display: flex;
     align-items: center;
     height: 100%;
+    position: relative;
 }
 
 div#product-container {

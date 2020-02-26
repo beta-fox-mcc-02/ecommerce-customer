@@ -96,8 +96,14 @@ export default new Vuex.Store({
         url: `${serverUrl}/item/${itemId}`
       })
     },
-    checkoutAsync ({ state }, { token, itemId }) {
-      console.log(token, itemId)
+    checkoutAsync ({ state }, { token, itemId, stock }) {
+      if (stock > 0) {
+        return axios({
+          method: 'POST',
+          url: `${serverUrl}/transactions`,
+          data: { token, itemId, stock }
+        })
+      } else return false
     }
   }
 })

@@ -1,13 +1,13 @@
 <template>
   <div id="checkout-container">
     <div id="checkout-content">
-      <form>
+      <form v-on:submit.prevent="checkout">
         <div class="checkout-inputs">
           <label>Purchase Quantity</label>
           <input type="number" v-model="stock">
         </div>
         <div class="checkout-inputs">
-          <button>checkout</button>
+          <button type="submit">checkout</button>
         </div>
         <div class="total-purchase">
           Rp.{{(item.price * stock).toLocaleString()}}
@@ -26,13 +26,13 @@ export default {
     return {
       item: {},
       itemId: '',
-      stock: 1
+      stock: 0
     }
   },
   props: ['product'],
   watch: {
     $route () {
-      this.stock = 1
+      this.stock = 0
       this.itemId = this.$route.params.itemId
       this.$store.dispatch('getItem', this.itemId)
         .then((result) => {
@@ -43,8 +43,33 @@ export default {
         })
     }
   },
+  methods: {
+    checkout () {
+      const token = localStorage.getItem('token')
+      if (token) {
+        const payload = {
+          token,
+          itemId: this.itemId,
+          stock: this.stock
+        }
+        this.$store.dispatch('checkoutAsync', payload)
+          .then((result) => {
+            if (result) {
+              console.log(result.data)
+              this.$store.dispatch('fetchProductsAsync')
+              setTimeout(() => {
+                this.$router.push('/')
+              }, 1000)
+            } else console.log('stock is not enough')
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else this.$router.push('/registration')
+    }
+  },
   created () {
-    this.stock = 1
+    this.stock = 0
     this.itemId = this.$route.params.itemId
     this.$store.dispatch('getItem', this.itemId)
       .then((result) => {

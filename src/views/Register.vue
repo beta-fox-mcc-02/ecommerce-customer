@@ -22,6 +22,7 @@
       </form>
       <div class="form-footer">
         already a member? <a v-on:click="redirect">Login</a> instead
+        or go to <router-link to="/">Home</router-link>
       </div>
     </div>
   </section>
@@ -61,7 +62,7 @@ export default {
           this.message = 'Register Success please login now'
           setTimeout(() => {
             this.$router.push('/login')
-          }, 2000)
+          }, 3000)
         })
         .catch(() => {
           this.clear()
@@ -70,7 +71,7 @@ export default {
           setTimeout(() => {
             this.notification = false
             this.message = ''
-          }, 2000)
+          }, 3000)
         })
     },
     clear () {
@@ -147,6 +148,11 @@ input[type="text"], input[type="email"], input[type="password"] {
 a {
     margin: 0 0.5rem;
     font-weight: bold;
+}
+
+a.router-link-active {
+    text-decoration: none;
+    color: black;
 }
 
 a:hover {
