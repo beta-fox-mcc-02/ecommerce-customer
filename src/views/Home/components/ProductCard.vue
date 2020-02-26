@@ -24,7 +24,7 @@
             class="ml-auto"
             text
             @click="onAddToCart(product.id)"
-            :disabled="disableAddToCart"
+            :disabled="!product.stock"
           >Add To Cart</v-btn>
         </v-card-actions>
       </v-card>
@@ -90,8 +90,12 @@ export default {
       return +(Math.random() * 5).toFixed(1);
     },
     productStock() {
-      const item = this.product.stock === 1 ? 'item' : 'items';
-      return `${this.product.stock} ${item}`;
+      if (this.product.stock === 0) {
+        return `Not Available`;
+      } else {
+        const item = this.product.stock === 1 ? 'item' : 'items';
+        return `${this.product.stock} ${item}`;
+      }
     },
     productPrice() {
       return `Rp${this.product.price.toLocaleString('id-ID', 'currency')}`;
