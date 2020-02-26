@@ -137,11 +137,22 @@ export default new Vuex.Store({
       context.commit('SET_LOADING', true);
       return axios({
         method: 'DELETE',
-        url: `carts/${payload.id}`,
+        url: `/carts/${payload.id}`,
         headers: {
           access_token: localStorage.access_token
         },
         data: payload.data
+      });
+    },
+    checkout(context, payload) {
+      context.commit('SET_LOADING', true);
+      return axios({
+        method: 'PUT',
+        url: `/carts/checkout`,
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: payload
       });
     }
   },

@@ -166,8 +166,24 @@ export default {
 
     onBuy() {
       this.checkout = false;
-      console.log(this.totalPrice);
-      console.log(this.$store.state.carts);
+      const payload = {
+        carts: this.$store.state.carts
+      };
+      this.$store.dispatch('checkout', payload)
+        .then(({ data }) => {
+          console.log(data);
+          this.$store.commit('SET_LOADING', false);
+          this.$store.commit('STOP_ERROR');
+          this.$store.commit('SET_SUCCESS', 'Purchase Success. Thank You ^-^');
+          this.$store.dispatch('fetchCarts');
+
+        })
+        .catch(({ response }) => {
+          this.$store.commit('SET_LOADING', false);
+          this.$store.commit('SET_ERROR', response.data);
+          this.$store.commit('STOP_SUCCESS');
+          console.log(response);
+        });
     },
 
     onUpdate() {
