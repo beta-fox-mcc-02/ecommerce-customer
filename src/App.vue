@@ -1,32 +1,74 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app class="bg">
+  <n-navbar />
+  <notifications group="sign" position="center center" :width="600"/>
+  <!-- <v-parallax class="ovl-hd" src="https://missnyingnying.files.wordpress.com/2011/02/img_95671.jpg"> -->
+    <v-content>
+      <router-view></router-view>
+    </v-content>
+  <!-- </v-parallax> -->
+  <v-card height="150">
+    <v-footer
+      absolute
+      class="font-weight-medium primary text-center white--text"
+    >
+      <v-col
+        class="text-center pointer"
+        cols="12"
+      >
+        {{ new Date().getFullYear() }} — <strong>Singkongpedia</strong>
+      </v-col>
+    </v-footer>
+  </v-card>
+  </v-app>
 </template>
 
+<script>
+import nNavbar from './components/Navbar'
+export default {
+  name: 'App',
+  components: {
+    nNavbar
+  },
+  methods: {
+    checkLogin () {
+      if (localStorage.token) {
+        this.$store.commit('setIsLogin', true)
+      } else {
+        this.$store.commit('setIsLogin', false)
+      }
+    }
+  },
+  created () {
+    this.checkLogin()
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  .pointer {
+    cursor: pointer;
+  }
+  .hvr {
+    transition: transform 10s
+  }
+  .hvr:active {
+    background-color: blue;
+  }
+  .ophvr {
+    transition: opacity .4s ease-in-out;
+  }
+  .ophvr:hover {
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+    opacity: 0.6;
+  }
+  /* .ovl-hd {
+    overflow: auto;
+  } */
+  .bg {
+    background-image: url("https://missnyingnying.files.wordpress.com/2011/02/img_95671.jpg");
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: auto;
+  }
 </style>
