@@ -54,6 +54,7 @@ export default {
         this.product = result.data.data
       })
       .catch((err) => console.log(err))
+    this.$store.dispatch('getBannersAsync')
   }
 }
 </script>

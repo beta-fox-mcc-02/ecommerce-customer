@@ -12,6 +12,7 @@ export default new Vuex.Store({
     products: [],
     categories: [],
     product: [],
+    banners: [],
     transaction: {},
     username: '',
     email: '',
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     loginStatus: false
   },
   mutations: {
+    banners (state, value) {
+      state.banners = value
+    },
     setUsername (state, value) {
       state.username = value
     },
@@ -129,6 +133,16 @@ export default new Vuex.Store({
         url: `${serverUrl}/transactions/${payload.customerId}`,
         data: { productId: payload.productId }
       })
+    },
+    getBannersAsync ({ commit }) {
+      axios({
+        method: 'GET',
+        url: `${serverUrl}/banners`
+      })
+        .then(({ data }) => {
+          commit('banners', data)
+        })
+        .catch((err) => console.log(err))
     }
   }
 })

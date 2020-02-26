@@ -116,6 +116,7 @@ div#checkout-item {
     background-color: white;
     box-shadow: 0 0 0.4rem grey;
     visibility: hidden;
+    z-index: 1;
 }
 
 div#shopping-cart:hover #checkout-item {

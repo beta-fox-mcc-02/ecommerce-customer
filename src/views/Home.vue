@@ -3,7 +3,7 @@
     <Navbar />
     <main v-if="!showParticularProduct">
       <section id="banner">
-        <img src="https://www.kindpng.com/picc/m/465-4653741_e-commerce-banner-ecommerce-web-development-services-hd.png" alt="">
+        <img v-bind:src="banner" alt="">
       </section>
       <section class="categories">
         <div class="category-cards" v-for="category in categories" v-bind:key="category.id">
@@ -28,7 +28,8 @@ export default {
   data () {
     return {
       product: [],
-      showParticularProduct: false
+      showParticularProduct: false,
+      banner: ''
     }
   },
   components: { Navbar },
@@ -38,12 +39,24 @@ export default {
     },
     products () {
       return this.$store.state.products
+    },
+    banners () {
+      return this.$store.state.banners
     }
   },
   methods: {
     seeProducts (categoryId) {
       this.$router.push(`/${categoryId}`)
     }
+  },
+  created () {
+    this.$store.dispatch('getBannersAsync')
+    var i = 0
+    setInterval(() => {
+      i++
+      if (i === this.banners.length) i = 0
+      this.banner = this.banners[i].bannerUrl
+    }, 3000)
   }
 }
 </script>
@@ -114,6 +127,7 @@ section.categories {
 img {
     height: 100%;
     box-shadow: 0 0 1rem grey;
+    animation: fade-in-out 3s infinite;
 }
 
 button {
@@ -127,6 +141,13 @@ button {
 
 button:hover{
   background-color: #752626;
+}
+
+@keyframes fade-in-out {
+  0%{ opacity: 0; }
+  25%{ opacity: 1; }
+  75%{ opacity: 1; }
+  100%{ opacity: 0; }
 }
 
 </style>
