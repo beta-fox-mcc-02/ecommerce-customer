@@ -86,21 +86,21 @@ export default {
       axios({
         method: "post",
         url: "/cart/checkout",
-        data: {
-          total: this.totalPrice,
-          daftar: this.setDaftar
-        },
         headers: {
-          access_token : localStorage.token
+          token : localStorage.token
         }
       })
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
           this.$router.push('/')
+          // this.$store.dispatch('getCart')
+
+          this.$vToastify.success("check your email for invoice!", "thanks!"); 
           
         })
         .catch(err => {
           console.log(err);
+          this.$vToastify.error("it seems theres a problem", "sorry"); 
         });
     }
   },  
@@ -118,14 +118,14 @@ export default {
 
      return this.totalharga
     },
-    setDaftar(){
-      // this.totalharga = 0
-      let arr = this.$store.state.cartData
-      arr.forEach(el => this.daftar.push(el.product._id));
-      console.log(this.daftar);
+    // setDaftar(){
+    //   // this.totalharga = 0
+    //   let arr = this.$store.state.cartData
+    //   arr.forEach(el => this.daftar.push(el.product._id));
+    //   console.log(this.daftar);
       
-     return this.daftar
-    }
+    //  return this.daftar
+    // }
   },
   components:{
     itemCart

@@ -39,6 +39,7 @@
               min="1" :max="item.stock"
               class="form-control text-center"
               v-model="jumlah"
+              readonly
               placeholder
               aria-label="Example text with button addon"
               aria-describedby="button-addon1"
@@ -48,7 +49,8 @@
             </div>
           </div>
 
-          <button class="btn btn-primary mt-3" @click.prevent="addCart(aProduct.id)">Add to Cart</button>
+          <h3 class="mt-3" v-if="checkStock">Out of Stock</h3>
+          <button class="btn btn-primary mt-3" @click.prevent="addCart(aProduct.id)" v-else>Add to Cart</button>
         </div>
         <!-- {{aProduct.stock}} -->
       </div>
@@ -111,7 +113,18 @@ export default {
       return this.$store.state.loading;
     },
     getPrice(){
-      return this.item.price * this.jumlah
+        // if(this.item.stock < 1){
+        //   return '-Out of Stock-'
+        // }else{
+        //   }
+          return this.item.price * this.jumlah
+    },
+    checkStock(){
+      if(this.item.stock < 1){
+        return true
+      }else{
+        return false
+      }
     }
   },
   created: function() {
