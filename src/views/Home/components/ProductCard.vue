@@ -75,6 +75,7 @@ export default {
               });
             });
             this.$store.commit('SET_CARTS', payload);
+            this.$router.push('/cart');
           })
           .catch(({ response }) => {
             console.log(response);
@@ -104,6 +105,7 @@ export default {
               });
             });
             this.$store.commit('SET_CARTS', payload);
+            this.$router.push('/cart');
           })
           .catch(({ response }) => {
             console.log(response);
