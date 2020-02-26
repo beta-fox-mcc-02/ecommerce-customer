@@ -10,7 +10,6 @@
     img-height="480"
     indicators
   >
-
     <b-carousel-slide
       :caption="slide.caption"
       v-for="(slide, index) in slides" :key="index">
@@ -22,6 +21,9 @@
           :src="slide.image"
         >
       </template>
+      <router-link to="/products">
+        <b-button variant="success" size="lg">Shop now</b-button>
+      </router-link>
     </b-carousel-slide>
   </b-carousel>
 </div>
@@ -51,8 +53,5 @@ export default {
 <style lang="scss" scoped>
   .img-carousel {
     filter: brightness(60%);
-  }
-  .carousel-caption {
-    top: 50%;
   }
 </style>

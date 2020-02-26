@@ -27,7 +27,7 @@ export default {
         this.$store.commit('SET_AUTHENTICATED', false)
         this.$store.commit('SET_LOADING_AUTHENTICATION', false)
         this.$store.commit('SET_USER', {})
-        this.$store.commit('SET_ERRORS', err.body)
+        this.$store.commit('SET_ERRORS', err.response)
       })
   },
   computed: {
@@ -54,6 +54,12 @@ export default {
 }
 
 .carousel-caption {
-  top: 50%;
+  top: 40%;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: #2c3e50;
 }
 </style>

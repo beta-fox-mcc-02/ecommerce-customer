@@ -7,14 +7,26 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     products: [],
+    categories: [],
     errors: [],
     message: '',
     isLoading: null,
+    isLoadingAddToCart: null,
+    isLoadingCategories: null,
     isAuthenticated: null,
     isLoadingAuthenticated: null,
     user: {}
   },
   mutations: {
+    SET_LOADING_ADD_TO_CART (state, payload) {
+      state.isLoadingAddToCart = payload
+    },
+    SET_LOADING_CATEGORIES (state, payload) {
+      state.isLoadingCategories = payload
+    },
+    SET_CATEGORIES (state, payload) {
+      state.categories = payload
+    },
     SET_USER (state, payload) {
       state.user = payload
     },
@@ -38,11 +50,69 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateCart ({ commit }, payload) {
+      commit('SET_LOADING_ADD_TO_CART', true)
+      return api({
+        method: 'PUT',
+        url: '/carts/' + payload.cart_id,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        },
+        data: {
+          product_id: payload.product_id,
+          quantity: payload.quantity
+        }
+      })
+    },
+    addToCart ({ commit }, payload) {
+      commit('SET_LOADING_ADD_TO_CART', true)
+      return api({
+        method: 'POST',
+        url: '/carts',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        },
+        data: {
+          product_id: payload.product_id,
+          quantity: payload.quantity
+        }
+      })
+    },
+    fetchCategories ({ commit }) {
+      commit('SET_LOADING_CATEGORIES', true)
+      return api({
+        method: 'GET',
+        url: '/categories'
+      })
+    },
+    fetchProducts ({ commit }, category) {
+      commit('SET_LOADING', true)
+      if (!category) {
+        return api({
+          method: 'GET',
+          url: '/products'
+        })
+      } else {
+        return api({
+          method: 'GET',
+          url: '/products/category/' + category
+        })
+      }
+    },
     getBestDealProduct ({ commit }, limit) {
       commit('SET_LOADING', true)
       return api({
         method: 'GET',
         url: '/products?limit=' + limit
+      })
+    },
+    findUser ({ commit }) {
+      return api({
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        },
+        url: '/users'
       })
     },
     checkAuthenticated ({ commit }, payload) {

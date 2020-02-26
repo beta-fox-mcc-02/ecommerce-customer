@@ -5,7 +5,9 @@
         <div class="special-deals">
           <h2>Our Special Deals</h2>
           <b-row class="special-deals-products">
-            <Product :product="product" v-for="product in products" :key="product.id"/>
+            <b-col md="4" v-for="product in products" :key="product.id">
+              <Product :isHomePage="true" :product="product"/>
+            </b-col>
           </b-row>
         </div>
         <div class="features">
