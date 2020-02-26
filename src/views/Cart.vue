@@ -1,9 +1,23 @@
 <template>
   <div class="Cart-container">
-    {{ cart }}
-    <CustomerProduct class="left"/>
-    <!-- <div class="left">KIRI</div> -->
-    <div class="right">KANAN</div>
+    <div class="left">
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Qty</th>
+            <th>Total Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <CustomerProduct v-for="cart in carts" :key="cart.id" :cart="cart" />
+        </tbody>
+      </table>
+    </div>
+    <div class="right">
+      {{ carts }}
+    </div>
   </div>
 </template>
 
@@ -16,7 +30,7 @@ export default {
     CustomerProduct
   },
   computed: {
-    cart () {
+    carts () {
       return this.$store.state.cart
     }
   },
