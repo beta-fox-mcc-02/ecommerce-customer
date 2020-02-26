@@ -1,8 +1,9 @@
 <template>
   <div id="mycart">
     <NavbarCustomer style="position:fixed; z-index: 1; top: 0px; width: 100%;" class="shadow" />
+   <Loading v-if="loading"/>
 
-    <div class="container mb-5" style="margin-top: 10vh;">
+    <div class="container mb-5" style="margin-top: 10vh;" v-if="!loading">
       <h1 style="font-family: 'Playfair Display SC', serif">
       my cart
       </h1>
@@ -22,11 +23,13 @@
 import store from "../store/index";
 import CartCard from "../components/CartCard";
 import NavbarCustomer from "../components/NavbarCustomer";
+import Loading from '../components/Loading'
 export default {
   name: `MyCart`,
   components: {
     NavbarCustomer,
-    CartCard
+    CartCard,
+    Loading
   },
   data() {
     return {};

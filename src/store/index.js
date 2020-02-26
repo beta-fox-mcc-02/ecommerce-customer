@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     allProduct: [],
     detailProduct: {},
-    loading: true,
+    loading: false,
     notification: '',
     myCarts: []
   },
@@ -55,6 +55,7 @@ export default new Vuex.Store({
         })
     },
     getAllMyCart ({commit}) {
+      commit('SET_LOADING', true)
       axios({
         method: `GET`,
         url: '/carts',
@@ -63,7 +64,7 @@ export default new Vuex.Store({
         }
       })
         .then(({data}) => {
-          
+          commit('SET_LOADING', false)
           commit('SET_ALL_MY_CART', data)
         })
         .catch(err => {
