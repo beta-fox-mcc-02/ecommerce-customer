@@ -43,7 +43,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field label="Quantity"></v-text-field>
+                    <v-text-field label="Quantity" type="number" min="0" v-model="newQuantity"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -52,7 +52,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="onCancel">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="onEdit">Update</v-btn>
+              <v-btn color="blue darken-1" text @click="onUpdate">Update</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -111,6 +111,8 @@ export default {
       { text: 'Actions', value: 'action', sortable: false },
     ],
     editedIndex: -1,
+    newQuantity: '',
+    updateValue: []
   }),
 
   computed: {
@@ -135,14 +137,14 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.newQuantity = item.quantity;
+      this.updateValue = item;
       this.edit = true;
     },
 
+
     deleteItem() {
       this.deleteModal = true;
-      // const index = this.desserts.indexOf(item);
     },
 
     onCancel() {
@@ -165,8 +167,24 @@ export default {
       this.close();
     },
 
-    onEdit() {
-      this.edit = true;
+    onUpdate() {
+      const payload = {
+        id: this.updateValue.id,
+        data: {
+          status: this.updateValue.status,
+          quantity: this.newQuantity,
+          ProductId: this.updateValue.ProductId
+        }
+      };
+      this.$store.dispatch('addItemToCart', payload)
+        .then(({ data }) => {
+          console.log(data);
+          this.$store.dispatch('fetchCarts');
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        });
+      this.edit = false;
     },
 
     onDelete() {
