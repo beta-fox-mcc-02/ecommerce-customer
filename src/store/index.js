@@ -53,6 +53,26 @@ export default new Vuex.Store({
           access_token: localStorage.access_token
         }
       });
+    },
+    createNewCart(context, payload) {
+      return axios({
+        method: 'POST',
+        url: '/carts',
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: payload
+      });
+    },
+    addItemToCart(context, payload) {
+      return axios({
+        method: 'PUT',
+        url: `/carts/${payload.id}`,
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: payload.data
+      });
     }
   },
   modules: {

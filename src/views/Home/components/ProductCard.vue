@@ -21,7 +21,7 @@
         color="teal"
         class="ml-auto"
         text
-        @click="onAddToCart"
+        @click="onAddToCart(product.id)"
         :disabled="disableAddToCart"
       >Add To Cart</v-btn>
     </v-card-actions>
@@ -41,11 +41,73 @@ export default {
   }),
 
   methods: {
-    onAddToCart() {
-      console.log('onnAddToCart');
+    onAddToCart(id) {
       if (!localStorage.access_token) {
         this.$router.push('/register');
         console.log('you must register first');
+      }
+      const cart = this.$store.state.carts.filter(el => el.ProductId === id);
+      if (cart.length) {
+        const payload = {
+          id: cart[0].id,
+          data: {
+            status: cart[0].status,
+            ProductId: cart[0].ProductId,
+            quantity: cart[0].quantity + 1
+          }
+        };
+        this.$store.dispatch('addItemToCart', payload)
+          .then(() => {
+            return this.$store.dispatch('fetchCarts');
+          })
+          .then(({ data }) => {
+            const payload = [];
+            data.forEach(el => {
+              payload.push({
+                id: el.id,
+                UserId: el.UserId,
+                ProductId: el.ProductId,
+                status: el.status,
+                quantity: el.quantity,
+                totalPrice: el.price,
+                name: el.Product.name,
+                price: el.Product.price
+              });
+            });
+            this.$store.commit('SET_CARTS', payload);
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
+      } else {
+        const payload = {
+          status: false,
+          quantity: 1,
+          ProductId: id
+        };
+        this.$store.dispatch('createNewCart', payload)
+          .then(() => {
+            return this.$store.dispatch('fetchCarts');
+          })
+          .then(({ data }) => {
+            const payload = [];
+            data.forEach(el => {
+              payload.push({
+                id: el.id,
+                UserId: el.UserId,
+                ProductId: el.ProductId,
+                status: el.status,
+                quantity: el.quantity,
+                totalPrice: el.price,
+                name: el.Product.name,
+                price: el.Product.price
+              });
+            });
+            this.$store.commit('SET_CARTS', payload);
+          })
+          .catch(({ response }) => {
+            console.log(response);
+          });
       }
     }
   },
