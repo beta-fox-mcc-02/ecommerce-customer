@@ -61,13 +61,13 @@
         <v-dialog v-model="deleteModal" max-width="500px">
           <v-card>
             <v-card-title>
-              <span class="headline">Confirm Purchase</span>
+              <span class="headline">Confirm Delete</span>
             </v-card-title>
 
             <v-card-text>
               <v-container>
                 <v-row>
-                  <p>Total Price is Rp. 2.000.000</p>
+                  <p>Do you want to delete "{{itemToDelete.name}}"?</p>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -75,7 +75,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="onCancel">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="onDelete">Buy</v-btn>
+              <v-btn color="blue darken-1" text @click="onDelete">Delete</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -112,7 +112,8 @@ export default {
     ],
     editedIndex: -1,
     newQuantity: '',
-    updateValue: []
+    updateValue: '',
+    itemToDelete: '',
   }),
 
   computed: {
@@ -142,29 +143,19 @@ export default {
       this.edit = true;
     },
 
-
-    deleteItem() {
+    deleteItem(item) {
       this.deleteModal = true;
+      this.itemToDelete = item;
     },
 
     onCancel() {
       this.checkout = false;
       this.deleteModal = false;
       this.edit = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
     },
 
     onBuy() {
-      this.checkout = true;
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
+      this.checkout = false;
     },
 
     onUpdate() {
@@ -188,7 +179,8 @@ export default {
     },
 
     onDelete() {
-      this.deleteModal = true;
+      this.deleteModal = false;
+      console.log(this.itemToDelete);
     },
     formatPrice(price) {
       return `Rp ${price.toLocaleString('id-ID', 'currency')}`;

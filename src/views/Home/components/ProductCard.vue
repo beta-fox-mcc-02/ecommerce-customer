@@ -1,31 +1,35 @@
 <template>
-  <v-card :loading="loading" class="mx-auto my-5" max-width="374">
-    <v-img height="200" :src="product.image_url"></v-img>
+  <div class>
+    <v-hover v-slot:default="{ hover }" close-delay="200">
+      <v-card :loading="loading" class="mx-auto my-5" max-width="374" :elevation="hover ? 16: 2">
+        <v-img height="200" :src="product.image_url"></v-img>
 
-    <v-card-title>{{product.name}}</v-card-title>
+        <v-card-title>{{product.name}}</v-card-title>
 
-    <v-card-text>
-      <v-row align="center" class="mx-0">
-        <v-rating :value="randomNumber" color="amber" dense half-increments readonly size="14"></v-rating>
-        <div class="grey--text ml-4">{{randomNumber}} (rating)</div>
-      </v-row>
-      <div class="my-4 subtitle-1">
-        <h4>Stock : {{productStock}}</h4>
-      </div>
-    </v-card-text>
-    <v-divider class="mx-4"></v-divider>
-    <v-card-title>{{productPrice}}</v-card-title>
+        <v-card-text>
+          <v-row align="center" class="mx-0">
+            <v-rating :value="randomNumber" color="amber" dense half-increments readonly size="14"></v-rating>
+            <div class="grey--text ml-4">{{randomNumber}} (rating)</div>
+          </v-row>
+          <div class="my-4 subtitle-1">
+            <h4>Stock : {{productStock}}</h4>
+          </div>
+        </v-card-text>
+        <v-divider class="mx-4"></v-divider>
+        <v-card-title>{{productPrice}}</v-card-title>
 
-    <v-card-actions>
-      <v-btn
-        color="teal"
-        class="ml-auto"
-        text
-        @click="onAddToCart(product.id)"
-        :disabled="disableAddToCart"
-      >Add To Cart</v-btn>
-    </v-card-actions>
-  </v-card>
+        <v-card-actions>
+          <v-btn
+            color="teal"
+            class="ml-auto"
+            text
+            @click="onAddToCart(product.id)"
+            :disabled="disableAddToCart"
+          >Add To Cart</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-hover>
+  </div>
 </template>
 
 <script>
@@ -95,3 +99,17 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-card {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.v-card:not(.on-hover) {
+  opacity: 0.6;
+}
+
+.show-btns {
+  color: rgba(255, 255, 255, 1) !important;
+}
+</style>
