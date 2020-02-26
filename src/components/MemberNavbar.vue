@@ -12,6 +12,19 @@
     </div>
     <div id="shopping-cart">
       <a class="fas fa-shopping-cart"></a>
+      <div id="checkout-item">
+        <div id="checkout-title">
+          <h1> {{transaction.username}}'s items </h1>
+        </div>
+        <ul id="cart">
+          <li class="checkout-details" v-for="product in transaction.Products" v-bind:key="product.id">
+            <h3>{{product.name}}</h3>
+            <p>Rp.{{product.Transaction.purchasePrice.toLocaleString()}}</p>
+            <p>{{!product.Transaction.status ? 'Waiting for payment' : 'Bought'}}</p>
+            <button v-if="!product.Transaction.status" v-on:click="pay(product.Transaction)">Pay now</button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -23,12 +36,38 @@ export default {
       username: localStorage.getItem('username')
     }
   },
+  computed: {
+    transaction () {
+      return this.$store.state.transaction
+    }
+  },
   methods: {
     logout () {
       this.$store.commit('clearAll')
-      // tambah commit clear satu lagi jika "username" masih ada
+      this.$store.dispatch('fetchProductsAsync')
       localStorage.clear()
+    },
+    getTransaction () {
+      const token = localStorage.getItem('token')
+      this.$store.dispatch('getTransactionAsync', token)
+    },
+    pay (transaction) {
+      const payload = {
+        customerId: transaction.CustomerId,
+        productId: transaction.ProductId
+      }
+      this.$store.dispatch('payAsync', payload)
+        .then((result) => {
+          console.log(result.data)
+          this.getTransaction()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
+  },
+  created () {
+    this.getTransaction()
   }
 }
 </script>
@@ -59,12 +98,28 @@ a:hover{
   background-color: #374d69
 }
 
-div#user-profile {
+div#user-profile, div#shopping-cart {
     position: relative;
 }
 
 div#user-profile:hover span {
     visibility: visible;
+}
+
+div#checkout-item {
+    position: absolute;
+    right: 0;
+    width: 20rem;
+    height: 20rem;
+    overflow-y: scroll;
+    word-break: break-word;
+    background-color: white;
+    box-shadow: 0 0 0.4rem grey;
+    visibility: hidden;
+}
+
+div#shopping-cart:hover #checkout-item {
+  visibility: visible;
 }
 
 span {
@@ -98,6 +153,47 @@ button#logout {
 
 button#logout:hover {
   background-color: #8baec9
+}
+
+div#checkout-title {
+    height: 10%;
+    text-align: center;
+    background-color: #3ca4a9;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-variant-caps: petite-caps;
+}
+
+div#checkout-product {
+    height: 20%;
+}
+
+ul#cart {
+    display: flex;
+    list-style: none;
+    padding: 0.5rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+li.checkout-details {
+    width: 50%;
+    height: 7rem;
+    display: flex;
+    flex-direction: column;
+    font-variant: all-petite-caps;
+}
+
+h3 {
+    text-align: center;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    word-break: break-word;
+    font-variant-caps: all-petite-caps;
 }
 
 </style>

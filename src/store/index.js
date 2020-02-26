@@ -11,6 +11,7 @@ export default new Vuex.Store({
     products: [],
     categories: [],
     product: [],
+    transaction: {},
     username: '',
     email: '',
     password: '',
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     },
     setCategories (state, value) {
       state.categories = value
+    },
+    setTransaction (state, value) {
+      state.transaction = value
     },
     clearAll (state) {
       state.username = ''
@@ -104,6 +108,26 @@ export default new Vuex.Store({
           data: { token, itemId, stock }
         })
       } else return false
+    },
+    getTransactionAsync ({ state, commit }, token) {
+      axios({
+        method: 'GET',
+        url: `${serverUrl}/transactions`,
+        headers: { token }
+      })
+        .then((result) => {
+          commit('setTransaction', result.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    payAsync ({ state }, payload) {
+      return axios({
+        method: 'PUT',
+        url: `${serverUrl}/transactions/${payload.customerId}`,
+        data: { productId: payload.productId }
+      })
     }
   }
 })

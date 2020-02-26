@@ -55,7 +55,8 @@ export default {
         this.$store.dispatch('checkoutAsync', payload)
           .then((result) => {
             if (result) {
-              console.log(result.data)
+              const token = localStorage.getItem('token')
+              this.$store.dispatch('getTransactionAsync', token)
               this.$store.dispatch('fetchProductsAsync')
               setTimeout(() => {
                 this.$router.push('/')
