@@ -4,6 +4,7 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="4">
+            <v-alert type="error" v-if="isError">{{errorMessage}}</v-alert>
             <v-card class="elevation-12">
               <v-toolbar color="teal" dark flat>
                 <v-toolbar-title>{{title}}</v-toolbar-title>
@@ -67,7 +68,7 @@ export default {
       ],
       password: '',
       passwordRules: [
-        v => v.length >= 5 || 'Password too short. Minimum 5 characters',
+        // v => v.length >= 5 || 'Password too short. Minimum 5 characters',
         v => v.length <= 20 || 'Password too long. Maximum 20 characters',
       ],
       valid: false
@@ -83,24 +84,28 @@ export default {
         payload.role = 'customer';
         this.$store.dispatch('registerCustomer', payload)
           .then(({ data }) => {
+            this.$store.commit('STOP_ERROR');
+            // logic
             this.$store.commit('HAS_LOGIN');
             this.$router.push('/');
             localStorage.setItem('access_token', data.access_token);
           })
           .catch(({ response }) => {
-            console.log(response);
+            this.$store.commit('SET_ERROR', response.data.message);
           });
       }
 
       if (this.title === 'Login') {
         this.$store.dispatch('loginCustomer', payload)
           .then(({ data }) => {
+            this.$store.commit('STOP_ERROR');
+            // logic
             this.$store.commit('HAS_LOGIN');
             this.$router.push('/');
             localStorage.setItem('access_token', data.access_token);
           })
           .catch(({ response }) => {
-            console.log(response);
+            this.$store.commit('SET_ERROR', response.data.message);
           });
       }
     },
@@ -110,6 +115,17 @@ export default {
     },
     toHome() {
       this.$router.push('/');
+    }
+  },
+  computed: {
+    isError() {
+      return this.$store.state.errorStatus;
+    },
+    isSuccess() {
+      return this.$store.state.successStatus;
+    },
+    errorMessage() {
+      return this.$store.state.errorMessages;
     }
   }
 }

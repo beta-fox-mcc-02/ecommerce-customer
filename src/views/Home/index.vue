@@ -52,6 +52,8 @@
     </v-app-bar>
 
     <v-content>
+      <v-alert type="error" class="mt-5" v-if="false">Error Message</v-alert>
+      <v-alert type="success" class="mt-5" v-if="false">Success Message</v-alert>
       <router-view></router-view>
     </v-content>
 
@@ -83,7 +85,7 @@ export default {
       this.$router.push('/cart');
     },
     logout() {
-      console.log('KENA');
+      this.$router.push('/');
       localStorage.removeItem('access_token');
       this.$store.commit('LOGOUT');
     }

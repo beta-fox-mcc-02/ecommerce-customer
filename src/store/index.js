@@ -8,7 +8,11 @@ export default new Vuex.Store({
   state: {
     hasLogin: false,
     products: [],
-    carts: []
+    carts: [],
+    errorMessages: [],
+    errorStatus: false,
+    successMessage: '',
+    succesStatus: false
   },
   mutations: {
     HAS_LOGIN(state) {
@@ -22,6 +26,23 @@ export default new Vuex.Store({
     },
     SET_CARTS(state, payload) {
       state.carts = payload;
+    },
+    SET_ERROR(state, payload) {
+      state.errorStatus = true;
+      if (Array.isArray(payload)) {
+        state.errorMessages = payload.join(' and ');
+      }
+      else state.errorMessages = payload;
+    },
+    STOP_ERROR(state) {
+      state.errorStatus = false;
+    },
+    SET_SUCCESS(state, payload) {
+      state.succesStatus = true;
+      state.successMessage = payload;
+    },
+    STOP_SUCCESS(state) {
+      state.succesStatus = false;
     }
   },
   actions: {
