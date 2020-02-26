@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ProductDetail :showDialog="showDialog" @modalToggle="modalToggle" :product="product" />
+    <ProductDetail :showDialog="showDialog" @modalToggle="modalToggle" :product="product" @addToCart="addToCart"/>
     <b-jumbotron fluid container-fluid class="pt-2 pb-0" style="background: rgba(0,0,0,0)">
       <b-row>
         <b-col>
@@ -15,7 +15,7 @@
       </b-row>
       <b-row style="min-height: 50vh;">
         <!-- items -->
-        <ItemCard @modalToggle="modalToggle" @setProduct="setProduct" v-for="product in allProducts" :key="product.id" :product="product" />
+        <ItemCard @modalToggle="modalToggle" @setProduct="setProduct" v-for="product in allProducts" :key="product.id" :product="product" @addToCart="addToCart"/>
         <!-- end of items -->
       </b-row>
     </b-jumbotron>
@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     modalToggle (bool) {
-      // this.product = product
       this.showDialog = bool
     },
     setProduct (product) {
@@ -57,6 +56,18 @@ export default {
       } else {
         this.allProducts = this.products
       }
+    },
+    addToCart (id) {
+      const payload = {
+        ProductId: id
+      }
+      this.$store.dispatch('addToCart', payload)
+        .then(({ data }) => {
+          this.$store.commit('SET_NOTIFICATION', data.msg)
+        })
+        .catch(err => {
+          this.$store.commit('SET_ERROR', err)
+        })
     }
   },
   computed: {
@@ -66,6 +77,11 @@ export default {
   },
   created () {
     this.setAllProducts()
+  },
+  watch: {
+    products () {
+      this.setAllProducts()
+    }
   }
 }
 </script>

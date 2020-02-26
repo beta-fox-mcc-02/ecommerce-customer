@@ -42,14 +42,15 @@ export default {
       }
       this.$store.dispatch('login', payload)
         .then(({ data }) => {
-          localStorage.access_token = data.access_token
+          localStorage.access_token = data.token
           localStorage.username = data.username
-          this.$store.commit('SET_IS_LOADING', false)
+          this.$router.push('/').catch(() => {})
+          this.$store.commit('SET_NOTIFICATION', `Welcome back, ${data.username}`)
+          this.$store.commit('SET_LOGIN', true)
           this.clearForm()
         })
         .catch(err => {
-          console.log(err)
-          this.$store.commit('SET_IS_LOADING', false)
+          this.$store.commit('SET_ERROR', err)
           this.clearForm()
         })
     },

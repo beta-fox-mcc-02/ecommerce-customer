@@ -15,7 +15,7 @@
             <md-button class="md-icon-button" @click.prevent="setData(true, product)">
               <md-icon>blur_circular</md-icon>
             </md-button>
-            <md-button class="md-icon-button">
+            <md-button class="md-icon-button" @click.prevent="addToCart">
               <md-icon>add_shopping_cart</md-icon>
             </md-button>
           </md-card-actions>
@@ -41,6 +41,9 @@ export default {
     },
     setProduct (product) {
       this.$emit('setProduct', product)
+    },
+    addToCart () {
+      this.$emit('addToCart', this.product.id)
     }
   }
 }

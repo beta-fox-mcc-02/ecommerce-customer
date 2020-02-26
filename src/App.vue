@@ -28,13 +28,19 @@ export default {
     },
     checkToken () {
       if (localStorage.access_token && localStorage.username) {
-        this.$store.commit('SET_IS_LOGIN', true)
+        this.$store.commit('SET_LOGIN', true)
+        this.$alertify.success(`Welcome back, ${localStorage.username}`)
+        this.$router.push('/catalog')
       }
+    },
+    fetchCart () {
+      this.$store.dispatch('getCart')
     }
   },
   created () {
     this.fetchProducts()
     this.checkToken()
+    this.fetchCart()
   },
   computed: {
     ...mapState([
@@ -68,5 +74,25 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.2);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: coral;
+  border-radius: 7px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(250, 100, 50);
 }
 </style>

@@ -11,7 +11,8 @@ export default new Vuex.Store({
     notification: '',
     error: {},
     isLoading: false,
-    isLogin: false
+    isLogin: false,
+    userCart: {}
   },
   mutations: {
     FETCH_PRODUCTS (state, data) {
@@ -25,12 +26,21 @@ export default new Vuex.Store({
     },
     SET_NOTIFICATION (state, data) {
       state.notification = data
+      setTimeout(() => {
+        state.notification = ''
+      }, 50)
     },
     SET_ERROR (state, data) {
       state.error = data
+      setTimeout(() => {
+        state.error = ''
+      }, 50)
     },
-    SET_IS_LOGIN (state, data) {
+    SET_LOGIN (state, data) {
       state.isLogin = data
+    },
+    SET_USER_CART (state, data) {
+      state.userCart = data
     }
   },
   actions: {
@@ -41,7 +51,8 @@ export default new Vuex.Store({
         url: process.env.VUE_APP_BASEURL + 'product'
       })
         .then(({ data }) => {
-          context.commit('FETCH_PRODUCTS', data.products)
+          const filtered = data.products.filter(product => product.stock > 0)
+          context.commit('FETCH_PRODUCTS', filtered)
           context.commit('SET_IS_LOADING', false)
         })
         .catch(err => {
@@ -59,7 +70,6 @@ export default new Vuex.Store({
     },
 
     login (context, data) {
-      context.commit('SET_IS_LOADING', true)
       return axios({
         method: 'post',
         url: process.env.VUE_APP_BASEURL + 'login',
@@ -71,7 +81,6 @@ export default new Vuex.Store({
     },
 
     register (context, data) {
-      context.commit('SET_IS_LOADING', true)
       return axios({
         method: 'post',
         url: process.env.VUE_APP_BASEURL + 'register',
@@ -81,7 +90,42 @@ export default new Vuex.Store({
           password: data.password
         }
       })
+    },
+
+    addToCart (context, data) {
+      return axios({
+        method: 'post',
+        url: process.env.VUE_APP_BASEURL + 'cart',
+        data: {
+          ProductId: data.ProductId,
+          quantity: data.quantity,
+          checkout: false
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    },
+
+    getCart (context) {
+      context.commit('SET_IS_LOADING', true)
+      axios({
+        methods: 'get',
+        url: process.env.VUE_APP_BASEURL + 'cart',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({ data }) => {
+          context.commit('SET_USER_CART', data)
+          context.commit('SET_IS_LOADING', false)
+        })
+        .catch(err => {
+          context.commit('SET_ERROR', err)
+          context.commit('SET_IS_LOADING', false)
+        })
     }
+
   },
   modules: {
   }

@@ -2,7 +2,7 @@
   <b-row class="d-flex justify-content-center align-items-center" style="background: rgba(0,0,0,.3); height: 90vh;">
     <b-card style="height: 56vh">
       <b-card-body class="pb-0">
-        <form style="width: 300px;">
+        <form style="width: 300px;" @submit.prevent="register">
           <div class="grey-text">
             <md-field style="border-bottom: 1px solid rgba(0,0,0,.3)">
               <label>Username</label>
@@ -39,6 +39,30 @@ export default {
   methods: {
     changeStatus (status) {
       this.$emit('changeStatus', status)
+    },
+    register () {
+      const payload = {
+        username: this.username,
+        email: this.email,
+        password: this.password
+      }
+      this.$store.dispatch('register', payload)
+        .then(({ data }) => {
+          localStorage.access_token = data.token
+          localStorage.username = data.username
+          this.$router.push('/').catch(() => {})
+          this.$store.commit('SET_NOTIFICATION', `Welcome, ${this.username}`)
+          this.$store.commit('SET_LOGIN', true)
+          this.clearForm()
+        })
+        .catch(err => {
+          this.$store.commit('SET_ERROR', err)
+          this.clearForm()
+        })
+    },
+    clearForm () {
+      this.identification = ''
+      this.password = ''
     }
   }
 }

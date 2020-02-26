@@ -7,10 +7,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
+import VueAlertify from 'vue-alertify'
 
 Vue.use(VueMaterial)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueAlertify)
 
 Vue.config.productionTip = false
 

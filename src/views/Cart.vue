@@ -3,9 +3,12 @@
     <md-card class="my-2" style="background: rgba(0,0,0,.3)">
       <md-card-content>
         <b-row>
-          <b-col md="8" sm="12" style="padding-right: 0">
-            <ItemOnCart />
+            <!-- ITEM -->
+          <b-col md="6" sm="12" style="padding-right: 0">
+            <ItemOnCart v-for="product in onCart" :key="product.id" :product="product"/>
           </b-col>
+            <!-- END OF ITEM -->
+            <!-- TOTAL -->
           <b-col md="4" sm="12">
             <md-card class="innercard">
               <md-card-header>
@@ -15,13 +18,13 @@
                 QUANTITY
               </md-card-content>
               <md-card-content style="font-size: 1.2rem;">
-                3
+                {{ reduceQty }}
               </md-card-content>
               <md-card-content style="font-size: 1.2rem;" class="pb-0 pt-4">
                 TOTAL PRICE
               </md-card-content>
               <md-card-content style="font-size: 1.2rem;">
-                1000000
+                Rp {{ afterDiscount.toLocaleString('id-ID') }}
               </md-card-content>
               <md-card-content>
                 <form>
@@ -37,6 +40,13 @@
               </md-card-content>
             </md-card>
           </b-col>
+          <!-- END OF TOTAL -->
+            <!-- HISTORY -->
+          <b-col md="2" sm="12">
+            <h5 style="font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem;">Transaction History</h5>
+            <ItemOnHistory v-for="product in checkedOut" :key="product.id" :product="product"/>
+          </b-col>
+            <!-- END OF HISTORY -->
         </b-row>
       </md-card-content>
     </md-card>
@@ -45,16 +55,52 @@
 
 <script>
 import ItemOnCart from '@/components/itemOnCart'
+import ItemOnHistory from '@/components/itemOnHistory'
 
 export default {
   name: 'Cart',
   data () {
     return {
-      voucherCode: ''
+      voucherCode: '',
+      discount: 0
     }
   },
   components: {
-    ItemOnCart
+    ItemOnCart,
+    ItemOnHistory
+  },
+  methods: {
+    fetchUserCart () {
+      this.$store.dispatch('getCart')
+    }
+  },
+  computed: {
+    userCart () {
+      return this.$store.state.userCart
+    },
+    onCart () {
+      return this.userCart.filter(product => !product.Cart.checkout)
+    },
+    checkedOut () {
+      return this.userCart.filter(product => product.Cart.checkout)
+    },
+    reduceQty () {
+      return this.onCart.reduce((acc, curr) => acc + curr.Cart.quantity, 0)
+    },
+    reducePrice () {
+      return this.onCart.reduce((acc, curr) => acc + (curr.price * curr.Cart.quantity), 0)
+    },
+    afterDiscount () {
+      return this.reducePrice - (this.reducePrice * this.discount / 100)
+    }
+  },
+  created () {
+    this.fetchUserCart()
+  },
+  watch: {
+    discount () {
+      this.afterDiscount()
+    }
   }
 }
 </script>

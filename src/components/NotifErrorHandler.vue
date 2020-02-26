@@ -17,15 +17,20 @@ export default {
   computed: mapState(['error', 'notification']),
   watch: {
     error (value) {
-      const { errObj } = value.response.data
-      if (errObj.errors) {
-        this.showError(errObj.errors[0])
-      } else {
-        this.showError(errObj.msg)
+      console.log('errornye', value)
+      if (value) {
+        const { errObj } = value.response.data
+        if (errObj.errors) {
+          this.showError(errObj.errors[0])
+        } else {
+          this.showError(errObj.msg)
+        }
       }
     },
     notification (value) {
-      this.showNotification(value)
+      if (value) {
+        this.showNotification(value)
+      }
     }
   }
 }
