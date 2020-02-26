@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <b-card
+    <!-- <b-card
       overlay
       img-src="../assets/banner.jpg"
       img-alt="Card Image"
@@ -10,7 +10,8 @@
       <b-card-text style="font-size: 45px">
         E-commerce
       </b-card-text>
-    </b-card>
+    </b-card> -->
+    <Carousel />
     <div class="container">
         <div class="row">
           <Card v-for="product in listOfProducts"
@@ -28,11 +29,13 @@
 <script>
 // @ is an alias to /src
 import Card from '../components/Card.vue';
+import Carousel from '../components/Carousel.vue';
 
 export default {
   name: 'Home',
   components: {
     Card,
+    Carousel,
   },
   computed: {
     listOfProducts() {
