@@ -51,7 +51,9 @@ export default new Vuex.Store({
         url: process.env.VUE_APP_BASEURL + 'product'
       })
         .then(({ data }) => {
+          console.log(data.products[3].stock)
           const filtered = data.products.filter(product => product.stock > 0)
+          console.log(filtered)
           context.commit('FETCH_PRODUCTS', filtered)
           context.commit('SET_IS_LOADING', false)
         })
@@ -110,7 +112,7 @@ export default new Vuex.Store({
     getCart (context) {
       context.commit('SET_IS_LOADING', true)
       axios({
-        methods: 'get',
+        method: 'get',
         url: process.env.VUE_APP_BASEURL + 'cart',
         headers: {
           access_token: localStorage.access_token
@@ -124,8 +126,30 @@ export default new Vuex.Store({
           context.commit('SET_ERROR', err)
           context.commit('SET_IS_LOADING', false)
         })
-    }
+    },
 
+    getDiscount (context, data) {
+      return axios({
+        method: 'post',
+        url: process.env.VUE_APP_BASEURL + 'cart/discount',
+        data: {
+          voucherCode: data
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    },
+
+    checkout (context, data) {
+      return axios({
+        method: 'patch',
+        url: process.env.VUE_APP_BASEURL + 'cart/checkout',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    }
   },
   modules: {
   }
