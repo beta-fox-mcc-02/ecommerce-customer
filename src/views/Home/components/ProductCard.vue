@@ -17,7 +17,13 @@
     <v-card-title>{{productPrice}}</v-card-title>
 
     <v-card-actions>
-      <v-btn color="teal" class="ml-auto" text @click="onAddToCart">Add To Cart</v-btn>
+      <v-btn
+        color="teal"
+        class="ml-auto"
+        text
+        @click="onAddToCart"
+        :disabled="disableAddToCart"
+      >Add To Cart</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -31,6 +37,7 @@ export default {
   data: () => ({
     loading: false,
     selection: 1,
+    disableAddToCart: false
   }),
 
   methods: {
