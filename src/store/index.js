@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../api/axiosInstance'
+import router from '../router'
 
 Vue.use(Vuex)
 
@@ -69,7 +70,8 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err.response);
-          
+          commit('SET_LOADING', false)
+
         })
     }
   },

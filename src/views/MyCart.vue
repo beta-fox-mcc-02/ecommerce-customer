@@ -7,7 +7,7 @@
       <h1 style="font-family: 'Playfair Display SC', serif">
       my cart
       </h1>
-      <p class="text-muted ml-1 p-0"><i>Total cart price Rp. {{total}}</i></p>
+      <p class="text-muted ml-1 p-0"><i>Total cart price Rp. {{total || 0}}</i></p>
       <p class="text-muted ml-1 p-0"><i>{{products.length}} items</i></p>
 
       <div class="row my-3" style="display: flex; justify-content: space-around">
