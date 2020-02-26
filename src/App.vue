@@ -11,13 +11,21 @@
     width: 100%;"
     />
     <router-view />
+    <footerHome/>
   </div>
 </template>
 <script>
 import navbarHome from './components/navbarHome'
+import footerHome from './components/footerHome'
 export default {
   components:{
-    navbarHome
+    navbarHome,
+    footerHome
+  },
+  created: function(){
+    if(localStorage.token){
+      this.$store.commit('SET_LOGIN', true)
+    }
   }
 };
 </script>

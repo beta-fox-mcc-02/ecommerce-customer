@@ -237,54 +237,7 @@
     </section>
     <!-- End faq Area -->
 
-    <!-- Footer -->
-    <footer class="page-footer font-small blue darken-3">
-      <!-- Footer Elements -->
-      <div class="container">
-        <!-- Grid row-->
-        <div class="row">
-          <!-- Grid column -->
-          <div class="col-md-12 py-5">
-            <div class="mb-5 flex-center">
-              <!-- Facebook -->
-              <a class="fb-ic">
-                <i class="fab fa-facebook-f fa-lg mr-md-5 mr-3 fa-2x"></i>
-              </a>
-              <!-- Twitter -->
-              <a class="tw-ic">
-                <i class="fab fa-twitter fa-lg mr-md-5 mr-3 fa-2x"></i>
-              </a>
-              <!-- Google +-->
-              <a class="gplus-ic">
-                <i class="fab fa-google-plus-g fa-lg mr-md-5 mr-3 fa-2x"></i>
-              </a>
-              <!--Linkedin -->
-              <a class="li-ic">
-                <i class="fab fa-linkedin-in fa-lg mr-md-5 mr-3 fa-2x"></i>
-              </a>
-              <!--Instagram-->
-              <a class="ins-ic">
-                <i class="fab fa-instagram fa-lg mr-md-5 mr-3 fa-2x"></i>
-              </a>
-              <!--Pinterest-->
-              <a class="pin-ic">
-                <i class="fab fa-pinterest fa-lg fa-2x"></i>
-              </a>
-            </div>
-          </div>
-          <!-- Grid column -->
-        </div>
-        <!-- Grid row-->
-      </div>
-      <!-- Footer Elements -->
-
-      <!-- Copyright -->
-      <div class="footer-copyright text-center py-3">
-        © 2020 Copyright:
-        <a href="https://mdbootstrap.com/education/bootstrap/">MDBootstrap.com</a>
-      </div>
-      <!-- Copyright -->
-    </footer>
+  
   </div>
 </template>
 
@@ -303,7 +256,7 @@ export default {
 #home {
   padding-top: 0;
   background-image: url("../assets/header-bg.png");
-  height: 90vh;
+  height: 95vh;
   background-repeat: no-repeat;
   background-position: center;
 }
