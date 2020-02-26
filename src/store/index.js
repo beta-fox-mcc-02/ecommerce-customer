@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     hasLogin: false,
-    products: []
+    products: [],
+    carts: []
   },
   mutations: {
     HAS_LOGIN(state) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     SET_PRODUCTS(state, payload) {
       state.products = payload;
+    },
+    SET_CARTS(state, payload) {
+      state.carts = payload;
     }
   },
   actions: {
@@ -39,6 +43,15 @@ export default new Vuex.Store({
       return axios({
         method: 'GET',
         url: '/products'
+      });
+    },
+    fetchCarts() {
+      return axios({
+        method: 'GET',
+        url: '/carts',
+        headers: {
+          access_token: localStorage.access_token
+        }
       });
     }
   },

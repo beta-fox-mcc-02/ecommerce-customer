@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" sort-by="name" class="elevation-2">
+  <v-data-table :headers="headers" :items="carts" sort-by="name" class="elevation-2">
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>My Cart</v-toolbar-title>
@@ -75,12 +75,16 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="onCancel">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="onBuy">Buy</v-btn>
+              <v-btn color="blue darken-1" text @click="onDelete">Buy</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
+
+    <template v-slot:item.price="data">{{ formatPrice(data.value)}}</template>
+    <template v-slot:item.totalPrice="data">{{ formatPrice(data.value)}}</template>
+
     <template v-slot:item.action="{ item }">
       <v-icon small class="mr-3" @click="editItem(item)">fas fa-edit</v-icon>
       <v-icon small @click="deleteItem(item)">fas fa-trash</v-icon>
@@ -101,16 +105,18 @@ export default {
         sortable: false,
         value: 'name',
       },
-      { text: 'Price', value: 'calories' },
-      { text: 'Quantity', value: 'fat' },
-      { text: 'Total Price', value: 'carbs' },
+      { text: 'Price (IDR)', value: 'price', key: 'price' },
+      { text: 'Quantity', value: 'quantity' },
+      { text: 'Total Price (IDR)', value: 'totalPrice' },
       { text: 'Actions', value: 'action', sortable: false },
     ],
-    desserts: [],
     editedIndex: -1,
   }),
 
   computed: {
+    carts() {
+      return this.$store.state.carts;
+    }
   },
 
   watch: {
@@ -125,29 +131,27 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ];
+      this.$store.dispatch('fetchCarts')
+        .then(({ data }) => {
+          const payload = [];
+          data.forEach(el => {
+            payload.push({
+              id: el.id,
+              UserId: el.UserId,
+              ProductId: el.ProductId,
+              status: el.status,
+              quantity: el.quantity,
+              totalPrice: el.price,
+              name: el.Product.name,
+              price: el.Product.price
+            });
+          });
+
+          this.$store.commit('SET_CARTS', payload);
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        });
     },
 
     editItem(item) {
@@ -180,6 +184,17 @@ export default {
       }
       this.close();
     },
+
+    onEdit() {
+      this.edit = true;
+    },
+
+    onDelete() {
+      this.deleteModal = true;
+    },
+    formatPrice(price) {
+      return `Rp ${price.toLocaleString('id-ID', 'currency')}`;
+    }
   },
 }
 </script>
