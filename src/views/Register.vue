@@ -63,7 +63,7 @@ export default {
     register () {
       this.isLoading = true
       const payload = {
-        name: this.name,
+        first_name: this.name,
         address: this.address,
         email: this.email,
         password: this.password

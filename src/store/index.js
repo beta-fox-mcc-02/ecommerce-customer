@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     category: [],
     products: [],
+    cart: [],
     isLogedIn: false
   },
   mutations: {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     FETCH_ISLOGEDIN (state, data) {
       state.isLogedIn = data
+    },
+    FETCH_CART (state, data) {
+      state.cart = data
     }
   },
   actions: {
@@ -39,7 +43,7 @@ export default new Vuex.Store({
         method: 'post',
         url: 'http://localhost:3000/register',
         data: {
-          name: payload.name,
+          first_name: payload.first_name,
           address: payload.address,
           email: payload.email,
           password: payload.password
@@ -68,6 +72,15 @@ export default new Vuex.Store({
           ProductId: payload.ProductId,
           price: payload.price,
           totalItem: payload.totalItem
+        }
+      })
+    },
+    fetchCart () {
+      return Axios({
+        method: 'get',
+        url: 'http://localhost:3000/cart',
+        headers: {
+          token: localStorage.token
         }
       })
     }

@@ -36,7 +36,7 @@ export default {
   },
   props: ['product'],
   methods: {
-    toCart () {
+    toCart (event) {
       if (!localStorage.token) {
         this.$router.push({ path: '/login' })
         this.$vToastify.warning('login first')
@@ -52,10 +52,17 @@ export default {
           }
           this.$store.dispatch('cart', payload)
             .then(cart => {
-              console.log(cart)
+              event.target.reset()
+              this.$vToastify.success(`add ${this.product.name} to cart success`)
             })
             .catch(err => {
-              console.log(err.response)
+              // console.log(err.response)
+              this.$vToastify.warning({
+                title: 'BRO',
+                body: `${err.response.data.msg}`,
+                type: 'warning',
+                duration: 3000
+              })
             })
         }
       }

@@ -6,7 +6,7 @@
       </div>
       <div id="nav-right">
         <div v-if="checkLogin">
-          <a href=""><i class="fas fa-cart-plus" style="font-size: 25px; color: red"></i></a>
+          <a href="" @click.prevent="toCart"><i class="fas fa-cart-plus" style="font-size: 25px; color: red"></i></a>
         </div>
         <div v-if="checkLogin">
           <a href=""><i class="fas fa-user-circle" style="font-size: 25px; color: red"></i></a>
@@ -50,10 +50,15 @@ export default {
       localStorage.clear()
       this.$vToastify.success('logout success')
       this.$store.commit('FETCH_ISLOGEDIN', false)
+      this.$router.push({ path: '/' })
+    },
+    toCart () {
+      this.$router.push({ path: '/cart' })
     }
   },
   created () {
     if (localStorage.token) {
+      this.$router.push({ path: '/' })
       this.$store.commit('FETCH_ISLOGEDIN', true)
     }
   }
