@@ -1,7 +1,8 @@
 import axios from 'axios';
-console.log(process.env.VUE_APP_BASE_URL);
+
+const heroku = 'https://git.heroku.com/protected-taiga-69173.git';
 const instance = axios.create({
-  baseURL: process.env.VUE_APP_BASE_URL,
+  baseURL: heroku,
 });
 
 export default instance;
