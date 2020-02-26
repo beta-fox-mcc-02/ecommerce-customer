@@ -18,9 +18,9 @@
 
 <script>
 export default {
-  computed: {
-    username () {
-      return this.$store.state.username
+  data () {
+    return {
+      username: localStorage.getItem('username')
     }
   },
   methods: {

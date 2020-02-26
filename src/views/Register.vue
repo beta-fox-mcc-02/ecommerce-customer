@@ -59,11 +59,18 @@ export default {
           this.clear()
           this.notification = true
           this.message = 'Register Success please login now'
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 2000)
         })
         .catch(() => {
           this.clear()
           this.notification = true
           this.message = 'Input invalid or email is already taken'
+          setTimeout(() => {
+            this.notification = false
+            this.message = ''
+          }, 2000)
         })
     },
     clear () {

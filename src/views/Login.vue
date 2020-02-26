@@ -3,7 +3,7 @@
     <div class="form-container">
       <div class="form-header">
         <h1>Login Form</h1>
-        <p v-if="notification">{{ message }}</p>
+        <p v-if="notification" id="notification">{{ message }}</p>
         <p v-else>Please fill in the form below</p>
       </div>
       <form v-on:submit.prevent="login">
@@ -49,20 +49,32 @@ export default {
     login () {
       this.$store.dispatch('loginAsync')
         .then((result) => {
+          this.notification = true
+          this.message = `WELCOME ${result.data.username}`
           this.clear()
           localStorage.setItem('token', result.data.token)
           this.$store.commit('setLoginStatus', true)
-          this.$store.commit('setUsername', result.data.username)
-          this.$router.push('/')
+          localStorage.setItem('username', result.data.username)
+          setTimeout(() => {
+            this.clearNotification()
+            this.$router.push('/')
+          }, 2000)
         })
         .catch(() => {
           this.clear()
           this.notification = true
           this.message = 'Input email or password invalid'
+          setTimeout(() => {
+            this.clearNotification()
+          }, 2000)
         })
     },
     clear () {
       this.$store.commit('clearAll')
+    },
+    clearNotification () {
+      this.notification = false
+      this.message = ''
     }
   }
 }
@@ -149,6 +161,22 @@ button {
     width: 30%;
     height: 2.5rem;
     font-size: 20pt;
+}
+
+p#notification {
+    animation: bounce 1s;
+}
+
+@keyframes bounce {
+  0%{
+    transform: scale(0)
+  }
+  50%{
+    transform: scale(1.5)
+  }
+  100%{
+    transform: scale(1)
+  }
 }
 
 </style>

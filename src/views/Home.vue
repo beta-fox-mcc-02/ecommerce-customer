@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HeadMenu />
+    <Navbar />
     <main v-if="!showParticularProduct">
       <section id="banner">
         <img src="https://www.kindpng.com/picc/m/465-4653741_e-commerce-banner-ecommerce-web-development-services-hd.png" alt="">
@@ -11,18 +11,17 @@
             <h1> {{category.name}} </h1>
           </div>
           <div class="category-products">
-            <button v-on:click="getProduct(category.id)">Products</button>
+            <button v-on:click="seeProducts(category.id)">Products</button>
           </div>
         </div>
       </section>
     </main>
-    <ProductList v-if="showParticularProduct" v-bind:product="product" />
+    <router-view />
   </div>
 </template>
 
 <script>
-import HeadMenu from '../components/headmenu.vue'
-import ProductList from '../components/productlist.vue'
+import Navbar from '../components/Navbar.vue'
 
 export default {
   name: 'Home',
@@ -32,7 +31,7 @@ export default {
       showParticularProduct: false
     }
   },
-  components: { HeadMenu, ProductList },
+  components: { Navbar },
   computed: {
     categories () {
       return this.$store.state.categories
@@ -42,15 +41,8 @@ export default {
     }
   },
   methods: {
-    getProduct (categoryId) {
-      this.$store.dispatch('getProductAsync', categoryId)
-        .then((result) => {
-          this.product = result.data.data
-          this.showParticularProduct = true
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+    seeProducts (categoryId) {
+      this.$router.push(`/${categoryId}`)
     }
   }
 }

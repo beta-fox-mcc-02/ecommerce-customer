@@ -17,19 +17,43 @@
         </div>
       </div>
     </div>
+    <router-view v-bind:product="product"/>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['product'],
+  data () {
+    return {
+      categoryId: '',
+      product: []
+    }
+  },
   methods: {
     checkout (itemId) {
       const token = localStorage.getItem('token')
       if (token) {
-        this.$store.dispatch('checkoutAsync', { token, itemId })
+        this.$router.push(`/${this.categoryId}/${itemId}/checkout`)
       } else console.log('login first!')
     }
+  },
+  watch: {
+    $route () {
+      this.categoryId = this.$route.params.id
+      this.$store.dispatch('getProductAsync', this.categoryId)
+        .then((result) => {
+          this.product = result.data.data
+        })
+        .catch((err) => console.log(err))
+    }
+  },
+  created () {
+    this.categoryId = this.$route.params.id
+    this.$store.dispatch('getProductAsync', this.categoryId)
+      .then((result) => {
+        this.product = result.data.data
+      })
+      .catch((err) => console.log(err))
   }
 }
 </script>
@@ -47,7 +71,7 @@ div#product-container {
     width: 70%;
     overflow-x: scroll;
     box-shadow: 0 0 0.5rem #bbbbbb;
-    margin: 3%;
+    margin: 1%;
     display: flex;
 }
 

@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     products: [],
     categories: [],
+    product: [],
     username: '',
     email: '',
     password: '',
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     setProducts (state, value) {
       state.products = value
     },
+    setProduct (state, value) {
+      state.product = value
+    },
     setCategories (state, value) {
       state.categories = value
     },
@@ -45,7 +49,7 @@ export default new Vuex.Store({
     registerAsync ({ state }) {
       return axios({
         method: 'POST',
-        url: `${serverUrl}/customer/register`,
+        url: `${serverUrl}/customers/register`,
         data: {
           username: state.username,
           email: state.email,
@@ -56,7 +60,7 @@ export default new Vuex.Store({
     loginAsync ({ state }) {
       return axios({
         method: 'POST',
-        url: `${serverUrl}/customer/login`,
+        url: `${serverUrl}/customers/login`,
         data: {
           email: state.email,
           password: state.password
@@ -72,7 +76,7 @@ export default new Vuex.Store({
           commit('setProducts', result.data.products)
           return axios({
             method: 'GET',
-            url: `${serverUrl}/category`
+            url: `${serverUrl}/categories`
           })
         })
         .then((result) => {
@@ -83,7 +87,13 @@ export default new Vuex.Store({
     getProductAsync ({ state }, categoryId) {
       return axios({
         method: 'GET',
-        url: `${serverUrl}/product/${categoryId}`
+        url: `${serverUrl}/products/${categoryId}`
+      })
+    },
+    getItem ({ state }, itemId) {
+      return axios({
+        method: 'GET',
+        url: `${serverUrl}/item/${itemId}`
       })
     },
     checkoutAsync ({ state }, { token, itemId }) {
