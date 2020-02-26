@@ -18,6 +18,14 @@
             <v-list-item-title>My Cart</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item @click="toHistoryPage" v-if="hasLogin">
+          <v-list-item-action>
+            <v-icon>fas fa-history</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Purchase History</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -88,6 +96,10 @@ export default {
     toCartPage() {
       this.$store.commit('STOP_SUCCESS_ERROR');
       this.$router.push('/cart');
+    },
+    toHistoryPage() {
+      this.$store.commit('STOP_SUCCESS_ERROR');
+      this.$router.push('/history');
     },
     logout() {
       this.$store.commit('STOP_SUCCESS_ERROR');

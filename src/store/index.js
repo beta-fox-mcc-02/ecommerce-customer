@@ -13,7 +13,8 @@ export default new Vuex.Store({
     errorStatus: false,
     successMessage: '',
     succesStatus: false,
-    isLoading: false
+    isLoading: false,
+    histories: []
   },
   mutations: {
     HAS_LOGIN(state) {
@@ -50,6 +51,9 @@ export default new Vuex.Store({
     },
     SET_LOADING(state, payload) {
       state.isLoading = payload;
+    },
+    SET_HISTORIES(state, payload) {
+      state.histories = payload;
     }
   },
   actions: {
@@ -154,6 +158,16 @@ export default new Vuex.Store({
           access_token: localStorage.access_token
         },
         data: payload
+      });
+    },
+    histories(context) {
+      context.commit('SET_LOADING', true);
+      return axios({
+        method: 'GET',
+        url: '/carts/histories',
+        headers: {
+          access_token: localStorage.access_token
+        }
       });
     }
   },

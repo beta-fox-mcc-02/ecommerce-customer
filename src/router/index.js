@@ -18,6 +18,11 @@ const routes = [
         path: 'cart',
         name: 'CartPage',
         component: () => import('../views/Home/CartPage')
+      },
+      {
+        path: 'history',
+        name: 'HistoryPage',
+        component: () => import('../views/Home/HistoryPage')
       }
     ]
   },
