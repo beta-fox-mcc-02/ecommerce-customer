@@ -19,7 +19,10 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <p>Total Price is Rp. 2.000.000</p>
+                  <p>
+                    Total Price is
+                    <strong>{{totalPrice}}</strong>
+                  </p>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -119,6 +122,13 @@ export default {
   computed: {
     carts() {
       return this.$store.state.carts;
+    },
+    totalPrice() {
+      let total = 0;
+      this.$store.state.carts.forEach(el => {
+        total += el.totalPrice;
+      });
+      return `Rp ${total.toLocaleString('id-ID', 'currency')}`;
     }
   },
 
@@ -156,6 +166,8 @@ export default {
 
     onBuy() {
       this.checkout = false;
+      console.log(this.totalPrice);
+      console.log(this.$store.state.carts);
     },
 
     onUpdate() {
