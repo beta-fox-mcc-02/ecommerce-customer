@@ -180,7 +180,20 @@ export default {
 
     onDelete() {
       this.deleteModal = false;
-      console.log(this.itemToDelete);
+      const payload = {
+        id: this.itemToDelete.id,
+        data: {
+          ProductId: this.itemToDelete.ProductId
+        }
+      };
+      this.$store.dispatch('deleteItem', payload)
+        .then(() => {
+          this.$store.dispatch('fetchCarts');
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        });
+
     },
     formatPrice(price) {
       return `Rp ${price.toLocaleString('id-ID', 'currency')}`;

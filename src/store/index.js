@@ -93,13 +93,14 @@ export default new Vuex.Store({
         data: payload.data
       });
     },
-    deleteItem(context, id) {
+    deleteItem(context, payload) {
       return axios({
         method: 'DELETE',
-        url: `carts/${id}`,
+        url: `carts/${payload.id}`,
         headers: {
           access_token: localStorage.access_token
-        }
+        },
+        data: payload.data
       });
     }
   },
