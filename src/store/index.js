@@ -45,14 +45,33 @@ export default new Vuex.Store({
         url: '/products'
       });
     },
-    fetchCarts() {
-      return axios({
+    fetchCarts(context) {
+      axios({
         method: 'GET',
         url: '/carts',
         headers: {
           access_token: localStorage.access_token
         }
-      });
+      })
+        .then(({ data }) => {
+          const payload = [];
+          data.forEach(el => {
+            payload.push({
+              id: el.id,
+              UserId: el.UserId,
+              ProductId: el.ProductId,
+              status: el.status,
+              quantity: el.quantity,
+              totalPrice: el.price,
+              name: el.Product.name,
+              price: el.Product.price
+            });
+          });
+          context.commit('SET_CARTS', payload);
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        });
     },
     createNewCart(context, payload) {
       return axios({

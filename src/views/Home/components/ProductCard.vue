@@ -58,23 +58,7 @@ export default {
         };
         this.$store.dispatch('addItemToCart', payload)
           .then(() => {
-            return this.$store.dispatch('fetchCarts');
-          })
-          .then(({ data }) => {
-            const payload = [];
-            data.forEach(el => {
-              payload.push({
-                id: el.id,
-                UserId: el.UserId,
-                ProductId: el.ProductId,
-                status: el.status,
-                quantity: el.quantity,
-                totalPrice: el.price,
-                name: el.Product.name,
-                price: el.Product.price
-              });
-            });
-            this.$store.commit('SET_CARTS', payload);
+            this.$store.dispatch('fetchCarts');
             this.$router.push('/cart');
           })
           .catch(({ response }) => {
@@ -88,23 +72,7 @@ export default {
         };
         this.$store.dispatch('createNewCart', payload)
           .then(() => {
-            return this.$store.dispatch('fetchCarts');
-          })
-          .then(({ data }) => {
-            const payload = [];
-            data.forEach(el => {
-              payload.push({
-                id: el.id,
-                UserId: el.UserId,
-                ProductId: el.ProductId,
-                status: el.status,
-                quantity: el.quantity,
-                totalPrice: el.price,
-                name: el.Product.name,
-                price: el.Product.price
-              });
-            });
-            this.$store.commit('SET_CARTS', payload);
+            this.$store.dispatch('fetchCarts');
             this.$router.push('/cart');
           })
           .catch(({ response }) => {
