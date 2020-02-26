@@ -1,42 +1,35 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <Navbar/>
-    </div>
+    <Navbar @showModal="showModal" :showRegister="showRegister" />
     <router-view/>
+    <Register v-if="showRegister"/>
   </div>
 </template>
 
 <script>
 import Navbar from './components/Navbar'
+import Register from './components/Register'
 
 export default {
   name: 'App',
+  data () {
+    return {
+    }
+  },
   components: {
-    Navbar
+    Navbar,
+    Register
+  },
+  methods: {
   }
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+  margin-top: 150px;
 }
 </style>

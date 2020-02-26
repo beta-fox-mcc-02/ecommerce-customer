@@ -1,47 +1,67 @@
 <template>
-<div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Sign up</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <i class="fas fa-user prefix grey-text"></i>
-          <input type="text" id="orangeForm-name" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="orangeForm-name">Your name</label>
-        </div>
-        <div class="md-form mb-5">
-          <i class="fas fa-envelope prefix grey-text"></i>
-          <input type="email" id="orangeForm-email" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="orangeForm-email">Your email</label>
-        </div>
-
-        <div class="md-form mb-4">
-          <i class="fas fa-lock prefix grey-text"></i>
-          <input type="password" id="orangeForm-pass" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="orangeForm-pass">Your password</label>
-        </div>
-
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-deep-orange">Sign up</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <mdb-container>
+    <form @submit.prevent="registerUser">
+        <mdb-btn color="default" @click.native="register = true">launch register modal <mdb-icon icon="eye" class="ml-1"/></mdb-btn>
+    <mdb-modal :show="register" @close="register = false">
+    <mdb-modal-header class="text-center">
+      <mdb-modal-title tag="h4" bold class="w-100">Sign up</mdb-modal-title>
+    </mdb-modal-header>
+    <mdb-modal-body class="mx-3 grey-text">
+      <mdb-input label="Your name" icon="user" class="mb-5"/>
+      <mdb-input label="Your email" icon="envelope" type="email" class="mb-5"/>
+      <mdb-input label="Your password" icon="lock" type="password"/>
+    </mdb-modal-body>
+    <mdb-modal-footer center>
+      <mdb-btn @click.native="register = false" color="deep-orange">Sign Up</mdb-btn>
+    </mdb-modal-footer>
+  </mdb-modal>
+    </form>
+  </mdb-container>
 </template>
 
 <script>
+import {
+  mdbContainer,
+  mdbBtn,
+  mdbModal,
+  mdbModalHeader,
+  mdbModalBody,
+  mdbModalFooter,
+  mdbInput
+} from 'mdbvue'
+
 export default {
-  name: 'Register'
+  name: 'Register',
+  components: {
+    mdbContainer,
+    mdbBtn,
+    mdbModal,
+    mdbModalHeader,
+    mdbModalBody,
+    mdbModalFooter,
+    mdbInput
+  },
+  data () {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      register: false
+    }
+  },
+  methods: {
+    registerUser () {
+      const userData = {
+        username: this.username,
+        email: this.email,
+        password: this.password
+      }
+      this.$store.dispatch('register', userData)
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

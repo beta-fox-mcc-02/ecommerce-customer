@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <router-link to="/home"><a class="nav-link" href="#">Home</a></router-link>
                 </li>
                 <li class="nav-item">
                     <router-link to="/products"><a class="nav-link" href="#">Products</a></router-link>
@@ -16,14 +16,24 @@
                     <a class="nav-link" href="#">Profile</a>
                 </li>
             </ul>
-            <button type="button" class="btn btn-deep-orange">Deep-orange</button>
+            <button><Register/></button>
+            <button><Login/></button>
         </div>
     </nav>
 </template>
 
 <script>
+import Register from '../components/Register'
+import Login from '../components/Login'
+
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  components: {
+    Register,
+    Login
+  },
+  methods: {
+  }
 }
 </script>
 
