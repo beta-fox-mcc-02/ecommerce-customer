@@ -14,7 +14,7 @@
             </tr>
           </thead>
           <tbody>
-            <CartDetail v-for="cart in getCart" :key="cart.id" :cart="cart" @showDeleteModal="showDeleteModal"/>
+            <CartDetail v-for="cart in getCart" :key="cart.id" :cart="cart" @showDeleteModal="showDeleteModal" @fetchCart="fetchCart"/>
             <!-- {{ getCart }} -->
             <tr>
               <td colspan="6"></td>
@@ -25,7 +25,8 @@
               <td class="text-center">
                 <v-btn
                   color="success"
-                  @click.prevent="checkout">
+                  @click.prevent="checkout"
+                  :disabled="getCartStatus">
                   Checkout
                 </v-btn>
               </td>
@@ -56,26 +57,52 @@ export default {
   },
   methods: {
     fetchCart () {
+      this.total = 0
       // console.log('masuk sini')
       this.$store.dispatch('fetchCart')
         .then(({ data }) => {
-          // console.log(data)
+          // console.log(data, '====')
           this.$store.commit('SET_CART', data.data)
           data.data.forEach(product => {
+            // console.log(product, '====')
             this.total += product.total
           })
-          // console.log(this.getCart)
         })
         .catch(err => {
           console.log(err.response)
         })
     },
     showDeleteModal (status) {
-      console.log('testing')
+      // console.log('testing')
       this.showDelete = status
     },
     checkout () {
-
+      let payload
+      this.getCart.forEach(el => {
+        if (!payload) {
+          payload = {
+            CartId: el.CartId,
+            id: [el.id],
+            ProductId: [el.ProductId]
+          }
+        } else {
+          payload.id.push(el.id)
+          payload.ProductId.push(el.ProductId)
+        }
+      })
+      this.$store.dispatch('checkout', payload)
+        .then(data => {
+          console.log(data)
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    }
+  },
+  watch: {
+    getCartStatus (val) {
+      console.log(val)
+      // this.status = this.$store.state.cartStatus
     }
   },
   computed: {
@@ -84,11 +111,31 @@ export default {
     },
     getTotalPrice () {
       return 'Rp ' + (+this.total).toLocaleString('id-ID')
+    },
+    getCartStatus () {
+      // return this.$store.state.cartStatus
+      // const a = this.$store.state.cartStatus
+      // console.log(a)
+      // for (const b in a) {
+      //   console.log(a[b])
+      // }
+      // console.log(this.$store.state.cartStatus)
+      let status = false
+      for (const val in this.$store.state.cartStatus) {
+        // console.log(val)
+        if (this.$store.state.cartStatus[val] === false) {
+          status = true
+        } else {
+          status = false
+        }
+      }
+      console.log(status)
+      return status
     }
   },
   created () {
     this.fetchCart()
-    console.log('testing')
+    // console.log('testing')
   }
 }
 </script>

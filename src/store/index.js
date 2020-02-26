@@ -17,7 +17,8 @@ export default new Vuex.Store({
       name: '',
       email: ''
     },
-    carts: []
+    carts: [],
+    cartStatus: {}
   },
   getters: {
     getAlert: state => {
@@ -41,8 +42,11 @@ export default new Vuex.Store({
       state.user = user
     },
     SET_CART (state, cart) {
-      // console.log(cart)
+      // console.log(state.carts)
       state.carts = cart
+    },
+    SET_CART_STATUS (state, payload) {
+      state.cartStatus[payload.key] = payload.value
     }
   },
   actions: {
@@ -137,6 +141,20 @@ export default new Vuex.Store({
         data: {
           productId: payload.productId,
           price: payload.price,
+          stock: payload.stock,
+          qty: payload.qty
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    },
+    updateCart (context, payload) {
+      return axios({
+        method: 'PUT',
+        url: `carts/${payload.id}`,
+        data: {
+          price: payload.price,
           qty: payload.qty
         },
         headers: {
@@ -148,6 +166,17 @@ export default new Vuex.Store({
       return axios({
         method: 'DELETE',
         url: `carts/${id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    },
+    checkout (context, payload) {
+      console.log(payload, '=STORE=')
+      return axios({
+        method: 'PUT',
+        url: 'carts/:cartId/checkout',
+        data: payload,
         headers: {
           access_token: localStorage.access_token
         }

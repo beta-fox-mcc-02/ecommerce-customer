@@ -1,9 +1,12 @@
 <template>
   <v-card class="d-inline-block mx-auto"
     width="300"
-    style="margin-bottom: 150px; box-shadow: 1px 1px 5px 8px rgba(0,0,0,0.15);"
+    style="margin-bottom: 100px; box-shadow: 1px 1px 5px 8px rgba(0,0,0,0.15);"
   >
     <v-container>
+        <v-card-text class="text-center">
+          <b>{{ product.name }}</b>
+        </v-card-text>
         <v-col cols="auto">
           <v-img
             height="200"
@@ -15,8 +18,10 @@
         <v-col
           cols="auto"
           class="text-center pl-0"
+          style="margin-bottom: -50px"
         >
           <v-row
+            height="100"
             class="flex-row ma-0 fill-height"
             justify="center"
             style="display:flex; align-items:center;"
@@ -38,16 +43,6 @@
                   v-model.lazy="qty">
                   </v-text-field>
                 </v-col>
-                <v-col>
-                  <v-text-field
-                    class="text-center"
-                    label="Stock"
-                    name="qty"
-                    type="number"
-                    readonly
-                    v-model="product.stock">
-                  </v-text-field>
-                </v-col>
               </v-row>
             </v-col>
             <v-col class="px-0">
@@ -55,13 +50,20 @@
                 <v-icon>mdi-plus-circle</v-icon>
               </v-btn>
             </v-col>
+            <v-col>
+              <v-text-field
+                class="text-center"
+                label="Stock"
+                name="qty"
+                type="number"
+                readonly
+                v-model="product.stock">
+              </v-text-field>
+            </v-col>
           </v-row>
         </v-col>
         <v-col>
           <!-- <Alert v-if="alertMessage"/> -->
-          <v-card-text class="text-center">
-            <b>{{ product.name }}</b>
-          </v-card-text>
           <v-row>
             <v-col>
               <v-card-text style="display:flex; align-items:center; justify-content: space-between">
@@ -107,12 +109,20 @@ export default {
       const payload = {
         productId: this.product.id,
         price: this.product.price,
+        stock: this.product.stock,
         qty: this.qty
       }
       this.$store.dispatch('addToCart', payload)
         .then(({ data }) => {
-          console.log(data)
-          this.qty = 0
+          this.$store.dispatch('fetchCart')
+            .then(({ cart }) => {
+              this.qty = 0
+              this.$router.push('/carts')
+            })
+            .catch(err => {
+              console.log(err.response)
+            })
+          // console.log(data)
         })
         .catch(err => {
           console.log(err.response)

@@ -5,12 +5,12 @@
     <td class="text-center">{{ cart.Product.stock }}</td>
     <td class="text-center">{{ getProductPrice }}</td>
     <td class="text-center">
-      <v-btn icon @click.prevent="substract"><v-icon color="primary">mdi-minus-box</v-icon></v-btn>
+      <v-btn icon @click.prevent="substract" :disabled="buttonPrevState"><v-icon color="primary">mdi-minus-box</v-icon></v-btn>
       {{ qty }}
-      <v-btn icon @click.prevent="add"><v-icon color="primary">mdi-plus-box</v-icon></v-btn>
+      <v-btn icon @click.prevent="add" :disabled="buttonNextState" ><v-icon color="primary">mdi-plus-box</v-icon></v-btn>
     </td>
     <td class="text-center">
-      <v-btn icon @click.prevent="submitUpdate" v-if="checkStatus"><v-icon color="success">mdi-checkbox-marked</v-icon></v-btn>
+      <v-btn icon @click.prevent="submitUpdate" :disabled="buttonCheckStatus"><v-icon color="success">mdi-checkbox-marked</v-icon></v-btn>
       <v-btn icon @click.prevent="removeProduct"><v-icon color="red">mdi-delete</v-icon></v-btn>
     </td>
     <td class="text-center">{{ getTotalPrice }}</td>
@@ -37,13 +37,45 @@ export default {
     resetQty () {
       this.qty = 0
     },
+    submitUpdate () {
+      const payload = {
+        id: this.cart.id,
+        price: this.cart.Product.price,
+        qty: this.qty
+      }
+      this.$store.dispatch('updateCart', payload)
+        .then(({ data }) => {
+          // console.log(data.data[0])
+          this.qty = data.data[0].qty
+          const payload = {
+            key: data.data.id,
+            value: data.data.qty
+          }
+          this.$store.commit('SET_CART_STATUS', payload)
+          // this.$store.dispatch('fetchCart')
+          //   .then(({ data }) => {
+          //     console.log(data)
+          //     this.$store.commit('SET_CART', data.data)
+          //     data.data.forEach(product => {
+          //       this.total += product.total
+          //     })
+          //   })
+          //   .catch(err => {
+          //     console.log(err.response)
+          //   })
+          this.$emit('fetchCart')
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    },
     removeProduct () {
       this.$store.dispatch('removeFromCart', this.cart.id)
         .then(data => {
 
         })
         .catch(err => {
-          console.log(err)
+          console.log(err.response)
         })
     },
     showDeleteModal () {
@@ -53,12 +85,22 @@ export default {
   watch: {
     qty: function (val) {
       // console.log(val)
-      if (val < 0) {
-        this.qty = Math.abs(val)
+      if (val < 1) {
+        this.qty = 1
       }
       if (val > this.cart.Product.stock) {
         this.qty = this.cart.Product.stock
       }
+    },
+    buttonCheckStatus: function (val) {
+      // console.log(val, this.cart.id)
+      // if (!this.$store.state.cartStatus[this.cart.id]) {
+      const payload = {
+        key: this.cart.id,
+        value: val
+      }
+      this.$store.commit('SET_CART_STATUS', payload)
+      // }
     }
   },
   computed: {
@@ -66,17 +108,34 @@ export default {
       return 'Rp ' + (+this.cart.Product.price).toLocaleString('id-ID')
     },
     getTotalPrice () {
-      return 'Rp ' + (+this.cart.total).toLocaleString('id-ID')
-    },
-    checkStatus () {
-      if (this.qty === this.newQty) {
-        return false
+      if (this.qty === this.cart.Product.Stock) {
+        return 'Rp ' + (+this.cart.total).toLocaleString('id-ID')
       } else {
+        return 'Rp ' + (+this.cart.Product.price * this.qty).toLocaleString('id-ID')
+      }
+    },
+    buttonCheckStatus () {
+      if (this.qty === this.newQty) {
+        return true
+      } else {
+        return false
+      }
+    },
+    buttonPrevState () {
+      if (this.qty <= 1) {
         return true
       }
+      return false
+    },
+    buttonNextState () {
+      if (this.qty >= this.cart.Product.stock) {
+        return true
+      }
+      return false
     }
   },
   created () {
+    // console.log(this.cart.qty, 'dari cart detail created')
     this.qty = this.cart.qty
     this.newQty = this.qty
     // console.log(this.cart)
