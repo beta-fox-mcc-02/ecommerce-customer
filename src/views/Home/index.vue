@@ -54,6 +54,7 @@
     <v-content>
       <v-alert type="error" class="mt-5" v-if="isError">{{errorMessage}}</v-alert>
       <v-alert type="success" class="mt-5" v-if="isSuccess">{{successMessage}}</v-alert>
+      <v-progress-linear indeterminate color="teal" v-if="isLoading"></v-progress-linear>
       <router-view></router-view>
     </v-content>
 
@@ -110,6 +111,9 @@ export default {
     },
     successMessage() {
       return this.$store.state.successMessage;
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
     }
   },
   created() {

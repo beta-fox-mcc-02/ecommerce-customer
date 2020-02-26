@@ -171,6 +171,7 @@ export default {
     },
 
     onUpdate() {
+      this.$store.commit('SET_LOADING', true);
       const payload = {
         id: this.updateValue.id,
         data: {
@@ -181,12 +182,14 @@ export default {
       };
       this.$store.dispatch('addItemToCart', payload)
         .then(({ data }) => {
+          this.$store.commit('SET_LOADING', false);
           this.$store.commit('STOP_ERROR');
           this.$store.commit('SET_SUCCESS', 'Success Edit Item Quantity');
           console.log(data);
           this.$store.dispatch('fetchCarts');
         })
         .catch(({ response }) => {
+          this.$store.commit('SET_LOADING', false);
           this.$store.commit('SET_ERROR', response.data);
           this.$store.commit('STOP_SUCCESS');
           console.log(response);
@@ -195,6 +198,7 @@ export default {
     },
 
     onDelete() {
+      this.$store.commit('SET_LOADING', true);
       this.deleteModal = false;
       const payload = {
         id: this.itemToDelete.id,
@@ -204,11 +208,13 @@ export default {
       };
       this.$store.dispatch('deleteItem', payload)
         .then(() => {
+          this.$store.commit('SET_LOADING', false);
           this.$store.commit('STOP_ERROR');
           this.$store.commit('SET_SUCCESS', `Success Delete "${this.itemToDelete.name}"`);
           this.$store.dispatch('fetchCarts');
         })
         .catch(({ response }) => {
+          this.$store.commit('SET_LOADING', false);
           this.$store.commit('SET_ERROR', response.data);
           this.$store.commit('STOP_SUCCESS');
           console.log(response);

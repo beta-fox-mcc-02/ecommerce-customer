@@ -60,14 +60,17 @@ export default {
             quantity: cart[0].quantity + 1
           }
         };
+        this.$store.commit('SET_LOADING', true);
         this.$store.dispatch('addItemToCart', payload)
           .then(() => {
+            this.$store.commit('SET_LOADING', false);
             this.$store.commit('STOP_ERROR');
             this.$store.commit('SET_SUCCESS', 'Success Add Item To Cart');
             this.$store.dispatch('fetchCarts');
             this.$router.push('/cart');
           })
           .catch(({ response }) => {
+            this.$store.commit('SET_LOADING', false);
             this.$store.commit('SET_ERROR', response.data);
             this.$store.commit('STOP_SUCCESS');
             console.log(response);
@@ -80,12 +83,14 @@ export default {
         };
         this.$store.dispatch('createNewCart', payload)
           .then(() => {
+            this.$store.commit('SET_LOADING', false);
             this.$store.commit('STOP_ERROR');
             this.$store.commit('SET_SUCCESS', 'Success Add Item To Cart');
             this.$store.dispatch('fetchCarts');
             this.$router.push('/cart');
           })
           .catch(({ response }) => {
+            this.$store.commit('SET_LOADING', false);
             this.$store.commit('SET_ERROR', response.data);
             this.$store.commit('STOP_SUCCESS');
             console.log(response);

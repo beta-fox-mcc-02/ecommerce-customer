@@ -12,7 +12,8 @@ export default new Vuex.Store({
     errorMessage: '',
     errorStatus: false,
     successMessage: '',
-    succesStatus: false
+    succesStatus: false,
+    isLoading: false
   },
   mutations: {
     HAS_LOGIN(state) {
@@ -45,10 +46,14 @@ export default new Vuex.Store({
     STOP_SUCCESS_ERROR(state) {
       state.succesStatus = false;
       state.errorStatus = false;
+    },
+    SET_LOADING(state, payload) {
+      state.isLoading = payload;
     }
   },
   actions: {
     registerCustomer(context, payload) {
+      context.commit('SET_LOADING', true);
       return axios({
         method: 'POST',
         url: '/register',
@@ -56,19 +61,22 @@ export default new Vuex.Store({
       });
     },
     loginCustomer(context, payload) {
+      context.commit('SET_LOADING', true);
       return axios({
         method: 'POST',
         url: '/login',
         data: payload
       });
     },
-    fetchAllProducts() {
+    fetchAllProducts(context) {
+      context.commit('SET_LOADING', true);
       return axios({
         method: 'GET',
         url: '/products'
       });
     },
     fetchCarts(context) {
+      context.commit('SET_LOADING', true);
       axios({
         method: 'GET',
         url: '/carts',
@@ -77,6 +85,8 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
+          context.commit('STOP_ERROR');
+          context.commit('SET_LOADING', false);
           const payload = [];
           data.forEach(el => {
             payload.push({
@@ -93,10 +103,14 @@ export default new Vuex.Store({
           context.commit('SET_CARTS', payload);
         })
         .catch(({ response }) => {
+          context.commit('SET_ERROR', response.data);
+          context.commit('STOP_SUCCESS');
+          context.commit('SET_LOADING', false);
           console.log(response);
         });
     },
     createNewCart(context, payload) {
+      context.commit('SET_LOADING', true);
       return axios({
         method: 'POST',
         url: '/carts',
@@ -107,6 +121,7 @@ export default new Vuex.Store({
       });
     },
     addItemToCart(context, payload) {
+      context.commit('SET_LOADING', true);
       return axios({
         method: 'PUT',
         url: `/carts/${payload.id}`,
@@ -117,6 +132,7 @@ export default new Vuex.Store({
       });
     },
     deleteItem(context, payload) {
+      context.commit('SET_LOADING', true);
       return axios({
         method: 'DELETE',
         url: `carts/${payload.id}`,

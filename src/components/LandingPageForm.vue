@@ -18,6 +18,8 @@
                   <span>To Home</span>
                 </v-tooltip>
               </v-toolbar>
+              <v-progress-linear indeterminate color="teal" v-if="isLoading"></v-progress-linear>
+
               <v-card-text>
                 <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="onSubmit">
                   <v-text-field
@@ -80,18 +82,20 @@ export default {
         email: this.email,
         password: this.password
       };
+      this.$store.commit('SET_LOADING', true);
       if (this.title === 'Register') {
         payload.role = 'customer';
         this.$store.dispatch('registerCustomer', payload)
           .then(({ data }) => {
             this.$store.commit('STOP_ERROR');
-            // logic
+            this.$store.commit('SET_LOADING', false);
             this.$store.commit('HAS_LOGIN');
             this.$router.push('/');
             localStorage.setItem('access_token', data.access_token);
           })
           .catch(({ response }) => {
-            this.$store.commit('SET_ERROR', response.data.message);
+            this.$store.commit('SET_LOADING', false);
+            this.$store.commit('SET_ERROR', response.data);
           });
       }
 
@@ -99,13 +103,14 @@ export default {
         this.$store.dispatch('loginCustomer', payload)
           .then(({ data }) => {
             this.$store.commit('STOP_ERROR');
-            // logic
+            this.$store.commit('SET_LOADING', false);
             this.$store.commit('HAS_LOGIN');
             this.$router.push('/');
             localStorage.setItem('access_token', data.access_token);
           })
           .catch(({ response }) => {
-            this.$store.commit('SET_ERROR', response.data.message);
+            this.$store.commit('SET_LOADING', false);
+            this.$store.commit('SET_ERROR', response.data);
           });
       }
     },
@@ -126,6 +131,9 @@ export default {
     },
     errorMessage() {
       return this.$store.state.errorMessage;
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
     }
   }
 }

@@ -23,34 +23,18 @@ export default {
   created() {
     this.$store.dispatch('fetchAllProducts')
       .then(({ data }) => {
-        console.log(data.data);
+        this.$store.commit('SET_LOADING', false);
+        this.$store.commit('STOP_ERROR');
         this.$store.commit('SET_PRODUCTS', data.data);
+        this.$store.dispatch('fetchCarts');
       })
       .catch(({ response }) => {
+        this.$store.commit('SET_LOADING', false);
+        this.$store.commit('SET_ERROR', response.data);
         console.log(response);
       });
 
 
-    this.$store.dispatch('fetchCarts')
-      .then(({ data }) => {
-        const payload = [];
-        data.forEach(el => {
-          payload.push({
-            id: el.id,
-            UserId: el.UserId,
-            ProductId: el.ProductId,
-            status: el.status,
-            quantity: el.quantity,
-            totalPrice: el.price,
-            name: el.Product.name,
-            price: el.Product.price
-          });
-        });
-        this.$store.commit('SET_CARTS', payload);
-      })
-      .catch(({ response }) => {
-        console.log(response);
-      });
   }
 }
 </script>
