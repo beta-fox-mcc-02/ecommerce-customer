@@ -58,6 +58,9 @@ export default {
     getMessage () {
       return this.$store.state.message
     }
+  },
+  created () {
+    this.$store.commit('SET_MESSAGE', { msg: '', status: null })
   }
 }
 </script>

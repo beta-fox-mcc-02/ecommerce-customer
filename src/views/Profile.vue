@@ -128,6 +128,7 @@ export default {
   },
   created () {
     this.fetchUser()
+    this.$store.commit('SET_MESSAGE', { msg: '', status: null })
     // console.log(this.$store.state.user)
   }
 }

@@ -4,7 +4,7 @@ import axios from '../api/axios'
 import VueJWT from 'vuejs-jwt'
 
 Vue.use(Vuex)
-Vue.use(VueJWT, 'hacktiv100')
+Vue.use(VueJWT, process.env.VUE_APP_SECRET)
 
 export default new Vuex.Store({
   state: {
@@ -16,7 +16,8 @@ export default new Vuex.Store({
       id: '',
       name: '',
       email: ''
-    }
+    },
+    carts: []
   },
   getters: {
     getAlert: state => {
@@ -38,6 +39,10 @@ export default new Vuex.Store({
     },
     SET_USER (state, user) {
       state.user = user
+    },
+    SET_CART (state, cart) {
+      // console.log(cart)
+      state.carts = cart
     }
   },
   actions: {
@@ -50,17 +55,23 @@ export default new Vuex.Store({
       // console.log(payload)
       return axios({
         method: 'GET',
-        url: `users/${payload.id}`
+        url: `users/${payload.id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
       })
     },
     updateUser (context, payload) {
-      console.log(payload)
+      // console.log(payload)
       axios({
         method: 'PUT',
         url: `users/${payload.id}`,
         data: {
           name: payload.name,
           email: payload.email
+        },
+        headers: {
+          access_token: localStorage.access_token
         }
       })
         .then(({ data }) => {
@@ -96,7 +107,10 @@ export default new Vuex.Store({
     fetchProduct (context) {
       axios({
         method: 'GET',
-        url: 'products'
+        url: 'products',
+        headers: {
+          acces_token: localStorage.acces_token
+        }
       })
         .then(({ data }) => {
           // console.log(data)
@@ -105,6 +119,39 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err.response)
         })
+    },
+    fetchCart (context) {
+      return axios({
+        method: 'GET',
+        url: 'carts',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    },
+    addToCart (context, payload) {
+      console.log('masuk store')
+      return axios({
+        method: 'POST',
+        url: 'carts',
+        data: {
+          productId: payload.productId,
+          price: payload.price,
+          qty: payload.qty
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    },
+    removeFromCart (context, id) {
+      return axios({
+        method: 'DELETE',
+        url: `carts/${id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
     }
   },
   modules: {

@@ -77,7 +77,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('SET_MESSAGE', { msg: '', status: null })
+    // this.$store.commit('SET_MESSAGE', { msg: '', status: null })
   },
   directives: {
     focus: {

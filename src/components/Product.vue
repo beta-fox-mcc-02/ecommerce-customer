@@ -19,6 +19,7 @@
           <v-row
             class="flex-row ma-0 fill-height"
             justify="center"
+            style="display:flex; align-items:center;"
           >
             <v-col class="px-0">
               <v-btn @click.prevent="substract" icon>
@@ -26,9 +27,28 @@
               </v-btn>
             </v-col>
             <v-col class="px-0">
-              <v-btn icon>
-                <v-icon>{{ getQty }}</v-icon>
-              </v-btn>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                  class="text-center"
+                  label="Qty"
+                  name="qty"
+                  type="number"
+                  min="0" step="1"
+                  v-model.lazy="qty">
+                  </v-text-field>
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    class="text-center"
+                    label="Stock"
+                    name="qty"
+                    type="number"
+                    readonly
+                    v-model="product.stock">
+                  </v-text-field>
+                </v-col>
+              </v-row>
             </v-col>
             <v-col class="px-0">
               <v-btn @click.prevent="add" icon>
@@ -38,6 +58,7 @@
           </v-row>
         </v-col>
         <v-col>
+          <!-- <Alert v-if="alertMessage"/> -->
           <v-card-text class="text-center">
             <b>{{ product.name }}</b>
           </v-card-text>
@@ -59,6 +80,7 @@
 </template>
 
 <script>
+// import Alert from '@/components/Alert/vue'
 export default {
   data () {
     return {
@@ -78,22 +100,46 @@ export default {
       this.qty = 0
     },
     addToCart () {
-      console.log(this.product.id, this.product.name, this.qty)
+      if (!localStorage.access_token) {
+        this.$store.commit('SET_MESSAGE', { msg: 'Please log in first', status: false })
+        this.$router.push('/users/login')
+      }
+      const payload = {
+        productId: this.product.id,
+        price: this.product.price,
+        qty: this.qty
+      }
+      this.$store.dispatch('addToCart', payload)
+        .then(({ data }) => {
+          console.log(data)
+          this.qty = 0
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
+    }
+  },
+  watch: {
+    qty: function (val) {
+      // console.log(val)
+      if (val < 1) {
+        this.qty = Math.abs(val)
+      }
+      if (val > this.product.stock) {
+        this.qty = this.product.stock
+      }
     }
   },
   computed: {
     getProductPrice () {
       return 'Rp ' + (+this.product.price).toLocaleString('id-ID')
     },
-    getQty () {
-      if (this.qty <= 0) {
-        this.resetQty()
-      }
-      return this.qty
+    alertMessage () {
+      return this.$store.state.message
     }
   },
   created () {
-    // console.log(this.qty)
+    // console.log(this.product)
   }
 }
 </script>

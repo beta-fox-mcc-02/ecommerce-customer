@@ -32,6 +32,8 @@ export default {
     getStateLogin () {
       return this.$store.state.isLogin
     }
+  },
+  created () {
   }
 }
 </script>
