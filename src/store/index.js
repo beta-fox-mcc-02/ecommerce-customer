@@ -17,7 +17,8 @@ export default new Vuex.Store({
     productId: null,
     productToUpdate: {},
     cartId: null,
-    stockAvailable: null
+    stockAvailable: null,
+    quantityUpdated: null
   },
   mutations: {
     SET_PRODUCTS (state, payload) {
@@ -55,6 +56,9 @@ export default new Vuex.Store({
     },
     SET_CART_ID (state, payload) {
       state.cartId = payload
+    },
+    SET_QUANTITY_UPDATED (state, payload) {
+      state.quantityUpdated = payload
     }
   },
   actions: {
@@ -85,7 +89,16 @@ export default new Vuex.Store({
     },
     editCartQuantity () {
       return axios({
-        // method: 'PATCH',
+        method: 'PUT',
+        url: `/carts/${this.state.cartId}`,
+        data: {
+          UserId: this.state.currentUserId,
+          ProductId: this.state.productId,
+          quantity: this.state.quantityUpdated
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
       })
     },
     findOneProduct () {

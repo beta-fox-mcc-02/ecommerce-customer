@@ -25,12 +25,15 @@
               <p class="m-0" v-if="!editQuantity || cartId !== cart.id">
                 {{ cart.quantity }}
               </p>
-              <div class="edit-quantity" v-if="editQuantity && cartId === cart.id">
-                <input type="number" v-model="quantity">
+              <div class="edit-quantity d-flex" v-if="editQuantity && cartId === cart.id">
+                <form @submit.prevent="editQuantityOnly(cart.id, cart.Product.id)">
+                  <input type="number" min="1" v-model="quantity">
+                  <button type="submit" class="mt-2 btn btn-secondary btn-edit-quantity">Submit</button>
+                </form>
                 <i class="fa fa-times btn" @click="editQuantityInput"></i>
               </div>
             </td>
-            <td>{{ cart.price }}</td>
+            <td>Rp {{ cart.price.toLocaleString('id-ID') }}.00</td>
             <td>
               <button class="btn btn-secondary mr" v-if="!cart.status" @click="editQuantityInput(cart.quantity, cart.id)">Edit quantity</button>
               <button class="btn btn-dark mx-2" v-if="!cart.status" @click="purchase(cart.id, cart.Product.id, cart.quantity)">Purchase</button>
@@ -88,6 +91,24 @@ export default {
         this.quantity = quantity
         this.cartId = cartId
       }
+    },
+    editQuantityOnly (cartId, productId) {
+      this.$store.commit('SET_CART_ID', cartId)
+      this.$store.commit('SET_QUANTITY_UPDATED', this.quantity)
+      this.$store.commit('SET_PRODUCT_ID', productId)
+      this.$store.commit('SET_CURRENT_USERID', Number(localStorage.getItem('userId')))
+      return this.$store.dispatch('editCartQuantity')
+        .then(({ data }) => {
+          console.log(data.data[1])
+          this.editQuantityInput()
+          return this.$store.dispatch('fetchCarts')
+        })
+        .then(({ data }) => {
+          this.$store.commit('SET_CARTS', data)
+        })
+        .catch(({ response }) => {
+          console.log(response)
+        })
     },
     purchase (cartId, productId, quantity) {
       console.log('productId=', productId, 'quantity=', quantity)
@@ -166,5 +187,14 @@ export default {
 
 .product-img {
   width: 100px
+}
+
+.edit-quantity form {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-edit-quantity {
+  width: 50%;
 }
 </style>
