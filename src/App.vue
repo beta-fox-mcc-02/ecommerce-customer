@@ -44,7 +44,6 @@ export default {
       this.$router.push({ path: '/register' })
     },
     toLogin () {
-      console.log('masuukkkk')
       this.$router.push({ path: '/login' })
     },
     toLogout () {
