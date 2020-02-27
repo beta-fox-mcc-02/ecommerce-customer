@@ -1,8 +1,8 @@
 <template>
   <tr>
-    <td class="text-center"><span><img :src="image" style="width: 40px; height: 40px"/></span></td>
-    <td class="text-center">{{ cart.Product.name }} </td>
-    <td class="text-center">{{ cart.Product.stock }}</td>
+    <td class="text-center"><span><img :src="getImageUrl" style="width: 40px; height: 40px"/></span></td>
+    <td class="text-center">{{ getProductName }} </td>
+    <td class="text-center">{{ getProductStock }}</td>
     <td class="text-center">{{ getProductPrice }}</td>
     <td class="text-center">
       <v-btn icon @click.prevent="substract" :disabled="buttonPrevState"><v-icon color="primary">mdi-minus-box</v-icon></v-btn>
@@ -22,8 +22,7 @@ export default {
   data () {
     return {
       qty: 0,
-      newQty: '',
-      image: this.cart.Product.image_url
+      newQty: ''
     }
   },
   props: ['cart'],
@@ -52,17 +51,7 @@ export default {
             value: data.data.qty
           }
           this.$store.commit('SET_CART_STATUS', payload)
-          // this.$store.dispatch('fetchCart')
-          //   .then(({ data }) => {
-          //     console.log(data)
-          //     this.$store.commit('SET_CART', data.data)
-          //     data.data.forEach(product => {
-          //       this.total += product.total
-          //     })
-          //   })
-          //   .catch(err => {
-          //     console.log(err.response)
-          //   })
+          this.newQty = data.data[0].qty
           this.$emit('fetchCart')
         })
         .catch(err => {
@@ -72,7 +61,15 @@ export default {
     removeProduct () {
       this.$store.dispatch('removeFromCart', this.cart.id)
         .then(data => {
-
+          console.log(data)
+          this.$store.dispatch('fetchCart')
+            .then(cart => {
+              this.$store.commit('SET_CART', data.data)
+              this.qty = 0
+            })
+            .catch(err => {
+              console.log(err)
+            })
         })
         .catch(err => {
           console.log(err.response)
@@ -88,8 +85,8 @@ export default {
       if (val < 1) {
         this.qty = 1
       }
-      if (val > this.cart.Product.stock) {
-        this.qty = this.cart.Product.stock
+      if (val > this.getProductStock) {
+        this.qty = this.getProductStock
       }
     },
     buttonCheckStatus: function (val) {
@@ -99,13 +96,32 @@ export default {
         key: this.cart.id,
         value: val
       }
+      // console.log(payload)
       this.$store.commit('SET_CART_STATUS', payload)
       // }
     }
   },
   computed: {
     getProductPrice () {
-      return 'Rp ' + (+this.cart.Product.price).toLocaleString('id-ID')
+      if (this.cart.Product.price) {
+        return 'Rp ' + (+this.cart.Product.price).toLocaleString('id-ID')
+      } else {
+        return ''
+      }
+    },
+    getProductName () {
+      if (this.cart.Product.name) {
+        return this.cart.Product.name
+      } else {
+        return ''
+      }
+    },
+    getProductStock () {
+      if (this.cart.Product.stock) {
+        return this.cart.Product.stock
+      } else {
+        return ''
+      }
     },
     getTotalPrice () {
       if (this.qty === this.cart.Product.Stock) {
@@ -114,7 +130,15 @@ export default {
         return 'Rp ' + (+this.cart.Product.price * this.qty).toLocaleString('id-ID')
       }
     },
+    getImageUrl () {
+      if (this.cart.Product.image_url) {
+        return this.cart.Product.image_url
+      } else {
+        return ''
+      }
+    },
     buttonCheckStatus () {
+      // console.log(this.qty, this.newQty)
       if (this.qty === this.newQty) {
         return true
       } else {
@@ -128,7 +152,7 @@ export default {
       return false
     },
     buttonNextState () {
-      if (this.qty >= this.cart.Product.stock) {
+      if (this.qty >= this.getProductStock) {
         return true
       }
       return false
@@ -136,8 +160,9 @@ export default {
   },
   created () {
     // console.log(this.cart.qty, 'dari cart detail created')
-    this.qty = this.cart.qty
+    this.qty = this.cart.qty ? this.cart.qty : 0
     this.newQty = this.qty
+    // console.log(this.qty)
     // console.log(this.cart)
   }
 }

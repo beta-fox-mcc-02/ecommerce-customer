@@ -128,8 +128,15 @@ export default {
   },
   created () {
     this.fetchUser()
-    this.$store.commit('SET_MESSAGE', { msg: '', status: null })
+    // this.$store.commit('SET_MESSAGE', { msg: '', status: null })
     // console.log(this.$store.state.user)
+  },
+  beforeRouteEnter (from, to, next) {
+    if (localStorage.access_token) {
+      next()
+    } else {
+      next('/users/login')
+    }
   }
 }
 </script>

@@ -70,7 +70,7 @@
                 <div>
                   {{ getProductPrice }}
                 </div>
-                <v-btn @click.prevent="addToCart" icon color="primary">
+                <v-btn @click.prevent="addToCart" :disabled="getDisableState" icon color="primary">
                   <v-icon>mdi-cart-plus</v-icon>
                 </v-btn>
               </v-card-text>
@@ -87,7 +87,7 @@ export default {
   data () {
     return {
       image: this.product.image_url,
-      qty: 0
+      qty: 1
     }
   },
   props: ['product'],
@@ -132,8 +132,13 @@ export default {
   watch: {
     qty: function (val) {
       // console.log(val)
-      if (val < 1) {
+      if (val === 0) {
+        this.qty = 1
+      } else if (val < 1) {
         this.qty = Math.abs(val)
+      }
+      if (this.product.stock === 0) {
+        this.qty = 0
       }
       if (val > this.product.stock) {
         this.qty = this.product.stock
@@ -146,6 +151,13 @@ export default {
     },
     alertMessage () {
       return this.$store.state.message
+    },
+    getDisableState () {
+      if (this.product.stock === 0) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   created () {

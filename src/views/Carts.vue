@@ -63,10 +63,12 @@ export default {
         .then(({ data }) => {
           // console.log(data, '====')
           this.$store.commit('SET_CART', data.data)
-          data.data.forEach(product => {
-            // console.log(product, '====')
-            this.total += product.total
-          })
+          if (data.data.length !== 0) {
+            data.data.forEach(product => {
+              // console.log(product, '====')
+              this.total += product.total
+            })
+          }
         })
         .catch(err => {
           console.log(err.response)
@@ -91,11 +93,18 @@ export default {
         }
       })
       this.$store.dispatch('checkout', payload)
-        .then(data => {
+        .then(({ data }) => {
           console.log(data)
+          this.$store.dispatch('fetchCart')
+            .then(cart => {
+              this.$store.commit('SET_CART', data.data)
+            })
+            .catch(err => {
+              console.log(err)
+            })
         })
         .catch(err => {
-          console.log(err.response)
+          console.log(err.response, '======')
         })
     }
   },
@@ -136,6 +145,13 @@ export default {
   created () {
     this.fetchCart()
     // console.log('testing')
+  },
+  beforeRouteEnter (from, to, next) {
+    if (localStorage.access_token) {
+      next()
+    } else {
+      next('/users/login')
+    }
   }
 }
 </script>

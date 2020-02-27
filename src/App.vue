@@ -32,7 +32,7 @@ export default {
     if (localStorage.access_token) {
       next('/products')
     } else {
-      next('/')
+      next('/users/login')
     }
   }
 }

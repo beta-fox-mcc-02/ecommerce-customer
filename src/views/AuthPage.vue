@@ -16,7 +16,7 @@
 export default {
   name: 'Auth',
   created () {
-    this.$store.commit('SET_MESSAGE', { msg: '', status: null })
+    // this.$store.commit('SET_MESSAGE', { msg: '', status: null })
   },
   components: {
   }

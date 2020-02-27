@@ -175,7 +175,7 @@ export default new Vuex.Store({
       console.log(payload, '=STORE=')
       return axios({
         method: 'PUT',
-        url: 'carts/:cartId/checkout',
+        url: `carts/${payload.CartId}/checkout`,
         data: payload,
         headers: {
           access_token: localStorage.access_token
