@@ -36,7 +36,6 @@ const store = new Vuex.Store({
     ISLOGIN (state, status) {
       state.token = status
       state.isLogin = status
-      // console.log(state.isLogin)
     },
     LOGOUT (state, status) {
       state.token = status
@@ -51,7 +50,6 @@ const store = new Vuex.Store({
           router.push('/')
         })
         .catch(({ response }) => {
-        // console.log(response.data.err)
           Toastify({
             text: response.data.err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
@@ -68,7 +66,6 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           const err = response.data.err
-          // console.log()
           err.forEach(element => {
             Toastify({
               text: element,
@@ -81,11 +78,9 @@ const store = new Vuex.Store({
     fetchProducts (context) {
       axios.get('http://localhost:3000/products/list')
         .then(({ data }) => {
-          // console.log(data)
           context.commit('FETCH_PRODUCTS', data)
         })
         .catch(({ response }) => {
-          // console.log(response.data.err)
           Toastify({
             text: response.data.err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
@@ -100,12 +95,10 @@ const store = new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          // console.log(data)
           context.commit('ISLOGIN', true)
           context.commit('FETCH_COSTUMER', data)
         })
         .catch(({ response }) => {
-          // console.log(response.data.err)
           Toastify({
             text: response.data.err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
@@ -116,11 +109,9 @@ const store = new Vuex.Store({
     fetchCarousel (context) {
       axios.get('https://api.jikan.moe/v3/search/anime?q=gundam&limit=10')
         .then(({ data }) => {
-          console.log(data.results)
           context.commit('FETCH_CAROUSEL', data.results)
         })
         .catch(({ response }) => {
-          // console.log(response.data.err)
           Toastify({
             text: response.data.err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
@@ -135,11 +126,9 @@ const store = new Vuex.Store({
         }
       })
         .then(({ data }) => {
-        // console.log(data.results)
           router.push('/cart')
         })
         .catch(({ response }) => {
-        // console.log(response.data.err)
           Toastify({
             text: response.data.err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
@@ -158,7 +147,6 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           const err = response.data.err
-          // console.log()
           err.forEach(element => {
             Toastify({
               text: element,
@@ -169,7 +157,6 @@ const store = new Vuex.Store({
         })
     },
     cancelProduct (context, payload) {
-      console.log(payload)
       axios.delete('http://localhost:3000/costumers/cart', {
         headers: {
           token: localStorage.token,
@@ -183,7 +170,6 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           const err = response.data.err
-          // console.log()
           Toastify({
             text: err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
@@ -207,7 +193,6 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           const err = response.data.err
-          // console.log()
           Toastify({
             text: err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
@@ -226,7 +211,6 @@ const store = new Vuex.Store({
         })
         .catch(({ response }) => {
           const err = response.data.err
-          // console.log()
           Toastify({
             text: err,
             backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
