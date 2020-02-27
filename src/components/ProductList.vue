@@ -102,7 +102,7 @@ export default {
                         axios({
                                 method: 'post',
                                 // url: 'http://localhost:3000/cart/add',
-                                url: 'https://tranquil-coast-06554.herokuapp.com/add',
+                                url: 'https://tranquil-coast-06554.herokuapp.com/cart/add',
                                 data: {
                                     ProductId: ProductId,
                                     total_price: total_price,
