@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const ecommerce = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'https://tranquil-inlet-43823.herokuapp.com'
 })
 
 export default ecommerce
