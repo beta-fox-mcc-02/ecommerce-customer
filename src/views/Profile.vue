@@ -27,7 +27,7 @@
             </tr>
           </td>
         </tr>
-        <tr v-if="transactions">
+        <tr v-if="!transactions">
           <td colspan="4">There is no transactions</td>
         </tr>
       </tbody>
