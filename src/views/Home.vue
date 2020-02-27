@@ -24,14 +24,17 @@ export default {
       this.$store.dispatch('fetchProducts')
         .then(({ data }) => {
           this.$store.commit('SET_PRODUCTS', data.data)
+          this.$store.commit('SET_LOADING_FETCH_PRODUCTS', false)
         })
         .catch(({ response }) => {
-          console.log(response.data)
+          this.$store.commit('SET_LOADING_FETCH_PRODUCTS', false)
         })
     }
   },
   created () {
     this.fetchProducts()
+  },
+  computed: {
   }
 }
 </script>

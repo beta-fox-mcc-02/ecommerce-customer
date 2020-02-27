@@ -16,14 +16,28 @@ const routes = [
       {
         path: '/signIn',
         name: 'SignIn',
-        component: SignIn
+        component: SignIn,
+        beforeEnter: (to, from, next) => {
+          if (localStorage.getItem('token')) {
+            next('/')
+          } else {
+            next()
+          }
+        }
       }
     ]
   },
   {
     path: '/signUp',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('token')) {
+        next('/')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/cart',

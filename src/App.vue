@@ -16,10 +16,9 @@ export default {
   created () {
     if (localStorage.token) {
       this.$store.commit('SET_IS_LOGIN', true)
-      // this.$router.push({ name: this.$store.state.currentPage })
+      // this.$router.push({ name: 'Home' })
     } else {
       this.$store.commit('SET_IS_LOGIN', false)
-      // this.$router.push({ name: 'Home' })
     }
   }
 }

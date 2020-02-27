@@ -1,5 +1,6 @@
 <template>
   <div class="border rounded product-card-container" v-if="products.length">
+    <loading v-if="loading"/>
     <div class="card card-container" v-for="product in products" :key="product.id">
       <div class="p-2 add-cart-container" @click="addCartForm(product.id)">
         <i class="fas fa-shopping-basket"></i>
@@ -19,6 +20,7 @@
 
 <script>
 import AddCart from '../components/AddCart'
+import Loading from '../components/Loading'
 
 export default {
   name: 'Product',
@@ -28,7 +30,8 @@ export default {
     }
   },
   components: {
-    AddCart
+    AddCart,
+    Loading
   },
   computed: {
     products () {
@@ -39,6 +42,9 @@ export default {
     },
     showAddCartForm () {
       return this.$store.state.addCartFormShow
+    },
+    loading () {
+      return this.$store.state.loadingFetchProducts
     }
   },
   methods: {

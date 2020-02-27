@@ -1,7 +1,7 @@
 <template>
   <div class="border-bottom header-container">
     <div class="logo-container">
-      <p class="logo m-0" @click="toHome">LOGO</p>
+      <p class="logo m-0" @click="toHome">ALKOP.ID</p>
     </div>
     <div class="nav-container">
       <div class="px-2 cart-area">

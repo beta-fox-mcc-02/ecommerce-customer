@@ -5,6 +5,10 @@
       <i class="fa fa-shopping-cart shop-icon" aria-hidden="true" @click="toHome"></i>
     </div>
     <div class="cart-list-container" v-if="carts.length">
+      <div class="alert alert-danger alert-style" role="alert" v-if="editCartError">
+        {{ message }}
+      </div>
+      <loading v-if="loading"/>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -48,14 +52,21 @@
 </template>
 
 <script>
+import Loading from '../components/Loading'
+
 export default {
   name: 'Cart',
+  components: {
+    Loading
+  },
   data () {
     return {
       editQuantity: false,
       quantity: null,
       cartId: null,
-      toDelete: false
+      toDelete: false,
+      message: '',
+      editCartError: false
     }
   },
   methods: {
@@ -76,9 +87,10 @@ export default {
       return this.$store.dispatch('fetchCarts')
         .then(({ data }) => {
           this.$store.commit('SET_CARTS', data)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
         .catch(({ response }) => {
-          console.log(response)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
     },
     editQuantityInput (quantity, cartId) {
@@ -99,61 +111,61 @@ export default {
       this.$store.commit('SET_CURRENT_USERID', Number(localStorage.getItem('userId')))
       return this.$store.dispatch('editCartQuantity')
         .then(({ data }) => {
-          console.log(data.data[1])
           this.editQuantityInput()
           return this.$store.dispatch('fetchCarts')
         })
         .then(({ data }) => {
           this.$store.commit('SET_CARTS', data)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
+          this.editCartError = false
         })
         .catch(({ response }) => {
-          console.log(response)
+          this.message = response.data.msg
+          this.editCartError = true
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
     },
     purchase (cartId, productId, quantity) {
-      console.log('productId=', productId, 'quantity=', quantity)
       let stockAvailable
 
       this.$store.commit('SET_PRODUCT_ID', productId)
       return this.$store.dispatch('findOneProduct')
         .then(({ data }) => {
           if (data.data.stock >= quantity) {
-            console.log(data)
             stockAvailable = data.data.stock - quantity
             this.$store.commit('SET_STOCK_AVAILABLE', stockAvailable)
             this.$store.commit('SET_CART_ID', cartId)
             return this.$store.dispatch('purchase')
           } else {
-            console.log('stocks does not available')
+            this.message = 'stocks does not available'
           }
         })
         .then(({ data }) => {
-          console.log(data)
           return this.$store.dispatch('editProductStock')
         })
         .then(({ data }) => {
-          console.log(data)
           return this.$store.dispatch('fetchCarts')
         })
         .then(({ data }) => {
           this.$store.commit('SET_CARTS', data)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
         .catch(({ response }) => {
-          console.log(response)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
     },
     deleteCart (cartId) {
       this.$store.commit('SET_CART_ID', cartId)
       return this.$store.dispatch('deleteCart')
         .then(({ data }) => {
-          console.log(data)
           return this.$store.dispatch('fetchCarts')
         })
         .then(({ data }) => {
           this.$store.commit('SET_CARTS', data)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
         .catch(({ response }) => {
-          console.log(response)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
     }
   },
@@ -163,6 +175,9 @@ export default {
   computed: {
     carts () {
       return this.$store.state.carts
+    },
+    loading () {
+      return this.$store.state.loadingFetchCarts
     }
   }
 }
@@ -179,6 +194,12 @@ export default {
 
 .shop-text {
   font-size: 3rem;
+}
+
+.cart-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cart-list-container table td {

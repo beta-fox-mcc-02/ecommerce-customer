@@ -1,6 +1,9 @@
 <template>
   <div class="add-cart-container">
     <div class="card card-body card-add-cart">
+      <div class="alert alert-danger alert-style message-error" role="alert" v-if="message">
+        {{ message }}
+      </div>
       <form @submit.prevent="addCart">
         <div class="form-group">
           <input type="number" min="1" class="form-control" placeholder="Quantity" required v-model="quantity">
@@ -19,7 +22,8 @@ export default {
   name: 'AddCart',
   data () {
     return {
-      quantity: null
+      quantity: null,
+      message: ''
     }
   },
   computed: {
@@ -32,10 +36,6 @@ export default {
       this.$store.commit('SET_ADD_CART_FORM_SHOW', false)
     },
     addCart () {
-      console.log('userId=', Number(localStorage.getItem('userId')))
-      console.log('productId=', this.productIdForAddCart)
-      console.log('quantity=', Number(this.quantity))
-
       axios({
         method: 'POST',
         url: '/carts',
@@ -49,11 +49,13 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data)
           this.$store.commit('SET_ADD_CART_FORM_SHOW', false)
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
+          this.message = ''
         })
         .catch(({ response }) => {
-          console.log(response)
+          this.message = 'product quantity is not enough'
+          this.$store.commit('SET_LOADING_FETCH_CARTS', false)
         })
     }
   }
@@ -67,5 +69,9 @@ export default {
 
 .card-add-cart {
   background-color: rgba(148, 148, 148, 0.664);
+}
+
+.message-error {
+  font-size: 1rem;
 }
 </style>

@@ -18,7 +18,11 @@ export default new Vuex.Store({
     productToUpdate: {},
     cartId: null,
     stockAvailable: null,
-    quantityUpdated: null
+    quantityUpdated: null,
+    loadingSignUp: false,
+    message: '',
+    loadingFetchProducts: false,
+    loadingFetchCarts: false
   },
   mutations: {
     SET_PRODUCTS (state, payload) {
@@ -59,10 +63,23 @@ export default new Vuex.Store({
     },
     SET_QUANTITY_UPDATED (state, payload) {
       state.quantityUpdated = payload
+    },
+    SET_LOADING_SIGNUP (state, payload) {
+      state.loadingSignUp = payload
+    },
+    SET_MESSAGE (state, payload) {
+      state.message = payload
+    },
+    SET_LOADING_FETCH_PRODUCTS (state, payload) {
+      state.loadingFetchProducts = payload
+    },
+    SET_LOADING_FETCH_CARTS (state, payload) {
+      state.loadingFetchCarts = payload
     }
   },
   actions: {
     fetchProducts () {
+      this.commit('SET_LOADING_FETCH_PRODUCTS', true)
       return axios({
         method: 'GET',
         url: '/products',
@@ -72,6 +89,7 @@ export default new Vuex.Store({
       })
     },
     fetchCarts () {
+      this.commit('SET_LOADING_FETCH_CARTS', true)
       return axios({
         method: 'GET',
         url: '/carts',
@@ -81,6 +99,7 @@ export default new Vuex.Store({
       })
     },
     signUp () {
+      this.commit('SET_LOADING_SIGNUP', true)
       return axios({
         method: 'POST',
         url: '/users/signUp',
