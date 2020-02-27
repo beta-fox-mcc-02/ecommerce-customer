@@ -41,8 +41,8 @@ export default {
         .then((result) => {
           this.item = result.data
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
+          this.item = 'not found'
         })
     }
   },
@@ -73,8 +73,13 @@ export default {
               }, 3000)
             }
           })
-          .catch((err) => {
-            console.log(err)
+          .catch(() => {
+            this.showNotif = true
+            this.notification = 'Something error with your input'
+            setTimeout(() => {
+              this.showNotif = false
+              this.notification = ''
+            }, 3000)
           })
       } else this.$router.push('/registration')
     }
@@ -87,7 +92,7 @@ export default {
         this.item = result.data
       })
       .catch((err) => {
-        console.log(err)
+        this.$router.push('/')
       })
   }
 }

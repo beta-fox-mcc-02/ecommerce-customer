@@ -44,7 +44,7 @@ export default {
         .then((result) => {
           this.product = result.data.data
         })
-        .catch((err) => console.log(err))
+        .catch(() => {})
     }
   },
   created () {
@@ -53,7 +53,7 @@ export default {
       .then((result) => {
         this.product = result.data.data
       })
-      .catch((err) => console.log(err))
+      .catch(() => {})
     this.$store.dispatch('getBannersAsync')
   }
 }

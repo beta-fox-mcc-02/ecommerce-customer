@@ -69,9 +69,7 @@ export default {
         .then((result) => {
           this.getTransaction()
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
     cancel (detail) {
       const payload = {
@@ -89,8 +87,13 @@ export default {
             this.cancelNotif = null
           }, 2000)
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
+          this.cancelNotif = `something error!`
+          setTimeout(() => {
+            this.$store.dispatch('fetchProductsAsync')
+            this.getTransaction()
+            this.cancelNotif = null
+          }, 2000)
         })
     }
   },

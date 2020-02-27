@@ -91,7 +91,7 @@ export default new Vuex.Store({
         .then((result) => {
           commit('setCategories', result.data.data)
         })
-        .catch((err) => console.log(err))
+        .catch(() => {})
     },
     getProductAsync ({ state }, categoryId) {
       return axios({
@@ -123,9 +123,7 @@ export default new Vuex.Store({
         .then((result) => {
           commit('setTransaction', result.data)
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
     payAsync ({ state }, payload) {
       return axios({
@@ -156,7 +154,7 @@ export default new Vuex.Store({
         .then(({ data }) => {
           commit('banners', data)
         })
-        .catch((err) => console.log(err))
+        .catch(() => {})
     }
   }
 })
