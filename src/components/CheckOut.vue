@@ -12,6 +12,7 @@ export default {
   props: ['carts'],
   methods: {
     toPayment () {
+      this.$vToastify.loader('Please Wait...')
       // console.log(this.carts[0].User.id)
       const payload = {
         UserId: this.carts[0].User.id,
@@ -22,6 +23,7 @@ export default {
           // console.log(data)
           this.$store.dispatch('fetchCart')
             .then(({ data }) => {
+              this.$vToastify.stopLoader()
               this.$vToastify.success('Payment Success')
               this.$store.commit('FETCH_CART', data.msg)
             })

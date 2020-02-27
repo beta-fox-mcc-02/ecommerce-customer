@@ -41,7 +41,12 @@ export default {
           this.$store.commit('FETCH_CART', data.msg)
         })
         .catch(err => {
-          console.log(err)
+          this.$vToastify.warning({
+            title: 'BRO',
+            body: `${err.response.data.msg}`,
+            type: 'warning',
+            duration: 3000
+          })
         })
     }
   },

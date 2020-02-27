@@ -24,7 +24,12 @@ export default {
           this.$store.commit('FETCH_CATEGORY', categories.data.categories)
         })
         .catch(err => {
-          console.log(err.response)
+          this.$vToastify.warning({
+            title: 'BRO',
+            body: `${err.response.data.msg}`,
+            type: 'warning',
+            duration: 3000
+          })
         })
     }
   },

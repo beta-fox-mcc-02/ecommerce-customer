@@ -55,6 +55,7 @@ export default {
       this.updateQuantity()
     },
     updateQuantity () {
+      this.$vToastify.loader('Please Wait...')
       const payload = {
         id: this.cart.id,
         quantity: this.total,
@@ -62,29 +63,12 @@ export default {
       }
       this.$store.dispatch('update', payload)
         .then(data => {
-          console.log('sukses update database bro')
           this.$store.dispatch('fetchCart')
             .then(({ data }) => {
+              this.$vToastify.stopLoader()
               this.$store.commit('FETCH_CART', data.msg)
             })
             .catch(err => {
-              console.log(err)
-            })
-        })
-        .catch(err => {
-          console.log(err.response)
-        })
-    },
-    destroy (id) {
-      this.$store.dispatch('destroy', id)
-        .then(data => {
-          this.$store.dispatch('fetchCart')
-            .then(({ data }) => {
-              this.$store.commit('FETCH_CART', data.msg)
-              this.$vToastify.success('delete success')
-            })
-            .catch(err => {
-              this.isLoading = false
               this.$vToastify.warning({
                 title: 'BRO',
                 body: `${err.response.data.msg}`,
@@ -94,7 +78,34 @@ export default {
             })
         })
         .catch(err => {
-          this.isLoading = false
+          this.$vToastify.warning({
+            title: 'BRO',
+            body: `${err.response.data.msg}`,
+            type: 'warning',
+            duration: 3000
+          })
+        })
+    },
+    destroy (id) {
+      this.$vToastify.loader('Please Wait...')
+      this.$store.dispatch('destroy', id)
+        .then(data => {
+          this.$store.dispatch('fetchCart')
+            .then(({ data }) => {
+              this.$vToastify.stopLoader()
+              this.$store.commit('FETCH_CART', data.msg)
+              this.$vToastify.success('delete success')
+            })
+            .catch(err => {
+              this.$vToastify.warning({
+                title: 'BRO',
+                body: `${err.response.data.msg}`,
+                type: 'warning',
+                duration: 3000
+              })
+            })
+        })
+        .catch(err => {
           this.$vToastify.warning({
             title: 'BRO',
             body: `${err.response.data.msg}`,

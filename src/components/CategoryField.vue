@@ -11,7 +11,7 @@
           </div>
           <div class="cart">
             <h4>Price</h4>
-            <h5 style="color: red">{{ category.Product.price }}</h5>
+            <h5 style="color: red">{{ category.Product.price.toLocaleString() }}</h5>
             <h4>Stock</h4>
             <h5 style="color: red">{{ category.Product.stock }}</h5>
             <form @submit.prevent="toCart">

@@ -15,7 +15,12 @@ export default {
           this.$router.push({ path: `/${this.category.name}` })
         })
         .catch(err => {
-          console.log(err.response)
+          this.$vToastify.warning({
+            title: 'BRO',
+            body: `${err.response.data.msg}`,
+            type: 'warning',
+            duration: 3000
+          })
         })
     }
   }
