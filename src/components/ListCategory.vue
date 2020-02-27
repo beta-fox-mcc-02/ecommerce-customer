@@ -8,7 +8,6 @@ export default {
   props: ['category'],
   methods: {
     toCategory () {
-      console.log(this.category.id)
       this.$store.dispatch('findCategory', this.category.id)
         .then(({ data }) => {
           this.$store.commit('LISTED_CATEGORY', data)

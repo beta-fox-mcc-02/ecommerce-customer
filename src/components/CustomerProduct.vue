@@ -25,7 +25,7 @@
       </div>
     </td>
     <td>
-      <h4>{{ priceTotal }}</h4>
+      <h4>{{ priceTotal.toLocaleString() }}</h4>
     </td>
     <td>
       <a href="" @click.prevent="destroy(cart.id)"><i class="fas fa-trash-alt" style="font-size: 25px;"></i></a>

@@ -42,7 +42,7 @@ export default {
       for (let i = 0; i < this.carts.length; i++) {
         price += this.carts[i].price
       }
-      return price
+      return price.toLocaleString()
     }
   }
 }
