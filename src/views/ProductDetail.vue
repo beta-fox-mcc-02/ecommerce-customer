@@ -27,7 +27,7 @@
               <tr>
                 <td>Description</td>
                 <td>:</td>
-                <td>{{ product.description }}</td>
+                <td style="max-width:500px;">{{ product.description }}</td>
               </tr>
               <tr>
                 <td>Quantity</td>
