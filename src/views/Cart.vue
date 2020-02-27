@@ -39,16 +39,16 @@
               </a>
             </td>
           </tr>
-          <tr v-if="!cart.CartDetails">
-            <td colspan="6">You don't purchase any items</td>
+          <tr v-if="!cart.CartDetails.length">
+            <td colspan="8">You don't purchase any items</td>
           </tr>
-          <tr v-if="cart.CartDetails">
+          <tr v-if="cart.CartDetails.length">
             <td colspan="4"></td>
             <td class="text-right">Total</td>
             <td class="text-right">{{ total | formatCurrency }}</td>
             <td></td>
           </tr>
-          <tr class="tr-actions" v-if="cart.CartDetails">
+          <tr class="tr-actions" v-if="cart.CartDetails.length">
             <td colspan="2">
               <router-link to="/products">
                 <b-button variant="outline-info">Continue shopping</b-button>
@@ -83,7 +83,6 @@ export default {
   },
   data () {
     return {
-      // cart: {},
       show: false,
       deletedId: 0
     }
@@ -155,7 +154,6 @@ export default {
     if (this.user.cart && this.user.cart.length) {
       this.$store.dispatch('fetchCarts', { cart_id: this.user.cart[0].id })
         .then(response => {
-          // this.cart = response.data
           this.$store.commit('SET_CART', response.data)
           this.$store.commit('SET_LOADING_CART', false)
         })
