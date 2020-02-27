@@ -19,6 +19,13 @@ export default {
     // this.$store.commit('SET_MESSAGE', { msg: '', status: null })
   },
   components: {
+  },
+  beforeRouteEnter (from, to, next) {
+    if (localStorage.access_token) {
+      next('/products')
+    } else {
+      next()
+    }
   }
 }
 </script>

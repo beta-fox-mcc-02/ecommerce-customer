@@ -59,20 +59,22 @@ export default {
         })
     },
     removeProduct () {
+      // let newData
       this.$store.dispatch('removeFromCart', this.cart.id)
         .then(data => {
-          console.log(data)
-          this.$store.dispatch('fetchCart')
-            .then(cart => {
-              this.$store.commit('SET_CART', data.data)
-              this.qty = 0
-            })
-            .catch(err => {
-              console.log(err)
-            })
+          // newData = data
+          // console.log(data)
+          // this.$router.push('/carts')
+          return this.$store.dispatch('fetchCart')
+        })
+        .then(cart => {
+          console.log(cart)
+          this.$store.commit('SET_CART', cart.data.data)
+          this.qty = 0
+          this.$emit('setTotal', cart.data.data[0].total)
         })
         .catch(err => {
-          console.log(err.response)
+          this.$store.commit('SET_MESSAGE', { msg: err.response.data.msg, status: false })
         })
     },
     showDeleteModal () {
@@ -131,11 +133,11 @@ export default {
       }
     },
     getImageUrl () {
-      if (this.cart.Product.image_url) {
-        return this.cart.Product.image_url
-      } else {
-        return ''
-      }
+      return this.cart.Product.image_url
+      // if (this.cart.Product.image_url) {
+      // } else {
+      //   return ''
+      // }
     },
     buttonCheckStatus () {
       // console.log(this.qty, this.newQty)

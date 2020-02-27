@@ -1,5 +1,6 @@
 <template>
   <v-row align-start>
+    <Alert v-if="getMessage" />
     <v-col v-if="!showDelete">
       <v-simple-table>
           <thead>
@@ -14,7 +15,7 @@
             </tr>
           </thead>
           <tbody>
-            <CartDetail v-for="cart in getCart" :key="cart.id" :cart="cart" @showDeleteModal="showDeleteModal" @fetchCart="fetchCart"/>
+            <CartDetail v-for="cart in getCart" :key="cart.id" :cart="cart" @showDeleteModal="showDeleteModal" @fetchCart="fetchCart" @setTotal="setTotal"/>
             <!-- {{ getCart }} -->
             <tr>
               <td colspan="6"></td>
@@ -43,6 +44,7 @@
 <script>
 import CartDetail from '@/components/CartDetail.vue'
 import ModalDelete from '@/components/ModalDelete.vue'
+import Alert from '@/components/Alert.vue'
 
 export default {
   data () {
@@ -53,7 +55,8 @@ export default {
   },
   components: {
     CartDetail,
-    ModalDelete
+    ModalDelete,
+    Alert
   },
   methods: {
     fetchCart () {
@@ -71,7 +74,8 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err.response)
+          // console.log(err.response)
+          this.$store.commit('SET_MESSAGE', { msg: err.response.data.msg, status: false })
         })
     },
     showDeleteModal (status) {
@@ -94,23 +98,35 @@ export default {
       })
       this.$store.dispatch('checkout', payload)
         .then(({ data }) => {
-          console.log(data)
+          // console.log(data)
+          this.$store.commit('SET_MESSAGE', { msg: 'success checkout', status: true })
           this.$store.dispatch('fetchCart')
             .then(cart => {
               this.$store.commit('SET_CART', data.data)
+              this.$router.push('/products')
             })
             .catch(err => {
-              console.log(err)
+              // console.log(err)
+              this.$store.commit('SET_MESSAGE', { msg: err.response.data.msg, status: false })
             })
         })
         .catch(err => {
-          console.log(err.response, '======')
+          // console.log(err.response, '======')
+          this.$store.commit('SET_MESSAGE', { msg: err.response.data.msg, status: false })
         })
+    },
+    setTotal (total) {
+      this.total = total
     }
   },
   watch: {
     getCartStatus (val) {
-      console.log(val)
+      // console.log(val)
+      // if (!this.getCart) {
+      //   return true
+      // } else {
+      //   return false
+      // }
       // this.status = this.$store.state.cartStatus
     }
   },
@@ -122,29 +138,29 @@ export default {
       return 'Rp ' + (+this.total).toLocaleString('id-ID')
     },
     getCartStatus () {
-      // return this.$store.state.cartStatus
-      // const a = this.$store.state.cartStatus
-      // console.log(a)
-      // for (const b in a) {
-      //   console.log(a[b])
+      // let status = false
+      // for (const val in this.$store.state.cartStatus) {
+      //   // console.log(val)
+      //   if (this.$store.state.cartStatus[val] === false) {
+      //     status = true
+      //   } else {
+      //     status = false
+      //   }
       // }
-      // console.log(this.$store.state.cartStatus)
-      let status = false
-      for (const val in this.$store.state.cartStatus) {
-        // console.log(val)
-        if (this.$store.state.cartStatus[val] === false) {
-          status = true
-        } else {
-          status = false
-        }
+      if (this.$store.state.carts.length !== 0) {
+        return false
+      } else {
+        return true
       }
-      console.log(status)
-      return status
+      // console.log(status)
+      // return status
+    },
+    getMessage () {
+      return this.$store.state.message
     }
   },
   created () {
     this.fetchCart()
-    // console.log('testing')
   },
   beforeRouteEnter (from, to, next) {
     if (localStorage.access_token) {

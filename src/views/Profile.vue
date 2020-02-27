@@ -103,6 +103,7 @@ export default {
           this.$store.commit('SET_USER', data.data)
         })
         .catch(err => {
+          this.$store.commit('SET_MESSAGE', { msg: 'fetch fail', status: false })
           console.log(err.response)
         })
     },

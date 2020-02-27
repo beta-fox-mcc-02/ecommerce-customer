@@ -82,7 +82,7 @@
 </template>
 
 <script>
-// import Alert from '@/components/Alert/vue'
+// import Alert from '@/components/Alert.vue'
 export default {
   data () {
     return {
@@ -90,6 +90,9 @@ export default {
       qty: 1
     }
   },
+  // components: {
+  //   Alert
+  // },
   props: ['product'],
   methods: {
     add () {

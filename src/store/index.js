@@ -42,7 +42,7 @@ export default new Vuex.Store({
       state.user = user
     },
     SET_CART (state, cart) {
-      // console.log(state.carts)
+      // console.log(cart)
       state.carts = cart
     },
     SET_CART_STATUS (state, payload) {
@@ -83,7 +83,8 @@ export default new Vuex.Store({
           context.commit('SET_MESSAGE', { msg: data.msg, status: true })
         })
         .catch(err => {
-          console.log(err.response)
+          // console.log(err.response)
+          context.commit('SET_MESSAGE', { msg: err.response.data.msg, status: false })
         })
     },
     register (context, payload) {
@@ -121,7 +122,8 @@ export default new Vuex.Store({
           context.commit('SET_PRODUCT', data)
         })
         .catch(err => {
-          console.log(err.response)
+          // console.log(err.response)
+          context.commit('SET_MESSAGE', { msg: err.response.data.msg, status: false })
         })
     },
     fetchCart (context) {
@@ -134,7 +136,7 @@ export default new Vuex.Store({
       })
     },
     addToCart (context, payload) {
-      console.log('masuk store')
+      // console.log('masuk store')
       return axios({
         method: 'POST',
         url: 'carts',
@@ -172,7 +174,7 @@ export default new Vuex.Store({
       })
     },
     checkout (context, payload) {
-      console.log(payload, '=STORE=')
+      // console.log(payload, '=STORE=')
       return axios({
         method: 'PUT',
         url: `carts/${payload.CartId}/checkout`,
