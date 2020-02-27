@@ -16,7 +16,7 @@
                 </b-navbar-item>
             </b-navbar-dropdown>
             <b-navbar-dropdown label="Customer" v-if="isLogin && !isAdmin">
-                <b-navbar-item>
+                <b-navbar-item @click="viewInvoice">
                     View Transaction History
                 </b-navbar-item>
             </b-navbar-dropdown>            
@@ -30,7 +30,7 @@
                             icon="cart"
                             size="is-small">
                         </b-icon>
-                         View Cart (0 items)                   
+                         View Cart                   
                     </a>
                     <a class="button is-white has-text-info" v-if="!isLogin">
                         <router-link to="/login">
@@ -82,7 +82,12 @@ export default {
             this.$router.push({
                 name: 'cart'
             })
-        }
+        },
+        viewInvoice() {
+            this.$router.push({
+                name: 'invoice'
+            })
+        }        
     }
 }
 </script>

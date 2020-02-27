@@ -3,7 +3,7 @@
         <div class="container">
             <div class="box">
             <h1 class="has-text-centered has-text-info is-size-3"><strong>LEGO MINIFIGURES</strong></h1><hr>
-                <div class="columns is-multiline" >
+                <div class="columns is-multiline">
                     <div class="column is-4" v-for="product in products.products" :key="product.id">
                         <div class="card">
                             <div class="card-image">

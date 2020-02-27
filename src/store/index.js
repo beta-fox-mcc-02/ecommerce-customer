@@ -12,7 +12,8 @@ export default new Vuex.Store({
     productDetail: {},
     productToEdit: null,
     cart: [],
-    cartTotal: 0
+    cartTotal: 0,
+    invoices: []
   },
   mutations: {
     SET_SESSION(state, payload) {
@@ -31,16 +32,11 @@ export default new Vuex.Store({
       state.isAdmin = payload
     },
     SET_CART (state, payload) {
-      let total = 0
-      let products = payload.cart
-      for (let i in products) {
-        let price = products[i].Product.price
-        let quantity = products[i].quantity
-        total += price * quantity
-      }
-      state.cartTotal = total
       state.cart = payload
-    }    
+    },
+    SET_INVOICES (state, payload) {
+      state.invoices = payload
+    }     
   },
   actions: {
     userRegister({commit}, payload) {
@@ -190,18 +186,23 @@ export default new Vuex.Store({
         })
     },
 
-    updateCart ({commit}, payload) {
+    updateCart ({dispatch, commit}, payload) {
+      console.log('>>>')
       return new Promise((resolve, reject) => {
         axios({
           method: 'POST',
           url: '/carts',
-          data: payload,
+          data: {
+            ProductId: payload.ProductId,
+            quantity: payload.quantity
+          },
           headers: {
-            access_token: localStorage.getItem('token')
+            access_token: localStorage.getItem('access_token')
           }
         })
           .then(({ data }) => {
             commit('SET_CART', data)
+            dispatch('fetchCart')
             resolve(data)
           })
           .catch(err => {
@@ -210,7 +211,7 @@ export default new Vuex.Store({
       })
     },
     
-    deleteCart({dispatch, commit}, payload) {
+    deleteCart({dispatch}, payload) {
       return new Promise((resolve, reject) => {
         axios({
           method: 'DELETE',
@@ -220,7 +221,6 @@ export default new Vuex.Store({
           }
         })
         .then(({data}) => {
-          commit('SET_CART_AFTER_DELETE', data)
           dispatch('fetchCart')
           resolve(data)
         })
@@ -228,6 +228,47 @@ export default new Vuex.Store({
           reject(err)
         })
       })
+    },
+
+    checkOut({commit, state}) {
+      console.log('>>>>>>>>>>>', state.cart)
+      return new Promise((resolve, reject) => {
+        axios({
+          url: '/invoices',
+          method: 'POST',
+          data: {
+            cart: state.cart
+          },
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then(({ data }) => {
+          console.log(data)
+          commit('SET_CART', [])
+          resolve(data)
+        })
+        .catch(err => {
+          reject(err)
+        })        
+      })
+    },
+
+    fetchInvoices ({ commit }) {
+      axios({
+        method: 'GET',
+        url: '/invoices',
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          commit('SET_INVOICES', data)
+        })
+        .catch(err => {
+          console.log(err)
+          this.toastify('error', 'something went wrong')
+        })
     }
 
   },

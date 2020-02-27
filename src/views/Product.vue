@@ -16,7 +16,7 @@
                         <a class="button is-size-7" target="_blank" :href="'https://www.bricklink.com/v2/search.page?q='+ productDetail.name +'#T=M'">Compare Price with Bricklink Database</a>
                         <br><hr>
                         <div class="has-text-right">
-                        <a class="button is-clickable has-text-black is-warning" v-if="isLogin && !isAdmin && productDetail.stock > 0" @click="viewCart">  ADD TO CART <i class="fas fa-shopping-cart"></i></a>
+                        <a class="button is-clickable has-text-black is-warning" v-if="isLogin && !isAdmin && productDetail.stock > 0" @click="updateCart">  ADD TO CART <i class="fas fa-shopping-cart"></i></a>
                         <div class="button has-text-danger" outlined v-if="isLogin && !isAdmin && productDetail.stock <= 0">OUT OF STOCK</div>
                         </div>
                     </div>                
@@ -54,12 +54,15 @@ export default {
           if (!this.isLogin) {
             this.toastify("error", "please login")
           } else {
-            this.$store.dispatch('updateCart', {
+            let payload = {
                 ProductId: this.productDetail.id,
-                quantity: 1           
-            })
+                quantity: 1,
+                Product: this.productDetail           
+            }
+            console.log(payload)
+            this.$store.dispatch('updateCart', payload)
             .then(data => {
-                console.log(data)
+               console.log(data)
               this.$router.push({
                   name: 'cart'
               })
@@ -67,7 +70,7 @@ export default {
             })
             .catch(err => {
               console.log(err)
-              this.toastify('error', 'something went wronng')
+              this.toastify('error', 'something went wrong')
             })
           }
         }                      
