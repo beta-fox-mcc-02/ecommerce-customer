@@ -1,20 +1,19 @@
 {
-  "name": "ecommerce-customer",
+  "name": "ecommerce-admin",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "start": "vue-cli-service serve --open"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "buefy": "^0.8.10",
     "core-js": "^3.6.4",
-    "mdbootstrap": "^4.13.0",
-    "mdbvue": "^6.5.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
+    "vue-sweetalert2": "^3.0.3",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
@@ -31,7 +30,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.1.2",
-    "vue-cli-plugin-mdb": "^2.0.4",
     "vue-template-compiler": "^2.6.11"
   }
 }
