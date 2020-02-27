@@ -249,9 +249,13 @@ export default {
               successMessage: 'Product is Removed From Cart',
               interval: 2000,
             });
+            return this.$store.dispatch('fetchUserData', localStorage.person_id);
+          })
+          .then((response) => {
+            this.$store.commit('setLogin', response.data);
           })
           .catch((err) => {
-            console.log(err);
+            console.log(err.response);
           })
           .finally(() => {
             this.$store.commit('stopLoading');
