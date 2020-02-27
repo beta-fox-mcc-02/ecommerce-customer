@@ -45,7 +45,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name === 'CartPage') {
+  if (to.name === 'CartPage' || to.name === 'HistoryPage') {
     if (!localStorage.access_token) {
       next('/register');
     } else {
