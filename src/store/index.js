@@ -7,12 +7,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     products: [],
+    product: {},
     categories: [],
     transactions: [],
     cart: {},
     errors: [],
     message: '',
     isLoading: null,
+    isLoadingProduct: null,
     isLoadingAddToCart: null,
     isLoadingCategories: null,
     isAuthenticated: null,
@@ -33,6 +35,12 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    SET_LOADING_PRODUCT (state, payload) {
+      state.isLoadingProduct = payload
+    },
+    SET_PRODUCT (state, payload) {
+      state.product = payload
+    },
     SET_TRANSACTIONS (state, payload) {
       state.transactions = payload
     },
@@ -74,6 +82,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    fetchProductDetail ({ commit }, payload) {
+      commit('SET_LOADING_PRODUCT', true)
+      return api({
+        method: 'GET',
+        url: '/products/' + payload.product_id
+      })
+    },
     fetchHistoryCarts ({ commit }) {
       commit('SET_LOADING_CART', true)
       return api({

@@ -4,6 +4,11 @@
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Register</h1>
       </div>
+      <b-alert v-if="errors.length" show variant="danger">
+        <div style="margin-bottom:10px;" v-for="(err, index) of errors" :key="index">
+          {{ err }}
+        </div>
+      </b-alert>
       <div class="form-label-group">
         <input type="text" v-model="firstname" id="inputFirstname" class="form-control" placeholder="Firstname" required="" autofocus="">
         <label for="inputFirstname">Firstname</label>
@@ -68,7 +73,7 @@ export default {
         })
         .catch(err => {
           this.$store.commit('SET_LOADING', false)
-          this.$store.commit('SET_ERRORS', err.response)
+          this.$store.commit('SET_ERRORS', err.response.data.errors)
           this.$store.commit('SET_MESSAGE', '')
         })
     }
@@ -76,7 +81,28 @@ export default {
   computed: {
     isLoading () {
       return this.$store.state.isLoading
+    },
+    errors () {
+      return this.$store.state.errors
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$store.dispatch('checkAuthenticated')
+        .then(response => {
+          vm.$store.commit('SET_AUTHENTICATED', true)
+          vm.$store.commit('SET_LOADING_AUTHENTICATION', false)
+          vm.$store.commit('SET_USER', response.data)
+          vm.$router.push('/')
+        })
+        .catch((err) => {
+          vm.$store.commit('SET_AUTHENTICATED', false)
+          vm.$store.commit('SET_LOADING_AUTHENTICATION', false)
+          vm.$store.commit('SET_USER', {})
+          vm.$store.commit('SET_ERRORS', err.response)
+          next()
+        })
+    })
   }
 }
 </script>
