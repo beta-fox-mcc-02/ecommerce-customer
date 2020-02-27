@@ -14,11 +14,14 @@ const store = new Vuex.Store({
     token: false,
     costumer: {},
     carousel: [],
-    carts: []
+    carts: [],
+    history: []
   },
   mutations: {
+    FETCH_HISTORY (state, history) {
+      state.history = history
+    },
     FETCH_CART (state, items) {
-      console.log(items)
       state.carts = items
     },
     FETCH_CAROUSEL (state, item) {
@@ -57,12 +60,11 @@ const store = new Vuex.Store({
         })
     },
     registerCostumer (context, payload) {
-      console.log(payload)
       axios.post('http://localhost:3000/costumers/register', payload)
         .then(({ data }) => {
           localStorage.token = data.token
           context.commit('ISLOGIN', true)
-          router.push('/admin')
+          router.push('/')
         })
         .catch(({ response }) => {
           const err = response.data.err
@@ -99,6 +101,7 @@ const store = new Vuex.Store({
       })
         .then(({ data }) => {
           // console.log(data)
+          context.commit('ISLOGIN', true)
           context.commit('FETCH_COSTUMER', data)
         })
         .catch(({ response }) => {
@@ -181,13 +184,54 @@ const store = new Vuex.Store({
         .catch(({ response }) => {
           const err = response.data.err
           // console.log()
-          err.forEach(element => {
-            Toastify({
-              text: element,
-              backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
-              className: 'info'
-            }).showToast()
-          })
+          Toastify({
+            text: err,
+            backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+            className: 'info'
+          }).showToast()
+        })
+    },
+    checkout (context, payload) {
+      axios.post('http://localhost:3000/costumers/checkout', payload, {
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          router.push('/')
+          Toastify({
+            text: 'Thank you for purchase, your product will arrive shortly',
+            backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+            className: 'info'
+          }).showToast()
+        })
+        .catch(({ response }) => {
+          const err = response.data.err
+          // console.log()
+          Toastify({
+            text: err,
+            backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+            className: 'info'
+          }).showToast()
+        })
+    },
+    fetchHistory (context, payload) {
+      axios.get('http://localhost:3000/costumers/history', {
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          context.commit('FETCH_HISTORY', data)
+        })
+        .catch(({ response }) => {
+          const err = response.data.err
+          // console.log()
+          Toastify({
+            text: err,
+            backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+            className: 'info'
+          }).showToast()
         })
     }
   }

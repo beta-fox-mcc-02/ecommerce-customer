@@ -25,16 +25,14 @@
         </ul>
         <div class="text-right">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <router-link to="/cart"><i class="fas fa-cart-plus"></i></router-link>
-            </li>
             <li class="nav-item active dropleft">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-cog"></i>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <router-link class="dropdown-item" to="/login"><i class="fas fa-sign-in-alt"></i> Login</router-link>
-                  <button @click="logout" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                  <router-link v-if="!checkLogin" class="dropdown-item" to="/login"><i class="fas fa-sign-in-alt"></i> Login</router-link>
+                  <router-link v-if="checkLogin" class="dropdown-item" to="/cart"><i class="fas fa-cart-plus"></i> Cart</router-link>
+                  <button v-if="checkLogin" @click="logout" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
                   </div>
             </li>
           </ul>
@@ -59,16 +57,20 @@ export default {
     logout () {
       localStorage.clear()
       this.checkToken()
-      router.push('/')
+      router.push('/login')
     },
     checkToken () {
-      if (localStorage.token) {
-        this.token = true
-      } else this.token = false
+      this.$store.commit('ISLOGIN', false)
     }
   },
   created () {
     this.checkToken()
+    this.checkLogin()
+  },
+  computed: {
+    checkLogin () {
+      return this.$store.state.isLogin
+    }
   }
 }
 </script>

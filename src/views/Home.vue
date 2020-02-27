@@ -33,6 +33,8 @@ export default {
   created () {
     this.$store.dispatch('fetchProducts')
     this.$store.dispatch('fetchCarousel')
+    this.$store.dispatch('fetchCostumer')
+    this.$store.dispatch('fetchCart')
   }
 }
 </script>

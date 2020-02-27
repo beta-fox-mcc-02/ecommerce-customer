@@ -4,42 +4,30 @@
     <div class="row">
         <div class="col-12" style="overflow: auto">
             <div class="table-responsive bg-light text-center">
+                {{costumer}}
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col"> </th>
                             <th scope="col">Product</th>
-                            <th scope="col">Available Stock</th>
                             <th scope="col" class="text-center">Quantity</th>
                             <th scope="col" class="text-right">Price</th>
+                            <th scope="col">Date</th>
                             <th> </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="cart in costumer" :key="cart.id">
-                            <td><img :src="cart.Product.image_url" style="max-width:50px; max-height:50px"/> </td>
-                            <td>{{cart.Product.name}}</td>
-                            <td>{{cart.Product.stock}}</td>
+                            <td><img :src="cart.image_url" style="max-width:50px; max-height:50px"/> </td>
+                            <td>{{cart.name}}</td>
                             <td>{{cart.quantity}}</td>
-                            <td class="text-right">Rp. {{cart.Product.price.toLocaleString('id')}}</td>
-                            <td class="text-right"><button @click="cancelProduct(cart.Cart.id, cart.Product.id)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                            <td class="text-right">Rp. {{cart.Product.price | currencyFormat}}</td>
+                            <td>{{cart.invoice}}</td>
                         </tr>
                         <tr>
                             <td colspan="4"></td>
-                            <td>Sub-Total</td>
+                            <td>Total Credit</td>
                             <td v-if="costumer.length" class="text-right">Rp. {{sumSubPrice | currencyFormat}}</td>
-                            <td v-if="!costumer.length" class="text-right">Rp. 0</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4"></td>
-                            <td>Shipping</td>
-                            <td v-if="costumer.length" class="text-right">Rp. 50.000</td>
-                            <td v-if="!costumer.length" class="text-right">Rp. 0</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4"></td>
-                            <td><strong>Total</strong></td>
-                            <td v-if="costumer.length" class="text-right"><strong>Rp. {{totalPrice | currencyFormat}}</strong></td>
                             <td v-if="!costumer.length" class="text-right">Rp. 0</td>
                         </tr>
                     </tbody>
@@ -66,22 +54,9 @@ export default {
     return {
     }
   },
-  methods: {
-    cancelProduct (CartId, ProductId) {
-      const deleteProduct = {
-        CartId,
-        ProductId
-      }
-      //   console.log(id)
-      this.$store.dispatch('cancelProduct', deleteProduct)
-    },
-    checkout (products) {
-      this.$store.dispatch('checkout', products)
-    }
-  },
   created () {
     this.$store.dispatch('fetchCostumer')
-    this.$store.dispatch('fetchCart')
+    this.$store.dispatch('fetchHistory')
   },
   filters: {
     currencyFormat (val) {
@@ -90,31 +65,29 @@ export default {
   },
   computed: {
     costumer () {
-      const carts = []
-      console.log(this.$store.state.carts)
-      for (let i = 0; i < this.$store.state.carts.length; i++) {
-        if (!this.$store.state.carts[i].isCheckout) {
-          carts.push(this.$store.state.carts[i])
+      const history = []
+      console.log(this.$store.state.history)
+      for (let i = 0; i < this.$store.state.history.length; i++) {
+        if (this.$store.state.history[i].CartId === this.$store.state.costumer.Cart.id) {
+          history.push(this.$store.state.history[i])
         }
       }
-      return carts
+      console.log(history)
+      return history
     },
     price (quantity, price) {
       return (quantity * price).toLocaleString('id')
     },
     sumSubPrice () {
       const price = []
-      for (let i = 0; i < this.costumer.length; i++) {
-        const temp = this.costumer[i].Product.price * this.costumer[i].quantity
+      for (let i = 0; i < this.history.length; i++) {
+        const temp = this.history[i].price * this.history[i].quantity
         price.push(temp)
       }
       const subPrice = price.reduce((a, b) => {
         return a + b
       })
       return subPrice
-    },
-    totalPrice () {
-      return this.sumSubPrice + 50000
     }
   }
 }

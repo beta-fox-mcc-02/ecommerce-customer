@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import AdminLogin from '../views/AdminLogin.vue'
 import Login from '../views/Login.vue'
 import UserLogin from '../views/UserLogin.vue'
-import Admin from '../views/Admin.vue'
 import Cart from '../components/Cart.vue'
 import Product from '../components/Product.vue'
 import ProductList from '../components/ProductList.vue'
+import About from '../views/About.vue'
+import History from '../components/History.vue'
 // import store from '../store/index.js'
 
 Vue.use(VueRouter)
@@ -23,6 +23,15 @@ const routes = [
         path: '',
         name: 'product list',
         component: ProductList
+      },
+      {
+        path: 'product',
+        name: 'product',
+        beforeEnter: (to, from, next) => {
+          // console.log(store.state.isLogin)
+          next('/')
+        }
+
       },
       {
         path: '/product/:id',
@@ -46,23 +55,31 @@ const routes = [
         path: '',
         name: 'loginUser',
         component: UserLogin
-      },
-      {
-        path: 'admin',
-        name: 'adminLogin',
-        component: AdminLogin
       }
-    ]
+    ],
+    beforeEnter: (to, from, next) => {
+      // console.log(store.state.isLogin)
+      if (localStorage.token) {
+        next('/')
+      } else next()
+    }
   },
   {
     path: '/cart',
     name: 'cart',
-    component: Cart
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    component: Admin,
+    component: About,
+    children: [
+      {
+        path: '',
+        name: 'cartTable',
+        component: Cart
+      },
+      {
+        path: 'history',
+        name: 'history',
+        component: History
+      }
+    ],
     beforeEnter: (to, from, next) => {
       // console.log(store.state.isLogin)
       if (localStorage.token) {
