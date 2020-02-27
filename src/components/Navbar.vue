@@ -10,6 +10,9 @@
           <div class="collapse navbar-collapse d-md-flex justify-content-center" id="trigger">
             <ul class="navbar-nav">
               <li class="navbar-item mx-2">
+                <router-link to="/" class="nav-link">Home</router-link>
+              </li>
+              <li class="navbar-item mx-2">
                 <router-link to="/store" class="nav-link">Store</router-link>
               </li>
               <li class="navbar-item mx-2">

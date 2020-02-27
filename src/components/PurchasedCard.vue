@@ -19,7 +19,7 @@
           <i>*total price</i>
         </small>
         <p class="card-text text-left">
-          <strong>Rp. {{total}}</strong>
+          <strong>Rp. {{formatedTotal}}</strong>
         </p>
 
         <div class="text-center">
@@ -56,6 +56,9 @@ export default {
         day: `numeric`
       }).format(new Date(this.product.updatedAt));
       return tanggalan
+    },
+    formatedTotal () {
+      return (this.total).toLocaleString('id-ID')
     }
   }
 };

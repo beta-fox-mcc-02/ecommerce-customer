@@ -23,7 +23,7 @@
                   <h6>Price</h6>
                 </div>
                 <div class="col-8 text-left">
-                  <p>{{ product.price }}</p>
+                  <p>Rp. {{ formatedTotal }}</p>
                 </div>
               </div>
               <div class="row border-bottom mt-3">
@@ -162,6 +162,9 @@ export default {
   computed: {
     loading() {
       return this.$store.state.loading;
+    },
+    formatedTotal () {
+      return (this.product.price).toLocaleString('id-ID')
     }
   }
 };

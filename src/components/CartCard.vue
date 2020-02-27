@@ -18,7 +18,7 @@
         <h5 class="card-title" @click="pindah">{{product.Product.name}}</h5>
         <h6 class="card-subtitle mb-2 text-muted">Stock {{product.Product.stock}}</h6>
         <p class="card-text text-left">
-          <strong>Rp. {{product.Product.price}}</strong>
+          <strong>Rp. {{formatedTotal}}</strong>
         </p>
         <hr />
         <div class="d-flex justify-content-center mb-3 p-0">
@@ -130,6 +130,11 @@ export default {
             console.log(err.response.data.msg);
             
          })
+    }
+  },
+  computed: {
+    formatedTotal () {
+      return (this.product.Product.price).toLocaleString('id-ID')
     }
   }
 };

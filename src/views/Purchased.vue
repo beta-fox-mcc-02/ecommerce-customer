@@ -9,7 +9,7 @@
       <div class="container mb-5" style="margin-top: 10vh;" v-if="!loading">
         <h1 style="font-family: 'Playfair Display SC', serif">purchased history</h1>
         <p class="text-muted ml-1 p-0">
-          <i>Total purchased price Rp. {{total}}</i>
+          <i>Total purchased price Rp. {{formatedTotal || 0}}</i>
         </p>
         <p class="text-muted ml-1 p-0">
           <i>{{purchased.length}} items</i>
@@ -60,6 +60,9 @@ export default {
     },
     loading () {
        return this.$store.state.loading
+    },
+    formatedTotal () {
+      return (this.total).toLocaleString('id-ID')
     }
   },
   created() {
