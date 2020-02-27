@@ -11,7 +11,8 @@ export default new Vuex.Store({
     products: [],
     cart: { CartItems: [] },
     orders: [],
-    transactionDetails: []
+    transactionDetails: [],
+    product: {}
   },
   mutations: {
     // AUTH
@@ -58,12 +59,22 @@ export default new Vuex.Store({
       }
     },
     SET_TRANSACTION_DETAILS(state, transactions) {
-      if(transactions) {
+      if (transactions) {
         state.transactionDetails = transactions
+      }
+    },
+
+    // END OF ORDERS
+
+    // PRODUCT
+
+    SET_PRODUCT(state, product) {
+      if (product) {
+        state.product = product
       }
     }
 
-    // END OF ORDERS
+    // END OF PRODUCT
   },
   actions: {
     // AUTH
@@ -193,7 +204,7 @@ export default new Vuex.Store({
       })
     },
 
-    getOrderDetails({commit}, id) {
+    getOrderDetails({ commit }, id) {
       const token = localStorage.token
       return new Promise((resolve, reject) => {
         client
@@ -208,11 +219,29 @@ export default new Vuex.Store({
             reject(e)
           })
       })
-      
-      
-    }
+    },
 
     // END OF ORDERS
+
+    // PRODUCT
+
+    getProduct({ commit }, id) {
+      const token = localStorage.token
+      return new Promise((resolve, reject) => {
+        client
+          .get(`/products/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then(response => {
+            commit('SET_PRODUCT', response.data.product)
+            resolve(response.data.product)
+          })
+          .catch(e => {
+            reject(e)
+          })
+      })
+    }
+    // END OF PRODUCT
   },
   getters: {
     isAuthenticated: function() {

@@ -10,13 +10,16 @@
         <div class="media">
           <div class="media-content">
             <p class="title is-4">{{ product.name }}</p>
-            <p class="subtitle is-6">{{ product.price }}</p>
+            <p class="subtitle is-6">{{ formatIDR(product.price) }}</p>
           </div>
         </div>
 
         <div class="content">
           <div class="buttons">
-            <button class="button is-outlined is-primary is-fullwidth">
+            <button
+              class="button is-outlined is-primary is-fullwidth"
+              @click="productDetail(product.id)"
+            >
               Details
             </button>
             <button
@@ -58,6 +61,23 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    productDetail: function(id) {
+      this.$router.push(`/products/${id}`)
+    },
+    formatIDR: function(money) {
+      let reverse = money
+        .toString()
+        .split('')
+        .reverse()
+        .join('')
+      let ribuan = reverse.match(/\d{1,3}/g)
+      ribuan = ribuan
+        .join('.')
+        .split('')
+        .reverse()
+        .join('')
+      return 'Rp. ' + ribuan
     }
   }
 }

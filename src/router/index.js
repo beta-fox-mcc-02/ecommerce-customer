@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import Cart from '../views/Cart.vue'
 import Orders from '../views/Orders.vue'
 import OrderDetail from '../views/OrderDetail.vue'
+import ProductDetail from '../views/ProductDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,11 @@ const routes = [
     path: '/orders/:id',
     name: 'OrderDetail',
     component: OrderDetail
+  },
+  {
+    path: '/products/:id',
+    name: 'ProductDetail',
+    component: ProductDetail
   },
   {
     path: '/about',
