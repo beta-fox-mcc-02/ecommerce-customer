@@ -32,12 +32,15 @@
               <tr>
                 <td>Quantity</td>
                 <td>:</td>
-                <td>
+                <td v-if="product.stock > 0">
                   <input type="number" v-model="quantity" class="form-control"/>
+                </td>
+                <td v-if="product.stock <= 0">
+                  <b-badge style="font-size:14px;" pill variant="danger">Out of stock</b-badge>
                 </td>
               </tr>
             </table>
-             <b-button @click="addToCart(product, quantity)"
+             <b-button v-if="product.stock > 0" @click="addToCart(product, quantity)"
               class="btn-add-to-cart" variant="primary">Add to cart</b-button>
           </div>
         </div>
