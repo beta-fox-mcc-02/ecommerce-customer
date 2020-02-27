@@ -4,8 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-// const serverUrl = 'http://localhost:3000'
-const serverUrl = 'https://mysterious-beach-02436.herokuapp.com'
+const serverUrl = 'http://localhost:3000'
+// const serverUrl = 'https://mysterious-beach-02436.herokuapp.com'
 
 export default new Vuex.Store({
   state: {
@@ -130,8 +130,22 @@ export default new Vuex.Store({
     payAsync ({ state }, payload) {
       return axios({
         method: 'PUT',
-        url: `${serverUrl}/transactions/${payload.customerId}`,
-        data: { productId: payload.productId }
+        url: `${serverUrl}/transactions/${payload.transactionId}`,
+        data: {
+          customerId: payload.customerId,
+          productId: payload.productId
+        }
+      })
+    },
+    cancelAsync ({ state }, payload) {
+      return axios({
+        method: 'DELETE',
+        url: `${serverUrl}/transactions/${payload.transactionId}`,
+        data: {
+          customerId: payload.customerId,
+          productId: payload.productId,
+          purchasePrice: payload.purchasePrice
+        }
       })
     },
     getBannersAsync ({ commit }) {

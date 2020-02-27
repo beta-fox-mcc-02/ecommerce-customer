@@ -12,16 +12,23 @@
     </div>
     <div id="shopping-cart">
       <a class="fas fa-shopping-cart"></a>
+      <small v-if="cancelNotif" class="canceled" style="position: absolute;">{{cancelNotif}}</small>
       <div id="checkout-item">
         <div id="checkout-title">
           <h1> {{transaction.username}}'s items </h1>
         </div>
         <ul id="cart">
-          <li class="checkout-details" v-for="product in transaction.Products" v-bind:key="product.id">
-            <h3>{{product.name}}</h3>
-            <p>Rp.{{product.Transaction.purchasePrice.toLocaleString()}}</p>
-            <p>{{!product.Transaction.status ? 'Waiting for payment' : 'Bought'}}</p>
-            <button v-if="!product.Transaction.status" v-on:click="pay(product.Transaction)">Pay now</button>
+          <li class="checkout-details" v-for="detail in transaction.Transactions" v-bind:key="detail.id">
+            <h4>{{detail.Product.name}}</h4>
+            <div class="total-purchase">
+              <p>Expected</p>
+              <p class="totalpayment">Rp.{{detail.purchasePrice.toLocaleString()}}</p>
+            </div>
+            <div class="status">
+              <p>{{!detail.status ? '' : 'Bought'}}</p>
+              <button v-if="!detail.status" v-on:click="pay(detail)">Pay</button>
+              <button v-if="!detail.status" v-on:click="cancel(detail)">cancel</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -33,7 +40,8 @@
 export default {
   data () {
     return {
-      username: localStorage.getItem('username')
+      username: localStorage.getItem('username'),
+      cancelNotif: null
     }
   },
   computed: {
@@ -51,15 +59,35 @@ export default {
       const token = localStorage.getItem('token')
       this.$store.dispatch('getTransactionAsync', token)
     },
-    pay (transaction) {
+    pay (detail) {
       const payload = {
-        customerId: transaction.CustomerId,
-        productId: transaction.ProductId
+        transactionId: detail.id,
+        customerId: detail.CustomerId,
+        productId: detail.Product.id
       }
       this.$store.dispatch('payAsync', payload)
         .then((result) => {
-          console.log(result.data)
           this.getTransaction()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    cancel (detail) {
+      const payload = {
+        transactionId: detail.id,
+        customerId: detail.CustomerId,
+        productId: detail.Product.id,
+        purchasePrice: detail.purchasePrice
+      }
+      this.$store.dispatch('cancelAsync', payload)
+        .then((result) => {
+          this.cancelNotif = `${detail.Product.name} returned!`
+          setTimeout(() => {
+            this.$store.dispatch('fetchProductsAsync')
+            this.getTransaction()
+            this.cancelNotif = null
+          }, 2000)
         })
         .catch((err) => {
           console.log(err)
@@ -180,21 +208,66 @@ ul#cart {
 }
 
 li.checkout-details {
-    width: 50%;
-    height: 7rem;
+    width: 100%;
+    height: 5rem;
+    margin: 0.1rem 2%;
+    padding: 0 0.5rem;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     font-variant: all-petite-caps;
+    border: 0.01rem solid #3ca4a9;
 }
 
-h3 {
-    text-align: center;
-    height: 40%;
+.status, .total-purchase {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    padding: 0 0.3rem;
+    box-sizing: content-box;
+    align-items: center;
+    justify-content: center;
+}
+
+.total-purchase{
+  width: 40%;
+}
+
+h4 {
+    width: 40%;
     display: flex;
     justify-content: center;
     flex-direction: column;
     word-break: break-word;
     font-variant-caps: all-petite-caps;
+    font-family: monospace;
+    font-size: 16pt;
+}
+
+p {
+    font-family: monospace;
+    font-size: 15pt;
+}
+
+.totalpayment {
+    font-size: 12pt;
+}
+
+button {
+    width: 3rem;
+    padding: 0;
+}
+
+small.canceled {
+    background-color: #ffa602;
+    padding: 0.5rem 1rem;
+    font-size: 12pt;
+    color: black;
+    z-index: 2;
+    top: 5rem;
+    right: 1rem;
+    border-radius: 0.5rem;
+    -webkit-box-shadow: 0 0 0.3rem grey;
+    box-shadow: 0 0 0.3rem grey;
 }
 
 </style>
