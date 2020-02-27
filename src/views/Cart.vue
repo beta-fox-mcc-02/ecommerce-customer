@@ -154,6 +154,7 @@ export default {
     if (this.user.cart && this.user.cart.length) {
       this.$store.dispatch('fetchCarts', { cart_id: this.user.cart[0].id })
         .then(response => {
+          this.$store.commit('SET_ERRORS', [])
           this.$store.commit('SET_CART', response.data)
           this.$store.commit('SET_LOADING_CART', false)
         })
@@ -161,6 +162,8 @@ export default {
           this.$store.commit('SET_ERRORS', err.response.data.errors)
           this.$store.commit('SET_LOADING_CART', false)
         })
+    } else {
+      this.$store.commit('SET_CART', [])
     }
   },
   computed: {
