@@ -11,9 +11,14 @@
           <input type="password" class="form-control" id="password" placeholder="password" required v-model="password">
         </div>
         <button class="btn btn-dark" type="submit">Sign In</button>
+        <router-link to="/signUp">
+          <p class="mt-3 btn">Sign up here!</p>
+        </router-link>
       </form>
     </div>
-    <i class="fa fa-times btn" aria-hidden="true" @click="closeSignInForm"></i>
+    <router-link to="/">
+      <i class="fa fa-times btn" aria-hidden="true"></i>
+    </router-link>
   </div>
 </template>
 
@@ -29,9 +34,6 @@ export default {
     }
   },
   methods: {
-    closeSignInForm () {
-      this.$router.go(-1)
-    },
     signIn () {
       axios({
         method: 'POST',
@@ -42,10 +44,14 @@ export default {
         }
       })
         .then(({ data }) => {
+          localStorage.setItem('userId', data.UserId)
           localStorage.setItem('token', data.token)
+          this.$router.push({ name: 'Cart' })
+          this.$store.commit('SET_CURRENT_PAGE', 'Cart')
+          this.$store.commit('SET_IS_LOGIN', true)
         })
         .catch(({ response }) => {
-          console.log(response)
+          console.log(response.data)
         })
     }
   }

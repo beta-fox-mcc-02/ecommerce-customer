@@ -1,7 +1,7 @@
 <template>
   <div class="border-bottom header-container">
     <div class="logo-container">
-      LOGO
+      <p class="logo m-0" @click="toHome">LOGO</p>
     </div>
     <div class="nav-container">
       <div class="px-2 cart-area">
@@ -11,7 +11,7 @@
         <router-link to="/signIn" class="anchor">
           <i class="fas fa-sign-in-alt btn-2" v-if="!isLogin"></i>
         </router-link>
-        <i class="fas fa-sign-out-alt btn-2" v-if="isLogin"></i>
+        <i class="fas fa-sign-out-alt btn-2" v-if="isLogin" @click="signOut"></i>
       </div>
     </div>
   </div>
@@ -30,7 +30,22 @@ export default {
   },
   methods: {
     toCart () {
-      this.$store.commit('SET_CURRENT_PAGE', 'Cart')
+      if (localStorage.getItem('token')) {
+        this.$router.push({ name: 'Cart' })
+        this.$store.commit('SET_CURRENT_PAGE', 'Cart')
+      } else {
+        this.$router.push({ name: 'SignIn' })
+      }
+    },
+    signOut () {
+      localStorage.clear()
+      this.$store.commit('SET_IS_LOGIN', false)
+      this.$router.push({ name: 'Home' })
+      this.$store.commit('SET_CURRENT_PAGE', 'Home')
+    },
+    toHome () {
+      this.$router.push({ name: 'Home' })
+      this.$store.commit('SET_CURRENT_PAGE', 'Home')
     }
   }
 }
@@ -40,6 +55,11 @@ export default {
 .logo-container {
   font-family: 'Passion One';
   font-size: 2.5rem;
+  color: #2c3e50;
+}
+
+.logo:hover {
+  cursor: pointer;
 }
 
 .header-container {
