@@ -1,28 +1,13 @@
 <template>
   <div>
-    <h1>Shopping Cart</h1>
+    <h1>Transaction History</h1>
     <b-table
       style="max-width: 750px; margin:auto"
       small
-      ref="selectableTable"
-      selectable
-      select-mode="multi"
-      :items="notPaidProduct"
+      :items="paidProduct"
       :fields="fields"
-      @row-selected="onRowSelected"
       responsive="sm"
     >
-      <!-- Example scoped slot for select state illustrative purposes -->
-      <template v-slot:cell(selected)="{ rowSelected }">
-        <template v-if="rowSelected">
-          <span aria-hidden="true">&check;</span>
-          <span class="sr-only">Selected</span>
-        </template>
-        <template v-else>
-          <span aria-hidden="true">&nbsp;</span>
-          <span class="sr-only">Not selected</span>
-        </template>
-      </template>
 
       <template v-slot:cell(image_url)="data">
         <img v-if="!data.item.image_url" src="https://static.thenounproject.com/png/340719-200.png" alt="">
@@ -41,58 +26,10 @@
         Rp. {{ data.item.Cart.price.toLocaleString() }}
       </template>
 
-      <template v-slot:cell(action)="data">
-        <b-button
-        size="sm"
-        @click="edit(data.item, data.index, $event.target)"
-        class="mr-1">
-          Edit
-        </b-button>
-        <b-button
-        @click.prevent="deleteProduct(data.item.id)"
-        variant="danger"
-        size="sm">
-          Remove
-        </b-button>
-      </template>
+      <!-- <template v-slot:cell(updatedAt)="data">
+        
+      </template> -->
     </b-table>
-    <b-modal
-    centered
-    v-b-modal.modal-sm
-    :id="editModal.id"
-    title=""
-    hide-footer
-    @hide="resetAll">
-      <div style="display: flex; justify-content: center;">
-        <div>
-          <label style="font-weight: 700;margin: auto 15px">Stock: {{ editModal.stock }}</label>
-          <!-- <label style="margin: auto 15px" for="sb-inline">Quantity</label> -->
-          <b-form-spinbutton
-          id="sb-inline"
-          v-model="quantity"
-          inline
-          :max="editModal.stock">
-          </b-form-spinbutton>
-        </div>
-        <br>
-        <b-button @click="editQuantity()" style="margin: auto 10px" variant="secondary">
-          Edit
-        </b-button>
-      </div>
-    </b-modal>
-    <div class="footer">
-      <h5>Total: Rp. {{ totalPrice.toLocaleString() }}</h5>
-    </div>
-    <p>
-      <b-button class="button-custom" size="sm" @click="selectAllRows">Select all</b-button>
-      <b-button class="button-custom" size="sm" @click="clearSelected">Clear selected</b-button>
-      <b-button variant="success"
-      class="button-custom"
-      size="sm"
-      @click="checkoutSelected">
-      Check Out
-      </b-button>
-    </p>
   </div>
 </template>
 
@@ -102,10 +39,6 @@ export default {
   data() {
     return {
       fields: [
-        {
-          key: 'selected',
-          label: '',
-        },
         {
           key: 'image_url',
           label: '',
@@ -126,10 +59,6 @@ export default {
           key: 'total',
           label: 'Total',
         },
-        {
-          key: 'action',
-          label: 'Action',
-        },
       ],
       selected: [],
       quantity: 0,
@@ -144,8 +73,8 @@ export default {
     personData() {
       return this.$store.state.personData;
     },
-    notPaidProduct() {
-      return this.$store.getters.notPaidProduct;
+    paidProduct() {
+      return this.$store.getters.paidProduct;
     },
     totalPrice() {
       let result = 0;
