@@ -18,7 +18,9 @@
         <tr align="left">
           <th>Quantity</th>
           <td>
-            <input type="number" style="width: 3rem;" :value=product.Cart.quantity disabled>
+            <button @click.prevent="addToCart(product.id, 'sub')">-</button>
+            <input type="number" style="width: 2rem;" :value=product.Cart.quantity disabled>
+            <button @click.prevent="addToCart(product.id, 'add')">+</button>
           </td>
         </tr>
       </table>
@@ -31,6 +33,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      localQty: 0
+    }
+  },
   props: {
     product: Object
   },
@@ -54,6 +61,22 @@ export default {
         'Are you sure want to delete this product?',
         () => this.deleteFromCart()
       )
+    },
+    addToCart (id, type) {
+      if (type !== 'sub' || this.product.Cart.quantity > 1) {
+        const payload = {
+          ProductId: id,
+          type
+        }
+        this.$store.dispatch('addToCart', payload)
+          .then(({ data }) => {
+            this.$store.commit('SET_NOTIFICATION', data.msg)
+            this.$store.dispatch('getCart')
+          })
+          .catch(err => {
+            this.$store.commit('SET_ERROR', err)
+          })
+      }
     }
   }
 }

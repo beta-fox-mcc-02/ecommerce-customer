@@ -99,7 +99,8 @@ export default new Vuex.Store({
         data: {
           ProductId: data.ProductId,
           quantity: data.quantity,
-          checkout: false
+          checkout: false,
+          type: data.type
         },
         headers: {
           access_token: localStorage.access_token

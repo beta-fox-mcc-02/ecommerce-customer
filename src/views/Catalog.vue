@@ -63,7 +63,8 @@ export default {
     },
     addToCart (id) {
       const payload = {
-        ProductId: id
+        ProductId: id,
+        type: 'add'
       }
       this.$store.dispatch('addToCart', payload)
         .then(({ data }) => {
