@@ -192,7 +192,7 @@ export default {
     productAPI.get(`/${this.$route.params.productId}`)
       .then((response) => {
         this.product = response.data;
-        return cartAPI.get(`/${localStorage.person_id}/${this.$route.params.productId}`);
+        return cartAPI.get(`/${localStorage.person_id}/${this.$route.params.productId}/false`);
       })
       .then((res) => {
         this.cart = res.data;

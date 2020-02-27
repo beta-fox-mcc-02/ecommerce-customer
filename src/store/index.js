@@ -133,7 +133,7 @@ export default new Vuex.Store({
     // checkout cart
     checkoutCart(context, payload) {
       context.commit('setLoading');
-      return cartAPI.put(`/${payload.PersonId}/${payload.ProductId}/checkout`, {
+      return cartAPI.put(`/${payload.PersonId}/${payload.ProductId}/checkout`, payload, {
         headers: {
           token: localStorage.token,
         },
