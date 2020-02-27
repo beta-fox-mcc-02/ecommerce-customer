@@ -2,7 +2,7 @@
   <div class="border rounded product-card-container" v-if="products.length">
     <loading v-if="loading"/>
     <div class="card card-container" v-for="product in products" :key="product.id">
-      <div class="p-2 add-cart-container" @click="addCartForm(product.id)">
+      <div class="p-2 add-cart-container" @click="addCartForm(product.id, product.stock)">
         <i class="fas fa-shopping-basket"></i>
       </div>
       <img :src="product.image_url" class="card-image">
@@ -48,11 +48,12 @@ export default {
     }
   },
   methods: {
-    addCartForm (productId) {
+    addCartForm (productId, productStock) {
       if (localStorage.getItem('token')) {
         this.$store.commit('SET_ADD_CART_FORM_SHOW', true)
         this.$store.commit('SET_PRODUCT_ID_FOR_ADD_CART', productId)
         this.ProductId = productId
+        this.$store.commit('SET_PRODUCT_STOCK', productStock)
       } else {
         this.$router.push(({ name: 'SignIn' }))
       }

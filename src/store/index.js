@@ -21,7 +21,8 @@ export default new Vuex.Store({
     loadingSignUp: false,
     message: '',
     loadingFetchProducts: false,
-    loadingFetchCarts: false
+    loadingFetchCarts: false,
+    productStock: null
   },
   mutations: {
     SET_PRODUCTS (state, payload) {
@@ -71,6 +72,9 @@ export default new Vuex.Store({
     },
     SET_LOADING_FETCH_CARTS (state, payload) {
       state.loadingFetchCarts = payload
+    },
+    SET_PRODUCT_STOCK (state, payload) {
+      state.productStock = payload
     }
   },
   actions: {

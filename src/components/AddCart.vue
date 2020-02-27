@@ -6,7 +6,7 @@
       </div>
       <form @submit.prevent="addCart">
         <div class="form-group">
-          <input type="number" min="1" class="form-control" placeholder="Quantity" required v-model="quantity">
+          <input type="number" min="1" :max="productStok" class="form-control" placeholder="Quantity" required v-model="quantity">
         </div>
         <button class="btn btn-dark" type="submit">Add to your cart</button>
       </form>
@@ -29,6 +29,9 @@ export default {
   computed: {
     productIdForAddCart () {
       return this.$store.state.productIdForAddCart
+    },
+    productStok () {
+      return this.$store.state.productStock
     }
   },
   methods: {
