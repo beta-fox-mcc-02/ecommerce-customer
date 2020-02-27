@@ -1,25 +1,23 @@
 <template>
-  <v-app class="bg">
-  <n-navbar />
-  <notifications group="sign" position="center center" :width="600"/>
-  <!-- <v-parallax class="ovl-hd" src="https://missnyingnying.files.wordpress.com/2011/02/img_95671.jpg"> -->
-    <v-content>
-      <router-view></router-view>
-    </v-content>
-  <!-- </v-parallax> -->
-  <v-card height="150">
-    <v-footer
-      absolute
-      class="font-weight-medium primary text-center white--text"
-    >
-      <v-col
-        class="text-center pointer"
-        cols="12"
+  <v-app id="bg-none">
+    <n-navbar />
+    <notifications group="sign" position="top right" :width="600"/>
+      <v-content>
+        <router-view></router-view>
+      </v-content>\
+    <v-card>
+      <v-footer
+        absolute
+        class="font-weight-medium primary text-center white--text"
       >
-        {{ new Date().getFullYear() }} — <strong>Singkongpedia</strong>
-      </v-col>
-    </v-footer>
-  </v-card>
+        <v-col
+          class="text-center pointer"
+          cols="12"
+        >
+          {{ new Date().getFullYear() }} — <strong>Singkongpedia</strong>
+        </v-col>
+      </v-footer>
+    </v-card>
   </v-app>
 </template>
 
@@ -65,10 +63,13 @@ export default {
   /* .ovl-hd {
     overflow: auto;
   } */
-  .bg {
+  #bg-none {
+    background: none;
+  }
+  body {
     background-image: url("https://missnyingnying.files.wordpress.com/2011/02/img_95671.jpg");
     overflow: hidden;
     background-repeat: no-repeat;
-    background-size: auto;
+    background-size: cover;
   }
 </style>
