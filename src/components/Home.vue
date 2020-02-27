@@ -58,7 +58,7 @@ export default {
     margin: 10px;
   }
   .description p {
-    font-size: 40px;
+    font-size: 30px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: bold;
     text-align: right;

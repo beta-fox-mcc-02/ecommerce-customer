@@ -1,7 +1,7 @@
 <template>
   <div id="navbar">
     <div class="left-bar">
-      <h2>TITLE</h2>
+      <h2>Sweat<span>Al</span>er<span>t</span>.Inc</h2>
       <ul>
         <li @click="moveHome">Home</li>
         <li @click="moveProducts">Product</li>
@@ -10,7 +10,28 @@
     <div class="right-bar">
       <div class="chart">
         <ul>
-          <li>Chart</li>
+          <li @click="moveCheckout">Cart</li>
+          <div class="dropdown ml-2" v-if="cart.length > 0">
+            <button class="btn btn-success btn-sm dropdown-toggle" id="dropdownCart" data-toggle="dropdown" aria-hashpopup="true" aria-expanded="false">
+              <!-- <li>Chart -->
+                <span v-if="cart.length > 0" class="badge badge-pill badge-warning">{{ cartQty }}</span>
+                <i class="fas fa-shopping-cart mx-2"></i>
+                {{cartTotal | currencyFormat}}
+              <!-- </li> -->
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownCart">
+              <div v-for="(item, index) in cart" :key="index">
+                <div class="dropdown-item-text text-nowrap text-right">
+                  <span class="badge badge-pill badge-warning align-text-top mr-1">
+                    {{item.qty}}
+                  </span>
+                    {{item.product.name}}
+                  <b>{{item.product.price * item.qty | currencyFormat}}</b>
+                  <a href="#" class="badge badge-danger text-white" @click.stop="deleteItem(index)">-</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </ul>
       </div>
       <div class="logout">
@@ -40,9 +61,47 @@ export default {
     moveHome () {
       this.$router.push('/customer')
     },
+    moveCheckout () {
+      this.$router.push('/customer/checkout')
+    },
     logoutProcess () {
       localStorage.clear()
       this.$router.push('/')
+    },
+    deleteItem (i) {
+      const cart = this.$store.state.cart
+      if (cart[i].qty > 1) {
+        cart[i].qty--
+      } else {
+        cart.splice(i, 1)
+      }
+      this.$store.commit('SET_CART', cart)
+    }
+  },
+  filters: {
+    currencyFormat: function (val) {
+      return 'Rp. ' + val.toLocaleString('Id')
+    }
+  },
+  computed: {
+    cart () {
+      return this.$store.state.cart
+    },
+    cartTotal () {
+      let sum = 0
+      const cart = this.$store.state.cart
+      for (let i = 0; i < cart.length; i++) {
+        sum = sum + (cart[i].product.price * cart[i].qty)
+      }
+      return sum
+    },
+    cartQty: function () {
+      let qty = 0
+      const cart = this.$store.state.cart
+      for (let i = 0; i < cart.length; i++) {
+        qty = qty + cart[i].qty
+      }
+      return qty
     }
   }
 }
@@ -63,6 +122,21 @@ export default {
   /* position: fixed; */
 }
 
+#navbar .left-bar h2 {
+    font-size: 30px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 0px;
+    /* margin-top: 20px; */
+    margin-right: 20px;
+    letter-spacing: -2px;
+  }
+
+#navbar .left-bar span {
+  font-size: 25px;
+  color: coral;
+}
 /* LEFT NAVBAR */
 
 #navbar .left-bar{
@@ -93,7 +167,10 @@ export default {
   justify-content: flex-end;
   align-items: center;
 }
-
+.dropdown {
+  margin-left: 5px;
+  margin-top: 10px;
+}
 #navbar .right-bar .chart ul, #navbar .right-bar .login ul, #navbar .right-bar .logout ul{
   display: flex;
   flex-direction: row;

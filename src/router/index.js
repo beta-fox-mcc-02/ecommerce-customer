@@ -5,6 +5,7 @@ import Dashboard from '../views/Dashboard.vue'
 import Products from '../components/Products.vue'
 import Home from '../components/Home.vue'
 import DetailsProduct from '../components/DetailsProduct.vue'
+import Checkout from '../views/Checkout.vue'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,11 @@ const routes = [
         path: 'product/:id',
         name: 'DetailsProduct',
         component: DetailsProduct
+      },
+      {
+        path: 'checkout',
+        name: 'Checkout',
+        component: Checkout
       }
     ]
   }

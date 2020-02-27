@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar></Navbar>
+    <Header></Header>
     <!-- {{errorMessage}} -->
     <div class="message-response">
       <b-alert
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
+import Header from '../components/Header.vue'
 import Carousel from '../components/Carousel.vue'
 import NavLogin from '../components/NavLogin.vue'
 import Product from '../components/Product.vue'
@@ -39,7 +39,7 @@ import Product from '../components/Product.vue'
 export default {
   name: 'LandingPage',
   components: {
-    Navbar,
+    Header,
     Carousel,
     NavLogin,
     Product

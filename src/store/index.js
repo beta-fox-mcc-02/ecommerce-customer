@@ -11,7 +11,8 @@ export default new Vuex.Store({
     product: {},
     successMessage: '',
     errorHandler: '',
-    isNavLogin: 'login'
+    isNavLogin: 'login',
+    cart: []
   },
   mutations: {
     SET_PRODUCTS (state, payload) {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     SET_SUCCESS_MESSAGE (state, payload) {
       state.successMessage = payload
+    },
+    SET_CART (state, payload) {
+      state.cart = payload
     }
   },
   actions: {
@@ -95,6 +99,9 @@ export default new Vuex.Store({
         .then(({ data }) => {
           context.commit('SET_PRODUCT', data.dataItem)
         })
+    },
+    addToCart (context, payload) {
+      context.commit('SET_CART', payload)
     }
   },
   modules: {
