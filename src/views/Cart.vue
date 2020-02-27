@@ -38,6 +38,7 @@ export default {
     fetchCart () {
       this.$store.dispatch('fetchCart')
         .then(({ data }) => {
+          this.$vToastify.stopLoader()
           this.$store.commit('FETCH_CART', data.msg)
         })
         .catch(err => {

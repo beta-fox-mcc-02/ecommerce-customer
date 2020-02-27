@@ -54,6 +54,7 @@ export default {
       this.$router.push({ path: '/' })
     },
     toCart () {
+      this.$vToastify.loader('Please Wait...')
       this.$router.push({ path: '/cart' })
     },
     toHome () {
