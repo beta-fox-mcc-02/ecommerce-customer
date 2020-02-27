@@ -91,7 +91,7 @@ export default {
       .then((result) => {
         this.item = result.data
       })
-      .catch((err) => {
+      .catch(() => {
         this.$router.push('/')
       })
   }
