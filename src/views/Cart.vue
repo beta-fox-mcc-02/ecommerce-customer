@@ -41,6 +41,7 @@
             <td>
               <button class="btn btn-secondary mr" v-if="!cart.status" @click="editQuantityInput(cart.quantity, cart.id)">Edit quantity</button>
               <button class="btn btn-dark mx-2" v-if="!cart.status" @click="purchase(cart.id, cart.Product.id, cart.quantity)">Purchase</button>
+              <button class="btn btn-danger" v-if="!cart.status" @click="deleteCart(cart.id)">Cancel</button>
               <button class="btn btn-info" v-if="cart.status && cartId !== cart.id" @mouseover="toDeleteShow(cart.id)" >Purchased</button>
               <button class="btn btn-danger" v-if="toDelete && cartId === cart.id" @mouseleave="toDeleteShow" @click="deleteCart(cart.id)">Delete</button>
             </td>
