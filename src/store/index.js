@@ -156,6 +156,12 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
+    },
+    addToCart (context, id) {
+      axios({
+        method: 'POST',
+        url: 'http://localhost:3000/cart'
+      })
     }
   },
   modules: {

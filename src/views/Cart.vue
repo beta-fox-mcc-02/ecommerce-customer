@@ -10,26 +10,8 @@
 							<th style="width:10%"></th>
 						</tr>
 					</thead>
-					<tbody v-for="item in cart" :key="item.id">
-						<tr>
-							<td data-th="Product">
-								<div class="row">
-									<div class="col-sm-2 hidden-xs"><img :src= item.image_url class="img-responsive"/></div>
-									<div class="col-sm-10">
-										<h4 class="nomargin">{{ item.name }}</h4>
-									</div>
-								</div>
-							</td>
-							<td data-th="Price">{{ item.price }}</td>
-							<td data-th="Quantity">
-								<input v-model="quantity" type="number" class="form-control text-center">
-							</td>
-							<td data-th="Subtotal" class="text-center">{{ item.price*quantity }}</td>
-							<td class="actions" data-th="">
-								<button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
-								<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>								
-							</td>
-						</tr>
+					<tbody>
+						<CartItem v-for="item in cart" :key="item.id" :item="item" />
 					</tbody>
 					<tfoot>
 						<tr class="visible-xs">
@@ -47,6 +29,8 @@
 </template>
 
 <script>
+import CartItem from "@/components/CartItem.vue";
+
 export default {
   name: 'Cart',
   data () {
@@ -54,6 +38,9 @@ export default {
       quantity: '',
       subtotal: ''
     }
+  },
+  components: {
+	  CartItem
   },
   methods: {
   },
