@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="histories" sort-by="name" class="elevation-2">
+  <v-data-table :headers="headers" :items="histories" sort-by="date" sort-desc class="elevation-2">
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>My History Purchase</v-toolbar-title>

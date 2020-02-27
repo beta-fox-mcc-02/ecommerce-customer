@@ -176,6 +176,7 @@ export default {
           this.$store.commit('STOP_ERROR');
           this.$store.commit('SET_SUCCESS', 'Purchase Success. Thank You ^-^');
           this.$store.dispatch('fetchCarts');
+          this.$router.push('/history');
 
         })
         .catch(({ response }) => {
