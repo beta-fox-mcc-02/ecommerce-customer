@@ -147,6 +147,20 @@ export default new Vuex.Store({
           access_token: localStorage.access_token
         }
       })
+    },
+
+    deleteFromCart (context, data) {
+      return axios({
+        method: 'delete',
+        url: process.env.VUE_APP_BASEURL + 'cart',
+        data: {
+          UserId: data.UserId,
+          ProductId: data.ProductId
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
     }
   },
   modules: {

@@ -31,6 +31,7 @@ export default {
         this.$store.commit('SET_LOGIN', true)
         this.$alertify.success(`Welcome back, ${localStorage.username}`)
         this.$router.push('/catalog')
+        this.fetchCart()
       }
     },
     fetchCart () {
@@ -40,7 +41,7 @@ export default {
   created () {
     this.fetchProducts()
     this.checkToken()
-    this.fetchCart()
+    // this.fetchCart()
   },
   computed: {
     ...mapState([
