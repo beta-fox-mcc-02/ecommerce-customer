@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <div class="products">
-      <h1>Our Products</h1>
+      <h2>Our Products</h2>
       <b-row>
         <b-col sm="3">
           <Categories />
@@ -73,7 +73,7 @@ export default {
   .products {
     padding-top: 20px;
 
-    h1 {
+    h2 {
       text-align: center
     }
   }

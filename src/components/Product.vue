@@ -4,7 +4,9 @@
     <div class="card-wrapper">
       <article class="card mb-2">
         <div class="card-body">
-          <router-link class="router-link" :to="`/products/${product.id}/details`">
+          <router-link class="router-link"
+            :class="isHomePage ? 'product-home' : ''"
+            :to="`/products/${product.id}/detail`">
             <img
               class="d-block img-fluid w-100"
               :src="product.ProductImages[0].url"
@@ -15,12 +17,10 @@
             </h4>
             <p class="card-text">{{ product.price | formatCurrency }}</p>
           </router-link>
-          <b-button v-if="isHomePage" href="#" variant="primary">Buy now</b-button>
+          <router-link :to="`/products/${product.id}/detail`">
+            <b-button v-if="isHomePage" variant="primary">Buy now</b-button>
+          </router-link>
           <b-button v-if="!isHomePage" @click="addToCart(product, 1)" class="btn-add-to-cart" variant="primary">Add to cart</b-button>
-          <!-- <b-button v-if="!isHomePage" variant="primary" disabled>
-            <b-spinner small type="grow"></b-spinner>
-            Loading...
-          </b-button> -->
         </div>
       </article>
     </div>
@@ -110,6 +110,9 @@ export default {
 <style lang="scss" scoped>
   .btn-add-to-cart {
     margin-top: 20px;
+  }
+  .product-home {
+    padding: 1.5rem;
   }
   .card {
     border: none;

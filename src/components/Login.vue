@@ -43,10 +43,19 @@ export default {
         password: this.password
       })
         .then(response => {
-          this.$store.commit('SET_LOADING', false)
-          this.$store.commit('SET_AUTHENTICATED', true)
           localStorage.token = response.data.token
-          this.$router.push('/')
+          this.$store.dispatch('findUser')
+            .then(response => {
+              this.$store.commit('SET_USER', response.data)
+              this.$store.commit('SET_LOADING', false)
+              this.$store.commit('SET_AUTHENTICATED', true)
+              this.$router.push('/')
+            })
+            .catch((err) => {
+              this.$store.commit('SET_ERRORS', err.response)
+              this.$store.commit('SET_LOADING', false)
+              this.$store.commit('SET_AUTHENTICATED', false)
+            })
         })
         .catch(err => {
           this.$store.commit('SET_LOADING', false)

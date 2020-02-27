@@ -22,7 +22,7 @@ export default {
 <style lang="scss" scoped>
   .preloader {
     position: fixed;
-    z-index: 2000;
+    z-index: 100;
     height: 99999px;
     top: 0;
     right: 0;

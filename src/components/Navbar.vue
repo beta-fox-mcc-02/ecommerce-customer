@@ -25,8 +25,8 @@
                 <template v-slot:button-content>
                   <em>{{ user.username }}</em>
                 </template>
-                <b-dropdown-item href="#">Profile</b-dropdown-item>
-                <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+                <b-dropdown-item @click="goToProfile">Profile</b-dropdown-item>
+                <b-dropdown-item @click="logout" href="#">Sign Out</b-dropdown-item>
               </b-nav-item-dropdown>
           </li>
         </b-navbar-nav>
@@ -38,6 +38,16 @@
 <script>
 export default {
   name: 'Navbar',
+  methods: {
+    goToProfile () {
+      this.$router.push('/profile')
+    },
+    logout () {
+      this.$store.dispatch('logout')
+      localStorage.removeItem('token')
+      this.$router.push('/')
+    }
+  },
   computed: {
     isAuthenticated () {
       return this.$store.state.isAuthenticated

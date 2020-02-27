@@ -8,16 +8,40 @@ export default new Vuex.Store({
   state: {
     products: [],
     categories: [],
+    transactions: [],
+    cart: {},
     errors: [],
     message: '',
     isLoading: null,
     isLoadingAddToCart: null,
     isLoadingCategories: null,
     isAuthenticated: null,
+    isLoadingCart: null,
     isLoadingAuthenticated: null,
     user: {}
   },
+  getters: {
+    total: state => {
+      const cart = state.cart
+      let total = 0
+      if (cart.CartDetails) {
+        for (const c of cart.CartDetails) {
+          total += c.total
+        }
+      }
+      return total
+    }
+  },
   mutations: {
+    SET_TRANSACTIONS (state, payload) {
+      state.transactions = payload
+    },
+    SET_CART (state, payload) {
+      state.cart = payload
+    },
+    SET_LOADING_CART (state, payload) {
+      state.isLoadingCart = payload
+    },
     SET_LOADING_ADD_TO_CART (state, payload) {
       state.isLoadingAddToCart = payload
     },
@@ -50,6 +74,57 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    fetchHistoryCarts ({ commit }) {
+      commit('SET_LOADING_CART', true)
+      return api({
+        method: 'GET',
+        url: '/carts',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
+    },
+    deleteCartDetail ({ commit }, payload) {
+      commit('SET_LOADING_CART', true)
+      return api({
+        method: 'DELETE',
+        url: '/cart-details/' + payload.cart_id + '/' + payload.cart_detail_id,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
+    },
+    checkout ({ commit }, payload) {
+      commit('SET_LOADING_CART', true)
+      return api({
+        method: 'POST',
+        url: '/carts/' + payload.cart_id + '/checkout',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        },
+        data: {
+          cart_id: payload.cart_id,
+          cart_details: payload.cart_details
+        }
+      })
+    },
+    updateCartDetail ({ commit }, payload) {
+      commit('SET_LOADING_CART', true)
+      return api({
+        method: 'PUT',
+        url: '/cart-details/' + payload.cart_id,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        },
+        data: {
+          cart_id: payload.cart_id,
+          cart_details: payload.cart_details
+        }
+      })
+    },
+    logout ({ commit }, payload) {
+      commit('SET_AUTHENTICATED', false)
+    },
     updateCart ({ commit }, payload) {
       commit('SET_LOADING_ADD_TO_CART', true)
       return api({
@@ -104,6 +179,16 @@ export default new Vuex.Store({
       return api({
         method: 'GET',
         url: '/products?limit=' + limit
+      })
+    },
+    fetchCarts ({ commit }, payload) {
+      commit('SET_LOADING_CART', true)
+      return api({
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        },
+        url: '/carts/' + payload.cart_id
       })
     },
     findUser ({ commit }) {

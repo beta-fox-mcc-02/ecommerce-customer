@@ -1,11 +1,12 @@
 <template>
   <fragment>
     <CircularLoading v-if="isLoading && !categories" />
+    <h3>Categories</h3>
     <div v-if="!isLoading && categories" class="categories">
       <div class="category" v-for="category in categories" :key="category.id">
         <div class="name">
-          <router-link :to="`/products/category/${category.path}`">
-            <a>{{ category.name }}</a>
+          <router-link class="category-link" tag="a" :to="`/products/category/${category.path}`">
+            {{ category.name }}
           </router-link>
         </div>
       </div>
@@ -43,3 +44,15 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .category {
+    margin-bottom: 20px;
+  }
+
+  .router-link-active {
+    font-weight: bolder;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+</style>
