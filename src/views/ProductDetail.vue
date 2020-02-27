@@ -1,7 +1,8 @@
 <template>
   <div>
     <b-container>
-      <div class="product" v-if="product">
+      <PageLoading v-if="isLoading" />
+      <div class="product" v-if="product && !isLoading">
         <div class="product-image" v-if="product.ProductImages">
           <img :src="product.ProductImages[0].url" class="img-fluid w-100 d-block" />
         </div>
@@ -50,8 +51,12 @@
 </template>
 
 <script>
+import PageLoading from '@/components/PageLoading'
 export default {
   name: 'ProductDetail',
+  components: {
+    PageLoading
+  },
   data: () => {
     return {
       quantity: 1
@@ -128,6 +133,9 @@ export default {
   computed: {
     product () {
       return this.$store.state.product
+    },
+    isLoading () {
+      return this.$store.state.isLoadingProduct
     }
   },
   filters: {
