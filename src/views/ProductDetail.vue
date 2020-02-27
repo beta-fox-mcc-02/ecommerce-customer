@@ -138,8 +138,7 @@ export default {
     justify-content: center;
     align-items: center;
     .product-image {
-      max-width: 200px;
-      flex: 0.5
+      min-width: 250px;
     }
     .product-info {
       margin-left: 20px;
