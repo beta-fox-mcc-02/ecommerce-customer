@@ -1,6 +1,6 @@
-# ecommerce-admin
+# ecommerce-customer
 
-CLIENT_URL: `https://e-commerce-admin-by-nafies1.firebaseapp.com`
+CLIENT_URL: `https://ecommerce-customer-by-nafies1.firebaseapp.com`
 
 ## Project setup
 ```
