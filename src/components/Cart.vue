@@ -33,7 +33,7 @@ export default {
   name: 'Cart',
   methods: {
     deleteCart (id) {
-      this.$store.dispatch('deleteCart',id)\
+      this.$store.dispatch('deleteCart',id)
       this.$router.push('/cart')
     }
   },
