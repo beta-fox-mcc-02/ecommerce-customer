@@ -103,7 +103,7 @@ export default new Vuex.Store({
       commit('SET_LOADING_CART', true)
       return api({
         method: 'DELETE',
-        url: '/cart-details/' + payload.cart_id + '/' + payload.cart_detail_id,
+        url: '/carts/' + payload.cart_id + '/' + payload.cart_detail_id,
         headers: {
           Authorization: 'Bearer ' + localStorage.token
         }
@@ -127,7 +127,7 @@ export default new Vuex.Store({
       commit('SET_LOADING_CART', true)
       return api({
         method: 'PUT',
-        url: '/cart-details/' + payload.cart_id,
+        url: '/carts/' + payload.cart_id + '/all',
         headers: {
           Authorization: 'Bearer ' + localStorage.token
         },
