@@ -18,7 +18,8 @@ export default new Vuex.Store({
       email: ''
     },
     carts: [],
-    cartStatus: {}
+    cartStatus: {},
+    loadingStatus: null
   },
   getters: {
     getAlert: state => {
@@ -47,6 +48,9 @@ export default new Vuex.Store({
     },
     SET_CART_STATUS (state, payload) {
       state.cartStatus[payload.key] = payload.value
+    },
+    SET_LOADING_STATUS (state, status) {
+      state.loadingStatus = status
     }
   },
   actions: {
@@ -119,6 +123,7 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           // console.log(data)
+          context.commit('SET_LOADING_STATUS', false)
           context.commit('SET_PRODUCT', data)
         })
         .catch(err => {

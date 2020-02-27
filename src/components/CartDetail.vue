@@ -68,10 +68,15 @@ export default {
           return this.$store.dispatch('fetchCart')
         })
         .then(cart => {
-          console.log(cart)
-          this.$store.commit('SET_CART', cart.data.data)
-          this.qty = 0
-          this.$emit('setTotal', cart.data.data[0].total)
+          // console.log(cart)
+          if (cart.data.data.length !== 0) {
+            this.$store.commit('SET_CART', cart.data.data)
+            this.qty = 0
+            this.$emit('setTotal', cart.data.data[0].total)
+          } else {
+            this.$store.commit('SET_MESSAGE', { msg: cart.data.msg, status: true })
+            this.$router.push('/products')
+          }
         })
         .catch(err => {
           this.$store.commit('SET_MESSAGE', { msg: err.response.data.msg, status: false })

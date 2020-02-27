@@ -6,12 +6,13 @@
       style="margin-bottom: 30px; font: Arial, Helvetica, sans-serif;">
       PRODUCTS
     </v-card-text>
-    <v-row>
-    <Product
-    v-for="product in getProducts.data"
-    :key="product.id"
-    :product="product">
-    </Product>
+    <Loading v-if="getLoadingState"/>
+    <v-row v-else>
+      <Product
+      v-for="product in getProducts.data"
+      :key="product.id"
+      :product="product">
+      </Product>
     </v-row>
   </v-col>
 </template>
@@ -19,6 +20,7 @@
 <script>
 import Product from '@/components/Product.vue'
 import Alert from '@/components/Alert.vue'
+import Loading from '@/components/Loading.vue'
 
 export default {
   data () {
@@ -28,7 +30,8 @@ export default {
   },
   components: {
     Product,
-    Alert
+    Alert,
+    Loading
   },
   methods: {
     fetchProduct () {
@@ -41,9 +44,13 @@ export default {
     },
     getMessage () {
       return this.$store.state.message
+    },
+    getLoadingState () {
+      return this.$store.state.loadingStatus
     }
   },
   created () {
+    this.$store.commit('SET_LOADING_STATUS', true)
     this.fetchProduct()
   }
 }

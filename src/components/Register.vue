@@ -66,10 +66,10 @@ export default {
         password: this.password,
         RoleId: 1
       }
-      console.log('masuk method')
+      // console.log('masuk method')
       this.$store.dispatch('register', payload)
         .then(({ data }) => {
-          console.log(data, 'REGISTERING')
+          // console.log(data, 'REGISTERING')
           localStorage.access_token = data.access_token
           this.$store.commit('SET_ISLOGIN', true)
           this.$store.commit('SET_USER', { user: { id: data.data.id, name: data.data.name } })

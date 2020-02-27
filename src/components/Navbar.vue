@@ -10,7 +10,7 @@
         </div>
         <div v-else>
           <router-link to="/profiles" class="navbar"><v-btn icon @click="resetMessage"><v-icon>mdi-account-circle</v-icon></v-btn></router-link>
-          <router-link to="/carts" class="navbar"><v-btn icon><v-icon>mdi-cart</v-icon></v-btn></router-link>
+          <router-link to="/carts" class="navbar"><v-btn icon @click="resetMessage"><v-icon>mdi-cart</v-icon></v-btn></router-link>
         <v-btn @click.prevent="logingOut" class="navbar" icon><v-icon>mdi-logout</v-icon>Log out</v-btn>
         </div>
       </div>
