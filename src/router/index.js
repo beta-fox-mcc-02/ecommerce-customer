@@ -27,6 +27,18 @@ const routes = [
     path: '/cart',
     name: 'CartPanel',
     component: () => import('../components/Cart.vue')
+    // children: [
+    //   {
+    //     path: 'edit/:id',
+    //     name: 'EditCart',
+    //     component: () => import('../components/EditCart.vue')
+    //   }
+    // ]
+  },
+  {
+    path: '/cart/edit/:id',
+    name: 'EditCart',
+    component: () => import('../components/EditCart.vue')
   },
   {
     path: '/',

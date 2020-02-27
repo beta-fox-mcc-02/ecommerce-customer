@@ -39,8 +39,9 @@ export default {
       this.$store.dispatch('loginCostumer', this.costumerLogin)
         .then(({ data }) => {
           console.log(data, 'ini costumernyaaaaa ==================================')
-          // localStorage.setItem('access_token', data.access_token)
-          // this.$store.dispatch('fetchProduct')
+          localStorage.setItem('access_token', data.access_token)
+          this.$store.commit('INPUT_COSTUMER_ID', data.id)
+          console.log('ini customer idnyaaaaaa', this.$store.state.costumerId)
           this.$router.push('/')
         })
         .catch(err => {

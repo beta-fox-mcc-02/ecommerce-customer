@@ -1,8 +1,9 @@
 <template>
     <div>
+        {{cart}}
         <b-card
             title="Card Title"
-            img-src="https://picsum.photos/600/300/?image=25"
+            v-bind:img-src="cart.Product.image_url"
             img-alt="Image"
             img-top
             tag="article"
@@ -10,7 +11,6 @@
             class="mb-2"
         >
             <b-card-text>
-            Some quick example text to build on the card title and make up the bulk of the card's content.
             </b-card-text>
 
             <b-button href="#" variant="primary">Go somewhere</b-button>
@@ -20,7 +20,20 @@
 
 <script>
 export default {
-
+  name: 'EditCart',
+  data () {
+    return {
+      quantity: this.cart.quantity
+    }
+  },
+  created () {
+    this.$store.dispatch('viewCart', this.$route.params.id)
+  },
+  computed: {
+    cart () {
+      return this.$store.state.cart
+    }
+  }
 }
 </script>
 

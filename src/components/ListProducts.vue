@@ -1,21 +1,21 @@
 <template>
     <b-container class="d-flex m-2 p-2 flex-wrap">
-      {{products}}
-        <div>
+        <div
+        v-for="product in products"
+        :key="product.id"
+        >
             <b-card
-                title="Card Title"
-                img-src="https://picsum.photos/600/300/?image=25"
+                v-bind:title="product.name"
+                v-bind:src="product.image_url"
                 img-alt="Image"
                 img-top
                 tag="article"
                 style="max-width: 20rem;"
-                class="mb-2"
+                class="mb-2 "
             >
-                <b-card-text>
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-                </b-card-text>
-
-                <b-button class="m-1" variant="primary">Add Cart</b-button>
+                <b-card-text>Rp {{product.price}}</b-card-text>
+                <b-card-text>Stock : {{product.stock}}</b-card-text>
+                <b-button @click="addCart(product.id)" class="m-1" variant="primary">Add Cart</b-button>
                 <b-button class="m-1" to="/1" variant="primary">View Detail</b-button>
             </b-card>
         </div>
@@ -25,14 +25,36 @@
 <script>
 export default {
   name: 'ListProduct',
-  data () {
-    return {
-      products: []
-    }
-  },
   methods: {
     detail () {
       this.$router.push('/1')
+    },
+    addCart (id) {
+      this.$store.dispatch('addCart', id, this.costumerId)
+        .then(addedCart => {
+          console.log('masukk')
+          this.$router.push('/')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  created () {
+    this.$store.dispatch('fetchProduct')
+      .then(({ data }) => {
+        this.$store.commit('FETCH_PRODUCT', data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  computed: {
+    products () {
+      return this.$store.state.products.data
+    },
+    costumerId () {
+      return this.$store.state.costumerId
     }
   }
 }
