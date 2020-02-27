@@ -26,7 +26,7 @@
                             </figure>
                           </td>
                           <td>{{ product.Product.name }}</td>
-                          <td>{{ product.Product.price }}</td>
+                          <td>Rp {{ formatPrice(product.Product.price) }},00</td>
                           <td>
                               <b-input
                                   size="is-small"
@@ -40,14 +40,12 @@
                             <b-button rounded size="is-small" type="is-info" outlined @click="updateCart(product)">update</b-button>
                             <b-button rounded size="is-small" type="is-danger" outlined @click="deleteCart(product)">remove</b-button><br>
                           </td>
-                          <td>{{product.quantity * product.Product.price}}</td>
+                          <td>Rp {{formatPrice(product.quantity * product.Product.price)}},00</td>
                         </tr>     
                       </tbody>
                     </table>  
                 </div>
                 <div class="column is-3 has-text-centered has-text-info is-size-5">
-                    GRAND TOTAL
-                    <strong>IDR</strong><br>
                     <b-button outlined class="is-success is-size-5" rounded size="is-default" @click="checkOut">Proceed to Checkout</b-button>
                 </div>                
             </div>
@@ -63,6 +61,9 @@ export default {
         ...mapState(['cart', 'cartTotal'])
     },
     methods: {
+        formatPrice(price) {
+          return `${price.toLocaleString('id-ID', 'currency')}`;
+        },      
         viewInvoice() {
             this.$router.push({
                 name: 'invoice'

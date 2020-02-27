@@ -16,7 +16,7 @@
                         <tr v-for="(invoice, index) in invoices.invoice" :key="index">
                           <td>{{ index+1 }}</td>
                           <td>{{invoice.transactionDetails}}</td>
-                          <td>IDR {{invoice.total}}</td>
+                          <td>Rp {{formatPrice(invoice.total)}},00</td>
                         </tr>     
                       </tbody>
                     </table>  
@@ -34,7 +34,9 @@ export default {
     ...mapState(['invoices'])
   },
   methods: {
-
+    formatPrice(price) {
+      return `${price.toLocaleString('id-ID', 'currency')}`;
+    }
   },
   created() {
     this.$store.dispatch('fetchInvoices')

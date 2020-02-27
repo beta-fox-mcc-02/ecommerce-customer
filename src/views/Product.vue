@@ -16,8 +16,8 @@
                         <a class="button is-size-7" target="_blank" :href="'https://www.bricklink.com/v2/search.page?q='+ productDetail.name +'#T=M'">Compare Price with Bricklink Database</a>
                         <br><hr>
                         <div class="has-text-right">
-                        <a class="button is-clickable has-text-black is-warning" v-if="isLogin && !isAdmin && productDetail.stock > 0" @click="updateCart">  ADD TO CART <i class="fas fa-shopping-cart"></i></a>
-                        <div class="button has-text-danger" outlined v-if="isLogin && !isAdmin && productDetail.stock <= 0">OUT OF STOCK</div>
+                        <a class="button is-clickable has-text-black is-warning" v-if="isLogin && productDetail.stock > 0" @click="updateCart">  ADD TO CART <i class="fas fa-shopping-cart"></i></a>
+                        <div class="button has-text-danger" outlined v-if="isLogin && productDetail.stock <= 0">OUT OF STOCK</div>
                         </div>
                     </div>                
                 </div>                    
@@ -76,7 +76,7 @@ export default {
         }                      
     },
     computed: {
-        ...mapState(['isLogin', 'isAdmin'])
+        ...mapState(['isLogin'])
     },
     created() {
         this.checkProductDetail()

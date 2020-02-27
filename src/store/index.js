@@ -7,7 +7,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLogin: localStorage.getItem('access_token'),
-    isAdmin: localStorage.getItem('isAdmin'),
     products: [],
     productDetail: {},
     productToEdit: null,
@@ -28,9 +27,6 @@ export default new Vuex.Store({
     SET_NEW_PRODUCT (state, payload) {
       state.products.push(payload)
     },
-    USER_STATUS(state, payload) {
-      state.isAdmin = payload
-    },
     SET_CART (state, payload) {
       state.cart = payload
     },
@@ -48,7 +44,6 @@ export default new Vuex.Store({
         })
         .then(({data}) => {
           commit('SET_SESSION', true)
-          commit('USER_STATUS', data.isAdmin)
           resolve(data)
         })
         .catch(err => {
@@ -66,7 +61,6 @@ export default new Vuex.Store({
         })
         .then(({data}) => {
           commit('SET_SESSION', true)
-          commit('USER_STATUS', data.isAdmin)
           resolve(data)
         })
         .catch(err => {

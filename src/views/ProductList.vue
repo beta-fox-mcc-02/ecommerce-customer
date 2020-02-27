@@ -22,26 +22,17 @@
                                     <div class="media-left has-text-danger is-size-6" v-else>
                                         OUT OF STOCK
                                     </div> 
-                                    <br>
+                                    <div class="media-content has-text-right is-size-6">
+                                
+                                    </div>
+
                                     <div class="media-right has-text-right is-size-6">
                                         IDR {{ product.price }}
                                     </div>
-                                </div><hr>
-                                <div class="has-text-right">
-                                    <i class="fas fa-edit is-clickable"  @click.prevent="editProduct(product)" v-if="isLogin && isAdmin">|</i>
-                                    <i class="fas fa-trash-alt is-clickable"  @click.prevent="deleteProduct(product.id)" v-if="isLogin && isAdmin"></i> 
-                                    
                                 </div>
                             </div>
                         </div>                
-                    </div>
-                    <div class="column is-4 rounded" @click="addProduct" v-if="isLogin && isAdmin">
-                        <div class="card is-clickable">
-                            <div class="card has-text-centered">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                        </div>                
-                    </div>                    
+                    </div>                  
                 </div>        
             </div>        
         </div>
@@ -54,7 +45,7 @@ import { mapState } from 'vuex'
 export default {
     name: 'productList',
     computed: {
-        ...mapState(['products', 'isLogin', 'isAdmin'])
+        ...mapState(['products', 'isLogin'])
     },
     methods: {
         productDetail(productDetail) {
@@ -64,33 +55,6 @@ export default {
                     id: productDetail.id,
                     productDetail
                 }
-            })
-        },
-        editProduct(productDetail) {
-            console.log(productDetail)
-            this.$router.push({
-                name: 'editProduct',
-                params: {
-                    id: productDetail.id,
-                    productDetail
-                }
-            })
-        },
-        deleteProduct(productId) {
-            this.$store.dispatch('deleteProduct', productId)
-            .then(data => {
-                console.log(data)
-                this.toastify('success', 'item is deleted')
-                this.$router.push('/products')
-            })
-            .catch(err => {
-                console.log(err)
-                this.toastify('error', 'Login First')
-            })
-        },
-        addProduct() {
-            this.$router.push({
-                name: 'addProduct'
             })
         }                         
     },

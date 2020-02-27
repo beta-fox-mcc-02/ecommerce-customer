@@ -115,7 +115,6 @@ export default {
                     this.registerEmail = ''
                     this.registerPassword = ''
                     localStorage.setItem('access_token', result.access_token)
-                    localStorage.setItem('isAdmin', result.isAdmin)
                     this.$router.push(`/products`)
                 } 
             })
@@ -137,7 +136,6 @@ export default {
                     this.loginEmail = ''
                     this.loginPassword = ''
                     localStorage.setItem('access_token', result.access_token)
-                    localStorage.setItem('isAdmin', result.isAdmin)
                     localStorage.setItem('username', result.username)
                     this.toastify('success', `Hi ${result.username} Welcome back to Bricktiv8!`)
                     this.$router.push(`/products`)

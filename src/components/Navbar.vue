@@ -10,12 +10,7 @@
                 <router-link to="/products" @click="openLoading">Products</router-link>
                 <b-loading :is-full-page="isFullPage" :active.sync="isLoading" :can-cancel="true"></b-loading>
             </b-navbar-item>
-            <b-navbar-dropdown label="Admin" v-if="isLogin && isAdmin">
-                <b-navbar-item @click="addProduct">
-                    Add More Product
-                </b-navbar-item>
-            </b-navbar-dropdown>
-            <b-navbar-dropdown label="Customer" v-if="isLogin && !isAdmin">
+            <b-navbar-dropdown label="Customer" v-if="isLogin">
                 <b-navbar-item @click="viewInvoice">
                     View Transaction History
                 </b-navbar-item>
@@ -25,7 +20,7 @@
         <template slot="end">
             <b-navbar-item tag="div">
                 <div class="buttons ">
-                    <a class="button" v-if="isLogin && !isAdmin" @click="viewCart">
+                    <a class="button" v-if="isLogin" @click="viewCart">
                         <b-icon
                             icon="cart"
                             size="is-small">
@@ -56,12 +51,11 @@ export default {
         }
     },    
     computed: {
-        ...mapState(['isLogin', 'isAdmin'])
+        ...mapState(['isLogin'])
     },
     methods: {
         logout() {
             localStorage.removeItem('access_token')
-            localStorage.removeItem('isAdmin')
             this.$store.commit('SET_SESSION', false)
             this.$store.commit('USER_STATUS', null)
             this.$router.push('/')

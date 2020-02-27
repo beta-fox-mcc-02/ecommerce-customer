@@ -1,18 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '../store' //for guard
 
 
 Vue.use(VueRouter)
 
-function guard (to, from, next) {
-  if (store.state.isLogin) {
-    next()
-  } else {
-    next('/login')
-    this.toastify('error', 'Login First')
-  }
-}
+
 
 const routes = [
 
@@ -38,19 +30,6 @@ const routes = [
     props: true
   },
   {
-    path: '/products/add',
-    name: 'addProduct',
-    component: () => import(/* webpackChunkName: "products" */ '../components/ProductForm.vue'),
-    beforeEnter: guard      
-  },
-  {
-    path: '/products/:id/edit',
-    name: 'editProduct',
-    component: () => import(/* webpackChunkName: "products" */ '../components/EditForm.vue'),
-    props: true,
-    beforeEnter: guard      
-  },
-  {
     path: '/carts',
     name: 'cart',
     component: () => import(/* webpackChunkName: "carts" */ '../components/Cart.vue')
@@ -68,5 +47,24 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+//GUARD GLOBAL
+router.beforeEach((to, from, next) => {
+  if (to.name === 'cart' || to.name === 'invoice') {
+    if (!localStorage.access_token) {
+      next('/login');
+    } else {
+      next();
+    }
+  } else if (to.name === 'login') {
+    if (localStorage.access_token) {
+      next('/');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 export default router
