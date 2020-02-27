@@ -201,7 +201,7 @@ export default {
         }
       })
       .catch(() => {
-        this.$router.push('/');
+        // this.$router.push('/');
       })
       .finally(() => {
         this.$store.commit('stopLoading');

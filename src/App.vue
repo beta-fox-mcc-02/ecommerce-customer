@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar :userEmail="personData.email" :userProducts="personData.Products" />
+    <Navbar :userEmail="personData.email" :userProducts="notPaidProduct" />
     <Alert />
     <Loading />
     <router-view style="margin-top: 80px" />
@@ -22,6 +22,12 @@ export default {
   computed: {
     personData() {
       return this.$store.state.personData;
+    },
+    paidProduct() {
+      return this.$store.getters.paidProduct;
+    },
+    notPaidProduct() {
+      return this.$store.getters.notPaidProduct;
     },
   },
   created() {

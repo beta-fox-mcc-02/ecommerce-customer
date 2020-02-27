@@ -21,6 +21,20 @@ export default new Vuex.Store({
     // fetch products
     listOfProducts: [],
   },
+  getters: {
+    notPaidProduct(state) {
+      if (state.personData.Products) {
+        return state.personData.Products.filter((product) => !product.Cart.paid);
+      }
+      return [];
+    },
+    paidProduct(state) {
+      if (state.personData.Products) {
+        return state.personData.Products.filter((product) => product.Cart.paid);
+      }
+      return [];
+    },
+  },
   mutations: {
     // alert
     showAlert(state, payload) {
@@ -102,6 +116,24 @@ export default new Vuex.Store({
     addCart(context, payload) {
       context.commit('setLoading');
       return cartAPI.post('/', payload, {
+        headers: {
+          token: localStorage.token,
+        },
+      });
+    },
+    // delete cart
+    deleteCart(context, payload) {
+      context.commit('setLoading');
+      return cartAPI.delete(`/${payload.PersonId}/${payload.ProductId}`, {
+        headers: {
+          token: localStorage.token,
+        },
+      });
+    },
+    // checkout cart
+    checkoutCart(context, payload) {
+      context.commit('setLoading');
+      return cartAPI.put(`/${payload.PersonId}/${payload.ProductId}/checkout`, {
         headers: {
           token: localStorage.token,
         },

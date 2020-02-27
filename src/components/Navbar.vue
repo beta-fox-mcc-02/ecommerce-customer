@@ -53,7 +53,11 @@
               </b-row>
             </b-dropdown-text>
             <b-dropdown-text v-if="userProducts.length">
-              <b-button variant="outline-success" style="width: 160px">Checkout</b-button>
+              <b-button @click.prevent="clickCheckout"
+              variant="outline-success"
+              style="width: 160px">
+                Checkout
+              </b-button>
             </b-dropdown-text>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right v-if="isLogin">
@@ -62,6 +66,10 @@
               {{ userEmail }}
             </template>
             <b-dropdown-item>Profile</b-dropdown-item>
+            <b-dropdown-item
+            @click.prevent="clickCheckout()">
+            Cart
+            </b-dropdown-item>
             <b-dropdown-item
             @click.prevent="logout()">
             Sign Out
@@ -98,6 +106,9 @@ export default {
     },
     clickProductCart(id) {
       this.$router.push(`/product/${id}`);
+    },
+    clickCheckout() {
+      this.$router.push('/cart');
     },
   },
 };
