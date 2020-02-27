@@ -84,11 +84,12 @@ export default {
           setTimeout(() => {
             this.$store.dispatch('fetchProductsAsync')
             this.getTransaction()
+            this.$router.push('/')
             this.cancelNotif = null
           }, 2000)
         })
         .catch(() => {
-          this.cancelNotif = `something error!`
+          this.cancelNotif = 'something error!'
           setTimeout(() => {
             this.$store.dispatch('fetchProductsAsync')
             this.getTransaction()
