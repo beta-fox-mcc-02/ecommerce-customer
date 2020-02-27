@@ -47,14 +47,16 @@
     <md-dialog-actions>
       <md-button
         class="md-raised"
-        style="background: red;"
+        style="background: coral;"
         @click="modalToggle(false)"
+        size="sm"
         >CLOSE</md-button
       >
       <md-button
         class="md-raised"
-        style="background: blue;"
-        @click="modalToggle(false)"
+        style="background: lightgreen;"
+        @click="addToCart(product.id)"
+        size="sm"
         >ADD TO CART</md-button
       >
     </md-dialog-actions>
@@ -76,6 +78,9 @@ export default {
   methods: {
     modalToggle (bool) {
       this.$emit('modalToggle', bool)
+    },
+    addToCart (id) {
+      this.$emit('addToCart', id)
     }
   },
   watch: {
