@@ -5,16 +5,19 @@
         <img  alt="CE8 logo" src="../../assets/android-chrome-192x192.png">
       </div>
     </div>
-    <router-view />
+    <div class="row">
+      <Categories />
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
-// import CategoryButton from './components/CategoryButton'
+import Categories from './components/Categories'
 export default {
   name: 'Home',
   components: {
-    // CategoryButton
+    Categories
   }
 }
 </script>

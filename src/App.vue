@@ -2,6 +2,7 @@
   <div id="app">
     <Navbar/>
     <LoginCard v-if="showLogin" @close="loginTrigger"/>
+    <CartModal v-if="showCart" @close="cartTrigger"/>
     <!-- <div id="nav">
       <router-link to="/about">About</router-link>
     </div> -->
@@ -13,15 +14,20 @@
 import M from 'materialize-css'// load javascript from materialize
 import Navbar from './components/Navbar.vue'
 import LoginCard from '@/components/LoginCard.vue'
+import CartModal from './components/CartModal'
 export default {
   name: 'App',
   components: {
     Navbar,
-    LoginCard
+    LoginCard,
+    CartModal
   },
   methods: {
     loginTrigger () {
       this.$store.commit('loginTrigger')
+    },
+    cartTrigger () {
+      this.$store.commit('cartTrigger')
     }
   },
   props: {
@@ -30,6 +36,9 @@ export default {
   computed: {
     showLogin () {
       return this.$store.state.showLogin
+    },
+    showCart () {
+      return this.$store.state.showCart
     }
   },
   mounted () {

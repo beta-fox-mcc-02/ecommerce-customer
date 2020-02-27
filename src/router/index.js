@@ -10,10 +10,18 @@ const routes = [
     name: 'Home',
     component: Home,
     children: [
+    //   {
+    //     path: '',
+    //     name: 'Categories',
+    //     component: () => { return import(/* webpackChunkName: "CategoryButton" */ '../views/Home/components/Categories.vue') },
+    //     children: []
+    //   }
       {
         path: '',
-        name: 'CategoryButton',
-        component: () => { return import(/* webpackChunkName: "CategoryButton" */ '../views/Home/components/CategoryButton.vue') }
+        name: 'Products',
+        component: () => {
+          return import('../views/Home/Products/')
+        }
       }
     ]
   },
@@ -25,6 +33,13 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: function () {
       return import(/* webpackChunkName: "register" */ '../views/Register/Register.vue')
+    }
+  },
+  {
+    path: '/:productId',
+    name: 'BuyPage',
+    component: () => {
+      return import('../views/BuyPage/')
     }
   }
 ]

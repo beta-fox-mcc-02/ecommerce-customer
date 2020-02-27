@@ -74,7 +74,7 @@ export default {
         .then(({ data }) => {
           localStorage.token = data.token
           localStorage.username = data.username
-          this.$store.commit('SUCCESS', { message: `login successful! Welcome ${data.username}` })
+          this.$store.commit('SUCCESS', { message: `Login successful! Welcome ${data.username}!` })
           this.$store.commit('LOGIN_CHECK')
           this.loginTrigger()
         })
