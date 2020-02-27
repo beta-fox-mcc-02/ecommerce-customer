@@ -1,6 +1,10 @@
 <template>
   <div class="about container">
     <v-card>
+      <loading :active.sync="isLoading"
+        :can-cancel="false"
+        :is-full-page="false">
+      </loading>
       <v-simple-table>
         <template v-slot:default>
           <thead>
@@ -84,8 +88,12 @@ export default {
   methods: {
     continueAction () {
       this.dialog = false
+      const loader = this.$loading.show({
+        container: this.fullPage ? null : this.$refs.formContainer
+      })
       this.$store.dispatch('checkout')
         .then(({ data }) => {
+          loader.hide()
           console.log(data)
           this.$notify({
             group: 'sign',
@@ -96,6 +104,7 @@ export default {
           this.$router.push('/')
         })
         .catch(err => {
+          loader.hide()
           if (err.response) {
             console.log('Error in checkout:', err.response)
             this.$notify({
