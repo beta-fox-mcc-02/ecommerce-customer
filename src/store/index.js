@@ -51,9 +51,7 @@ export default new Vuex.Store({
         url: process.env.VUE_APP_BASEURL + 'product'
       })
         .then(({ data }) => {
-          console.log(data.products[3].stock)
           const filtered = data.products.filter(product => product.stock > 0)
-          console.log(filtered)
           context.commit('FETCH_PRODUCTS', filtered)
           context.commit('SET_IS_LOADING', false)
         })
