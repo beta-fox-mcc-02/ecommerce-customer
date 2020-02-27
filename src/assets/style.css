@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+}
+
+.cust, .cart {
+    background-image: url('https://i1.wp.com/insidelahore.com/wp-content/uploads/2018/02/Old_Book_Library_Ladder_Bookshelf_Books_Desktop_1920x1200_Wallpaper_1920x1200_11112.jpg?fit=1920%2C1062&ssl=1');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+.cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    /* padding: 500px 100px; */
+}
+
+.table {
+    margin: 55px 0;
+}
+
+.cart .image {
+    width: 125px;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+}
+
+.home_cust {
+    width: 1350px;
+    margin: auto;
+    /* margin-left: -75px; */
+}
+
+.home_card {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    scrollbar-width: none;
+    width: 100%;
+}
+
+.card {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.home_card img {
+    max-height: 350px;
+    border-bottom: 1px;
+}
+
+.home_card .x {
+    width: 250px;
+    margin: 30px 40px;
+    transition: transform .4s;;
+}
+
+.home_card a:hover {
+    transform: scale(1);
+}
+
+.media {
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.modal .modal-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-footer {
+    border: 0;
+    margin: 0 0 10px 23px;
+}
+
+.dropdown-content {
+    margin-left: 35px;
+    padding-right: 0px;
+    margin-right: -43px;
+}
+
+.login form, .register form {
+    margin: 80px 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login form strong, .register form strong {
+    font-size: xxx-large;
+}
+
+.login form input, .register form input {
+    width: 250px;
+}
