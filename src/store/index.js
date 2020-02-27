@@ -10,7 +10,6 @@ export default new Vuex.Store({
     isLogin: false,
     currentPage: '',
     carts: [],
-    currentUserId: '',
     addCartFormShow: false,
     productIdForAddCart: null,
     signUpData: {},
@@ -36,9 +35,6 @@ export default new Vuex.Store({
     },
     SET_CARTS (state, payload) {
       state.carts = payload
-    },
-    SET_CURRENT_USERID (state, payload) {
-      state.currentUserId = payload
     },
     SET_ADD_CART_FORM_SHOW (state, payload) {
       state.addCartFormShow = payload
@@ -111,7 +107,6 @@ export default new Vuex.Store({
         method: 'PUT',
         url: `/carts/${this.state.cartId}`,
         data: {
-          UserId: this.state.currentUserId,
           ProductId: this.state.productId,
           quantity: this.state.quantityUpdated
         },

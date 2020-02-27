@@ -108,7 +108,6 @@ export default {
       this.$store.commit('SET_CART_ID', cartId)
       this.$store.commit('SET_QUANTITY_UPDATED', this.quantity)
       this.$store.commit('SET_PRODUCT_ID', productId)
-      this.$store.commit('SET_CURRENT_USERID', Number(localStorage.getItem('userId')))
       return this.$store.dispatch('editCartQuantity')
         .then(({ data }) => {
           this.editQuantityInput()

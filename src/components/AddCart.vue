@@ -40,7 +40,6 @@ export default {
         method: 'POST',
         url: '/carts',
         data: {
-          UserId: Number(localStorage.getItem('userId')),
           ProductId: this.productIdForAddCart,
           quantity: Number(this.quantity)
         },

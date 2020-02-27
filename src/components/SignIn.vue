@@ -55,7 +55,6 @@ export default {
         }
       })
         .then(({ data }) => {
-          localStorage.setItem('userId', data.UserId)
           localStorage.setItem('token', data.token)
           this.$router.push({ name: 'Cart' })
           this.$store.commit('SET_CURRENT_PAGE', 'Cart')
