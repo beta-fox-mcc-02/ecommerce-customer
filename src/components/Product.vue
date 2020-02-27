@@ -42,51 +42,56 @@ export default {
   },
   methods: {
     addToCart (product, quantity) {
-      const cart = this.$store.state.user.cart
-      if (!cart.length) {
-        this.$store.dispatch('addToCart', {
-          product_id: product.id,
-          quantity
-        })
-          .then(response => {
-            this.$store.dispatch('findUser')
-              .then(response => {
-                this.$bvToast.toast('Product ' + product.name + ' has been added', {
-                  title: 'Successfully added',
-                  variant: 'success',
-                  solid: true
-                })
-                this.$store.commit('SET_USER', response.data)
-                this.$store.commit('SET_LOADING_ADD_TO_CART', false)
-              })
-              .catch(err => {
-                this.$store.commit('SET_ERRORS', err.response)
-                this.$store.commit('SET_LOADING_ADD_TO_CART', false)
-              })
-          })
-          .catch(err => {
-            this.$store.commit('SET_ERRORS', err.response)
-            this.$store.commit('SET_LOADING_ADD_TO_CART', false)
-          })
+      const user = this.$store.state.user
+      if (!Object.keys(user).length) {
+        this.$router.push('/login')
       } else {
         const cart = this.$store.state.user.cart
-        this.$store.dispatch('updateCart', {
-          cart_id: cart[0].id,
-          product_id: product.id,
-          quantity
-        })
-          .then(response => {
-            this.$bvToast.toast('Product ' + product.name + ' has been added', {
-              title: 'Successfully added',
-              variant: 'success',
-              solid: true
+        if (!cart.length) {
+          this.$store.dispatch('addToCart', {
+            product_id: product.id,
+            quantity
+          })
+            .then(response => {
+              this.$store.dispatch('findUser')
+                .then(response => {
+                  this.$bvToast.toast('Product ' + product.name + ' has been added', {
+                    title: 'Successfully added',
+                    variant: 'success',
+                    solid: true
+                  })
+                  this.$store.commit('SET_USER', response.data)
+                  this.$store.commit('SET_LOADING_ADD_TO_CART', false)
+                })
+                .catch(err => {
+                  this.$store.commit('SET_ERRORS', err.response)
+                  this.$store.commit('SET_LOADING_ADD_TO_CART', false)
+                })
             })
-            this.$store.commit('SET_LOADING_ADD_TO_CART', false)
+            .catch(err => {
+              this.$store.commit('SET_ERRORS', err.response)
+              this.$store.commit('SET_LOADING_ADD_TO_CART', false)
+            })
+        } else {
+          const cart = this.$store.state.user.cart
+          this.$store.dispatch('updateCart', {
+            cart_id: cart[0].id,
+            product_id: product.id,
+            quantity
           })
-          .catch(err => {
-            this.$store.commit('SET_ERRORS', err.response)
-            this.$store.commit('SET_LOADING_ADD_TO_CART', false)
-          })
+            .then(response => {
+              this.$bvToast.toast('Product ' + product.name + ' has been added', {
+                title: 'Successfully added',
+                variant: 'success',
+                solid: true
+              })
+              this.$store.commit('SET_LOADING_ADD_TO_CART', false)
+            })
+            .catch(err => {
+              this.$store.commit('SET_ERRORS', err.response)
+              this.$store.commit('SET_LOADING_ADD_TO_CART', false)
+            })
+        }
       }
     }
   },

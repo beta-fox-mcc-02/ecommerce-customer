@@ -139,6 +139,7 @@ export default new Vuex.Store({
     },
     logout ({ commit }, payload) {
       commit('SET_AUTHENTICATED', false)
+      commit('SET_USER', {})
     },
     updateCart ({ commit }, payload) {
       commit('SET_LOADING_ADD_TO_CART', true)
