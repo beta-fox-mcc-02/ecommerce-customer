@@ -7,16 +7,16 @@
             <img src="../../public/logo.png" alt="Logo" class="w-25">
           </div>
           <div class="col">
-            <router-link to="/" exact>Home</router-link>
+            <router-link to="/" exact> <i class="fa fa-home">  Home</i></router-link>
           </div>
           <div class="col">
-            <router-link to="/products">Products</router-link>
+            <router-link to="/products"><i class="fa fa-list-ol">  Products</i></router-link>
           </div>
           <div class="col">
-            <router-link to="/cart"><i class="fa fa-shopping-cart">Cart</i></router-link>
+            <router-link to="/cart"><i class="fa fa-shopping-cart">  Cart</i></router-link>
           </div>
           <div class="col">
-            <router-link to="/transaction">My Transaction</router-link>
+            <router-link to="/transaction"><i class="fa fa-dollar-sign">  My Transaction</i></router-link>
           </div>
           <div class="col">
             <span
@@ -26,9 +26,9 @@
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false">
-              Login
+              <i class="fa fa-sign-in-alt"> Login</i>
             </span>
-            <span v-else @click="logout">Logout</span>
+            <span v-else @click="logout"><i class="fa fa-sign-out-alt"> Logout</i></span>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="cursor: text;">
               <div class="form-login">
                 <form class="p-1 mt-3" @submit.prevent="login">
