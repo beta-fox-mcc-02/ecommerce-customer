@@ -51,18 +51,33 @@ export default new Vuex.Store({
         }
       })
     },
-    addProduct (context, data) {
+    addCart (context, data) {
       return axios({
         method: 'post',
-        url: '/product',
+        url: '/cart',
         headers: {
           token: localStorage.token
         },
         data
       })
     },
+    fetchCart ({ commit }) {
+      axios({
+        method: 'get',
+        url: '/cart',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          commit('addCurrentUser', data)
+        })
+        .catch(({ response }) => {
+          console.log(response)
+        })
+    },
     fetchProducts (context) {
-      return axios({
+      axios({
         method: 'get',
         url: '/product',
         headers: {
@@ -76,20 +91,23 @@ export default new Vuex.Store({
           console.log(response)
         })
     },
-    deleteProduct (context, id) {
+    deleteFromCart ({ state }, id) {
       return axios({
         method: 'delete',
-        url: `/product/${id}`,
+        url: `/cart/${id}`,
         headers: {
           token: localStorage.token
+        },
+        data: {
+          TransactionId: state.currentUser.Transactions[0].id
         }
       })
     },
-    updateProduct (context, payload) {
-      const { data, id } = payload
+    updateCart ({ state }, data) {
+      const id = state.currentUser.Transactions[0].id
       return axios({
         method: 'put',
-        url: `/product/${id}`,
+        url: `/cart/${id}`,
         headers: {
           token: localStorage.token
         },

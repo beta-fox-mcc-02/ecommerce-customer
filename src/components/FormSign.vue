@@ -131,11 +131,13 @@ export default {
         password: this.password
       })
         .then(({ data }) => {
-          console.log(data)
+          console.log('login success:', data)
           this.signSuccess(data)
         })
-        .catch(({ response }) => {
-          console.log(response)
+        .catch((err) => {
+          console.log('ini err:', err)
+          const { response } = err
+          console.log('ini err.response', response)
           this.$store.commit('runLoading', false)
           this.$notify({
             group: 'sign',
@@ -146,10 +148,10 @@ export default {
         })
     },
     signSuccess (data) {
+      console.log('data masuk', data)
       this.$store.commit('runLoading', false)
       this.emptyForm()
       localStorage.token = data.token
-      this.$store.commit('addCurrentUser', data)
       this.$store.commit('setIsLogin', true)
       this.$router.push('/')
     }

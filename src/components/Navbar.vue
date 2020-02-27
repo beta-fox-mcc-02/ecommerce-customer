@@ -25,60 +25,49 @@
       Singkongpedia
     </div>
     <v-spacer></v-spacer>
-    <v-menu offset-y v-if="isLogin">
+    <v-menu offset-y v-if="isLogin" :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <v-avatar class="pointer ophvr" v-on="on" size="48">
           <v-icon>mdi-cart-outline</v-icon>
         </v-avatar>
       </template>
       <v-list min-width="8rem" class="text-center" elevation="12">
+        <!-- <center class="px-2" v-if="!cartProducts.length">No product in cart</center> -->
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Id</th>
                 <th>Image Product</th>
                 <th>Product Name</th>
                 <th>Stock</th>
                 <th>Price</th>
-                <th>Description</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="product in products" :key="product.id">
-                <td>
-                  {{ product.id }}
-                </td>
-                <td>
-                  <!-- <v-avatar tile> -->
-                    <img :src="product.image" width="50" alt="avatar" srcset="">
-                  <!-- </v-avatar> -->
-                </td>
-                <td>
-                  {{ product.name }}
-                </td>
-                <td>{{ product.stock }} pcs</td>
-                <td>Rp {{ product.price }}</td>
-                <td>{{ product.description }}</td>
-                <td>
-                  <!-- <v-icon class="pointer mx-1 hvr" small>mdi-pencil</v-icon> -->
-                  <dialog-update class="my-2" :product="product"></dialog-update>
-                  <dialog-delete class="my-2" :product="product"></dialog-delete>
-                </td>
-              </tr>
+            <tbody v-for="product in cartProducts" :key="product.id">
+              <cart-list :product="product" />
             </tbody>
+            <tfoot>
+              <div class="d-flex justify-end">
+                <v-btn small color="primary" class="ml-2">checkout</v-btn>
+              </div>
+            </tfoot>
           </template>
         </v-simple-table>
+        <!-- <div></div> -->
       </v-list>
     </v-menu>
     <v-menu offset-y v-if="isLogin">
       <template v-slot:activator="{ on }">
         <v-avatar class="pointer ophvr" v-on="on" color="teal" size="48">
-          <span class="white--text headline">U</span>
+          <span class="white--text headline">{{ username ? username[0] : 'U'}}</span>
         </v-avatar>
       </template>
       <v-list min-width="8rem" class="text-center" elevation="12">
+        <v-list-item @click="list">
+          <v-list-item-title>{{ username ? username : 'User' }}</v-list-item-title>
+        </v-list-item>
+        <hr>
         <v-list-item @click="list">
           <v-list-item-title>History</v-list-item-title>
         </v-list-item>
@@ -93,6 +82,7 @@
   </v-app-bar>
 </template>
 <script>
+import cartList from './cartList'
 export default {
   name: 'NafNavbar',
   computed: {
@@ -101,7 +91,19 @@ export default {
     },
     products () {
       return this.$store.state.products
+    },
+    currentUser () {
+      return this.$store.state.currentUser
+    },
+    username () {
+      return this.currentUser.name
+    },
+    cartProducts () {
+      return this.currentUser.Transactions[0].Products
     }
+  },
+  components: {
+    cartList
   },
   methods: {
     logout () {

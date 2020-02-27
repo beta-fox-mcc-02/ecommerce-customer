@@ -34,7 +34,7 @@
                 </v-btn>
 
                 <v-btn icon>
-                  <v-icon>mdi-cart</v-icon>
+                  <v-icon @click="addCart(product.id)">mdi-cart</v-icon>
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -53,7 +53,6 @@ export default {
   name: 'Home',
   data () {
     return {
-
     }
   },
   components: {
@@ -69,11 +68,39 @@ export default {
         loader.hide()
         this.$router.push('/detailProduct')
       }, 1000)
+    },
+    addCart (id) {
+      console.log(id)
+      this.$store.dispatch('addCart', {
+        TransactionId: this.currentUser.Transactions[0].id,
+        ProductId: id,
+        quantity: 1
+      })
+        .then(({ data }) => {
+          console.log(data)
+          this.fetchCart()
+          this.$notify({
+            group: 'sign',
+            title: 'Add cart',
+            text: data.msg,
+            type: 'success'
+          })
+        })
+        .catch(err => {
+          if (err.response) console.log(err.response)
+          else console.log(err)
+        })
+    },
+    fetchCart () {
+      this.$store.dispatch('fetchCart')
     }
   },
   computed: {
     products () {
       return this.$store.state.products
+    },
+    currentUser () {
+      return this.$store.state.currentUser
     },
     headers () {
       const headers = []
@@ -88,6 +115,7 @@ export default {
   },
   created () {
     this.$store.dispatch('fetchProducts')
+    this.fetchCart()
   }
 }
 </script>
