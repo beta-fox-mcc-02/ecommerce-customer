@@ -23,6 +23,9 @@
         </tr>
       </table>
     </md-card-content>
+    <b-button variant="danger" size="sm" style="position: absolute; top: 10px; right: 10px;" @click.prevent="confirm">
+      <b-icon icon="trash-fill" aria-hidden="true"></b-icon>
+    </b-button>
   </md-card>
 </template>
 
@@ -30,6 +33,28 @@
 export default {
   props: {
     product: Object
+  },
+  methods: {
+    deleteFromCart () {
+      this.$store.commit('SET_IS_LOADING', true)
+      this.$store.dispatch('deleteFromCart', this.product.Cart)
+        .then(({ data }) => {
+          this.$store.commit('SET_NOTIFICATION', data.msg)
+          this.$store.dispatch('getCart')
+          this.$store.commit('SET_IS_LOADING', false)
+        })
+        .catch(err => {
+          this.$store.commit('SET_ERROR', err)
+          this.$store.commit('SET_IS_LOADING', false)
+        })
+    },
+    confirm () {
+      this.$alertify.confirmWithTitle(
+        'Delete Product',
+        'Are you sure want to delete this product?',
+        () => this.deleteFromCart()
+      )
+    }
   }
 }
 </script>
