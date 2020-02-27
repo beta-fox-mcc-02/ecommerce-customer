@@ -7,7 +7,8 @@
             <Carousel></Carousel>
         </div>
         <div class="card-body">
-          <router-view></router-view>
+            <b-spinner v-if="isLoading" class="text-light" style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+          <router-view v-if="!isLoading"></router-view>
         </div>
     </div>
   </center>
@@ -23,18 +24,25 @@ export default {
   name: 'Home',
   data () {
     return {
-      token: localStorage.token
+      token: localStorage.token,
+      isLoading: true
     }
   },
   components: {
     // RegisterCost
     Carousel
   },
+  methods: {
+    loading () {
+      setTimeout(() => {
+        this.isLoading = false
+      }, 2000)
+    }
+  },
   created () {
     this.$store.dispatch('fetchProducts')
     this.$store.dispatch('fetchCarousel')
-    this.$store.dispatch('fetchCostumer')
-    this.$store.dispatch('fetchCart')
+    this.loading()
   }
 }
 </script>

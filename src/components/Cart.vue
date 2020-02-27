@@ -1,7 +1,8 @@
 <template>
 <div class="container mb-4">
     <br><br>
-    <div class="row">
+    <b-spinner v-if="isLoading" class="text-light" style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+    <div v-if="!isLoading" class="row">
         <div class="col-12" style="overflow: auto">
             <div class="table-responsive bg-light text-center">
                 <table class="table table-striped">
@@ -64,6 +65,7 @@
 export default {
   data () {
     return {
+      isLogin: true
     }
   },
   methods: {
@@ -72,16 +74,21 @@ export default {
         CartId,
         ProductId
       }
-      //   console.log(id)
       this.$store.dispatch('cancelProduct', deleteProduct)
     },
     checkout (products) {
       this.$store.dispatch('checkout', products)
+    },
+    loading () {
+      setTimeout(() => {
+        this.isLoading = false
+      }, 2000)
     }
   },
   created () {
     this.$store.dispatch('fetchCostumer')
     this.$store.dispatch('fetchCart')
+    this.loading()
   },
   filters: {
     currencyFormat (val) {
@@ -91,7 +98,6 @@ export default {
   computed: {
     costumer () {
       const carts = []
-      console.log(this.$store.state.carts)
       for (let i = 0; i < this.$store.state.carts.length; i++) {
         if (!this.$store.state.carts[i].isCheckout) {
           carts.push(this.$store.state.carts[i])

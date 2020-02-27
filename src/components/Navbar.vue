@@ -66,6 +66,9 @@ export default {
   created () {
     this.checkToken()
     this.checkLogin()
+    if (localStorage.token) {
+      this.$store.dispatch('fetchCostumer')
+    }
   },
   computed: {
     checkLogin () {
