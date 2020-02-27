@@ -43,7 +43,7 @@ const store = new Vuex.Store({
   },
   actions: {
     loginCostumer (context, payload) {
-      axios.post('http://localhost:3000/costumers/login', payload)
+      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/login', payload)
         .then(({ data }) => {
           localStorage.token = data.token
           context.commit('ISLOGIN', true)
@@ -58,7 +58,7 @@ const store = new Vuex.Store({
         })
     },
     registerCostumer (context, payload) {
-      axios.post('http://localhost:3000/costumers/register', payload)
+      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/register', payload)
         .then(({ data }) => {
           localStorage.token = data.token
           context.commit('ISLOGIN', true)
@@ -76,7 +76,7 @@ const store = new Vuex.Store({
         })
     },
     fetchProducts (context) {
-      axios.get('http://localhost:3000/products/list')
+      axios.get('https://stark-hamlet-59602.herokuapp.com/products/list')
         .then(({ data }) => {
           context.commit('FETCH_PRODUCTS', data)
         })
@@ -89,7 +89,7 @@ const store = new Vuex.Store({
         })
     },
     fetchCostumer (context) {
-      axios.get('http://localhost:3000/costumers', {
+      axios.get('https://stark-hamlet-59602.herokuapp.com/costumers', {
         headers: {
           token: localStorage.token
         }
@@ -120,7 +120,7 @@ const store = new Vuex.Store({
         })
     },
     inputToCart (context, payload) {
-      axios.post('http://localhost:3000/costumers/cart', payload, {
+      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/cart', payload, {
         headers: {
           token: localStorage.token
         }
@@ -137,7 +137,7 @@ const store = new Vuex.Store({
         })
     },
     fetchCart (context) {
-      axios.get('http://localhost:3000/costumers/cart', {
+      axios.get('https://stark-hamlet-59602.herokuapp.com/costumers/cart', {
         headers: {
           token: localStorage.token
         }
@@ -157,7 +157,7 @@ const store = new Vuex.Store({
         })
     },
     cancelProduct (context, payload) {
-      axios.delete('http://localhost:3000/costumers/cart', {
+      axios.delete('https://stark-hamlet-59602.herokuapp.com/costumers/cart', {
         headers: {
           token: localStorage.token,
           CartId: payload.CartId,
@@ -178,7 +178,7 @@ const store = new Vuex.Store({
         })
     },
     checkout (context, payload) {
-      axios.post('http://localhost:3000/costumers/checkout', payload, {
+      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/checkout', payload, {
         headers: {
           token: localStorage.token
         }
@@ -201,7 +201,7 @@ const store = new Vuex.Store({
         })
     },
     fetchHistory (context, payload) {
-      axios.get('http://localhost:3000/costumers/history', {
+      axios.get('https://stark-hamlet-59602.herokuapp.com/costumers/history', {
         headers: {
           token: localStorage.token
         }
