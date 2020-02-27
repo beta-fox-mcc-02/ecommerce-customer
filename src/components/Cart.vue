@@ -33,8 +33,8 @@ export default {
   name: 'Cart',
   methods: {
     deleteCart (id) {
-      this.$store.dispatch('viewCart', id)
-      console.log(this.$store.state.cart)
+      this.$store.dispatch('deleteCart',id)\
+      this.$router.push('/cart')
     }
   },
   created () {
