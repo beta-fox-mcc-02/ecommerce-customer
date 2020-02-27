@@ -111,7 +111,7 @@ export default {
       if (localStorage.token) {
         this.$store.dispatch('addCart', {
           ProductId: this.watch.id,
-          quantity: this.quantity
+          quantity: Number(this.quantity)
         })
           .then(_ => {
             Toastify({
@@ -119,6 +119,7 @@ export default {
               backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
               className: 'success'
             }).showToast()
+            this.$router.push('/products')
           })
           .catch(_ => {
             Toastify({

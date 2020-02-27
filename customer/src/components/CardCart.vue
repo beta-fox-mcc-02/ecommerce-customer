@@ -11,7 +11,7 @@
         <div class="button-group mt-4">
           {{ $route.currentRoute }}
           <button class="btn" @click="addMore(cart.ProductId)">Add More</button>
-          <button class="btn float-right delete" @click="deleteCart(cart.id)">Delete</button>
+          <button class="btn float-right delete" @click.prevent="deleteCart(cart.id)">Delete</button>
         </div>
       </div>
     </div>
@@ -29,7 +29,22 @@ export default {
       this.$router.push(`/products/${id}`)
     },
     deleteCart (id) {
-      this.$store.dispatch('deleteCart', id)
+      this.$alertify.confirmWithTitle(
+        'Delete this product from cart ?',
+        `after deleting, data will be remove from server`,
+        () => {
+          this.$store.dispatch('deleteCart', id)
+            .then(_ => {
+              Toastify({
+                text: 'Success Deleting Cart',
+                backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                className: 'success'
+              }).showToast()
+              this.$store.dispatch('fetchCart')
+            })
+            .catch(_ => {})
+        }
+      )
     }
   },
   computed: {

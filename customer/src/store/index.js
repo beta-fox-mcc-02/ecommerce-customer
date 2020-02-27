@@ -96,6 +96,7 @@ export default new Vuex.Store({
       })
     },
     fetchCart ({ commit, state }, payload) {
+      state.loading = true
       axios({
         method: 'GET',
         url: '/cart',
@@ -105,21 +106,18 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           commit('SET_CARTS', data)
+          state.loading = false
         })
         .catch(_ => {})
     },
     deleteCart (context, payload) {
-      axios({
+      return axios({
         method: 'DELETE',
         url: `/cart/${payload}`,
         headers: {
           token: localStorage.token
         }
       })
-      .then(_ => {
-        context.dispatch('fetchCart')
-      })
-      .catch(_ => {})
     },
     checkout ({ state }) {
       return axios({
@@ -134,6 +132,7 @@ export default new Vuex.Store({
       })
     },
     fetchTransaction ({ commit, state }, payload) {
+      state.loading = true
       axios({
         method: 'GET',
         url: '/cart/transactions',
@@ -142,8 +141,8 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          console.log(data)
           commit('SET_TRANSACTIONS', data)
+          state.loading = false
         })
         .catch(_ => {})
     },

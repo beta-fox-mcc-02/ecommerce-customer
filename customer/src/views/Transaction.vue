@@ -3,25 +3,30 @@
     <div class="head">
       <span style="font-size: 25px; font-weight: 600;">My Cart</span>
     </div>
-    <div class="no-cart my-5 text-center" v-if="carts.length === 0">
-      <h4>Nothing in Cart &#128546;</h4>
-      <router-link to="/products">Buy Something Here</router-link>
-    </div>
-    <div class="content" v-else>
-      <CartCard v-for="cart in carts" :key="cart.id" :cart="cart"/>
-      <div class="text-right mr-5 my-4">
-      <h5>Total Price : Rp. {{ totalPrice }},-</h5>
+    <Loading v-if="loading"/>
+    <div class="afterload" v-else>
+      <div class="no-cart my-5 text-center" v-if="carts.length === 0">
+        <h4>Nothing in Transactions &#128546;</h4>
+        <router-link to="/products">Buy Something Here</router-link>
+      </div>
+      <div class="content" v-else>
+        <CartCard v-for="cart in carts" :key="cart.id" :cart="cart"/>
+        <div class="text-right mr-5 my-4">
+        <h5>Total Price : Rp. {{ totalPrice }},-</h5>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Loading from '../components/Loading'
 import CartCard from '../components/TransactionCard'
 export default {
   name: 'CartPage',
   components: {
-    CartCard 
+    CartCard,
+    Loading
   },
   computed: {
     carts () {
@@ -34,6 +39,9 @@ export default {
         total += carts[i].quantity * carts[i].Product.price
       }
       return (total).toLocaleString("id-ID")
+    },
+    loading () {
+      return this.$store.state.loading
     }
   },
   created () {
