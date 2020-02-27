@@ -41,6 +41,7 @@ export default {
           console.log(data, 'ini costumernyaaaaa ==================================')
           localStorage.setItem('access_token', data.access_token)
           this.$store.commit('INPUT_COSTUMER_ID', data.id)
+          this.$store.commit('INPUT_EMAIL_COSTUMER', data.email)
           console.log('ini customer idnyaaaaaa', this.$store.state.costumerId)
           this.$router.push('/')
         })

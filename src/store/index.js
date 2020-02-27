@@ -9,7 +9,8 @@ export default new Vuex.Store({
     costumerId: 0,
     products: [],
     carts: [],
-    cart: {}
+    cart: {},
+    emailCostumer: ''
   },
   mutations: {
     FETCH_PRODUCT (state, payload) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     INPUT_COSTUMER_ID (state, payload) {
       state.costumerId = payload
+    },
+    INPUT_EMAIL_COSTUMER (state, payload) {
+      state.emailCostumer = payload
     },
     FETCH_CART (state, payload) {
       state.cart = payload
@@ -80,7 +84,7 @@ export default new Vuex.Store({
     },
     deleteCart ({ commit }, id) {
       return instance({
-        method: 'post',
+        method: 'delete',
         url: `/cart/${id}`
       })
     }
