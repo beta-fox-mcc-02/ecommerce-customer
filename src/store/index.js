@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import axios from '../axios/config'
+import jikan from '../axios/jikan'
 import router from '../router'
 import Toastify from 'toastify-js'
 // import url from '@/axios/config'
@@ -43,7 +44,7 @@ const store = new Vuex.Store({
   },
   actions: {
     loginCostumer (context, payload) {
-      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/login', payload)
+      axios.post('/costumers/login', payload)
         .then(({ data }) => {
           localStorage.token = data.token
           context.commit('ISLOGIN', true)
@@ -58,7 +59,7 @@ const store = new Vuex.Store({
         })
     },
     registerCostumer (context, payload) {
-      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/register', payload)
+      axios.post('/costumers/register', payload)
         .then(({ data }) => {
           localStorage.token = data.token
           context.commit('ISLOGIN', true)
@@ -76,7 +77,7 @@ const store = new Vuex.Store({
         })
     },
     fetchProducts (context) {
-      axios.get('https://stark-hamlet-59602.herokuapp.com/products/list')
+      axios.get('/products/list')
         .then(({ data }) => {
           context.commit('FETCH_PRODUCTS', data)
         })
@@ -89,7 +90,7 @@ const store = new Vuex.Store({
         })
     },
     fetchCostumer (context) {
-      axios.get('https://stark-hamlet-59602.herokuapp.com/costumers', {
+      axios.get('/costumers', {
         headers: {
           token: localStorage.token
         }
@@ -107,7 +108,7 @@ const store = new Vuex.Store({
         })
     },
     fetchCarousel (context) {
-      axios.get('https://api.jikan.moe/v3/search/anime?q=gundam&limit=10')
+      jikan.get('/search/anime?q=gundam&limit=10')
         .then(({ data }) => {
           context.commit('FETCH_CAROUSEL', data.results)
         })
@@ -120,7 +121,7 @@ const store = new Vuex.Store({
         })
     },
     inputToCart (context, payload) {
-      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/cart', payload, {
+      axios.post('/costumers/cart', payload, {
         headers: {
           token: localStorage.token
         }
@@ -137,7 +138,7 @@ const store = new Vuex.Store({
         })
     },
     fetchCart (context) {
-      axios.get('https://stark-hamlet-59602.herokuapp.com/costumers/cart', {
+      axios.get('/costumers/cart', {
         headers: {
           token: localStorage.token
         }
@@ -157,7 +158,7 @@ const store = new Vuex.Store({
         })
     },
     cancelProduct (context, payload) {
-      axios.delete('https://stark-hamlet-59602.herokuapp.com/costumers/cart', {
+      axios.delete('/costumers/cart', {
         headers: {
           token: localStorage.token,
           CartId: payload.CartId,
@@ -178,7 +179,7 @@ const store = new Vuex.Store({
         })
     },
     checkout (context, payload) {
-      axios.post('https://stark-hamlet-59602.herokuapp.com/costumers/checkout', payload, {
+      axios.post('/costumers/checkout', payload, {
         headers: {
           token: localStorage.token
         }
@@ -201,7 +202,7 @@ const store = new Vuex.Store({
         })
     },
     fetchHistory (context, payload) {
-      axios.get('https://stark-hamlet-59602.herokuapp.com/costumers/history', {
+      axios.get('/costumers/history', {
         headers: {
           token: localStorage.token
         }

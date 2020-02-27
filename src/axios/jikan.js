@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: 'https://stark-hamlet-59602.herokuapp.com'
+  baseURL: 'https://api.jikan.moe/v3'
 })
 
 export default instance
