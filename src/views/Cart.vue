@@ -31,7 +31,7 @@
               </p>
               <div class="edit-quantity d-flex" v-if="editQuantity && cartId === cart.id">
                 <form @submit.prevent="editQuantityOnly(cart.id, cart.Product.id)">
-                  <input type="number" min="1" v-model="quantity">
+                  <input type="number" min="1" :max="cart.Product.stock" v-model="quantity">
                   <button type="submit" class="mt-2 btn btn-secondary btn-edit-quantity">Submit</button>
                 </form>
                 <i class="fa fa-times btn" @click="editQuantityInput"></i>
