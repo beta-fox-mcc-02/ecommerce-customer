@@ -1,12 +1,12 @@
 <template>
   <div class="Cart-container">
     <div class="left">
-      <table>
+      <table style="width: 120vh;">
         <thead>
           <tr>
             <th>Image</th>
             <th>Qty</th>
-            <th>Total Price</th>
+            <th>Price</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -14,20 +14,20 @@
           <CustomerProduct v-for="cart in carts" :key="cart.id" :cart="cart" />
         </tbody>
       </table>
-    </div>
-    <div class="right">
-      {{ carts }}
+      <CheckOut :carts="carts"/>
     </div>
   </div>
 </template>
 
 <script>
 import CustomerProduct from '../components/CustomerProduct'
+import CheckOut from '../components/CheckOut'
 
 export default {
   name: 'Cart',
   components: {
-    CustomerProduct
+    CustomerProduct,
+    CheckOut
   },
   computed: {
     carts () {
@@ -60,20 +60,21 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 78vh;
-  border: 1px solid red;
+  margin-top: 20px;
+  margin-bottom: 20px
 }
 
 .Cart-container div {
-  border: 1px solid black;
-  height: 78vh;
+  border: none;
+  box-shadow: 0px 1px 6px 0px rgba(49,53,59,0.40);
+  padding: 10px;
 }
 
 .left {
   width: 120vh;
-}
-
-.right {
-  width: 75vh
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

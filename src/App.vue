@@ -2,15 +2,15 @@
   <div id="app">
     <div class="navbar">
       <div>
-        <img src="https://i.pinimg.com/originals/d9/12/09/d91209340bdc005936c46323a62caaff.png" style="width: 50px; height: 50px;">
+        <img @click.prevent="toHome" src="https://i.pinimg.com/originals/d9/12/09/d91209340bdc005936c46323a62caaff.png" style="width: 50px; height: 50px;">
       </div>
       <div id="nav-right">
         <div v-if="checkLogin">
           <a href="" @click.prevent="toCart"><i class="fas fa-cart-plus" style="font-size: 25px; color: red"></i></a>
         </div>
-        <div v-if="checkLogin">
+        <!-- <div v-if="checkLogin">
           <a href=""><i class="fas fa-user-circle" style="font-size: 25px; color: red"></i></a>
-        </div>
+        </div> -->
         <div v-if="checkLogin">
           <button @click.prevent="toLogout" type="submit" class="btn btn-danger">LOGOUT</button>
         </div>
@@ -44,6 +44,7 @@ export default {
       this.$router.push({ path: '/register' })
     },
     toLogin () {
+      console.log('masuukkkk')
       this.$router.push({ path: '/login' })
     },
     toLogout () {
@@ -54,11 +55,13 @@ export default {
     },
     toCart () {
       this.$router.push({ path: '/cart' })
+    },
+    toHome () {
+      this.$router.push({ path: '/' })
     }
   },
   created () {
     if (localStorage.token) {
-      this.$router.push({ path: '/' })
       this.$store.commit('FETCH_ISLOGEDIN', true)
     }
   }
@@ -73,7 +76,6 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
 .navbar {
   padding: 30px;
   height: 70px;
@@ -85,19 +87,15 @@ export default {
   display: flex;
   justify-content: flex-start
 }
-
 .fas {
   padding: 0px 50px;
 }
-
 #nav-right {
   display: flex;
 }
-
 .navbar div {
   cursor: pointer;
 }
-
 .navbar .account {
   padding: 0 20px;
 }

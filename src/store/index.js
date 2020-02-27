@@ -9,7 +9,8 @@ export default new Vuex.Store({
     category: [],
     products: [],
     cart: [],
-    isLogedIn: false
+    isLogedIn: false,
+    listedCategory: []
   },
   mutations: {
     FETCH_CATEGORY (state, data) {
@@ -23,25 +24,39 @@ export default new Vuex.Store({
     },
     FETCH_CART (state, data) {
       state.cart = data
+    },
+    CHANGE_PRICE (state, data) {
+      state.totalPrice = data
+    },
+    LISTED_CATEGORY (state, data) {
+      state.listedCategory = data
     }
   },
   actions: {
     fetchCategory () {
       return Axios({
         method: 'get',
-        url: 'http://localhost:3000/categories'
+        url: 'https://cryptic-refuge-38840.herokuapp.com/categories'
+      })
+    },
+    findCategory (context, id) {
+      return Axios({
+        method: 'get',
+        url: `https://cryptic-refuge-38840.herokuapp.com/categories/${id}`
       })
     },
     fetchProducts () {
       return Axios({
         method: 'get',
-        url: 'http://localhost:3000/products'
+        url: 'https://cryptic-refuge-38840.herokuapp.com/products'
       })
     },
     register (context, payload) {
+      console.log(payload)
+      console.log(payload.first_name)
       return Axios({
         method: 'post',
-        url: 'http://localhost:3000/register',
+        url: 'https://cryptic-refuge-38840.herokuapp.com/register',
         data: {
           first_name: payload.first_name,
           address: payload.address,
@@ -53,7 +68,7 @@ export default new Vuex.Store({
     login (context, payload) {
       return Axios({
         method: 'post',
-        url: 'http://localhost:3000/login',
+        url: 'https://cryptic-refuge-38840.herokuapp.com/login',
         data: {
           email: payload.email,
           password: payload.password
@@ -64,7 +79,7 @@ export default new Vuex.Store({
       console.log(payload)
       return Axios({
         method: 'post',
-        url: 'http://localhost:3000/cart',
+        url: 'https://cryptic-refuge-38840.herokuapp.com/cart',
         headers: {
           token: localStorage.token
         },
@@ -78,9 +93,43 @@ export default new Vuex.Store({
     fetchCart () {
       return Axios({
         method: 'get',
-        url: 'http://localhost:3000/cart',
+        url: 'https://cryptic-refuge-38840.herokuapp.com/cart',
         headers: {
           token: localStorage.token
+        }
+      })
+    },
+    destroy (context, id) {
+      return Axios({
+        method: 'delete',
+        url: `https://cryptic-refuge-38840.herokuapp.com/cart/${id}`,
+        headers: {
+          token: localStorage.token
+        }
+      })
+    },
+    update (context, payload) {
+      return Axios({
+        method: 'put',
+        url: `https://cryptic-refuge-38840.herokuapp.com/cart/${payload.id}`,
+        headers: {
+          token: localStorage.token
+        },
+        data: {
+          quantity: payload.quantity,
+          price: payload.price
+        }
+      })
+    },
+    payment (context, payload) {
+      return Axios({
+        method: 'post',
+        url: `https://cryptic-refuge-38840.herokuapp.com/cart/${payload.UserId}`,
+        headers: {
+          token: localStorage.token
+        },
+        data: {
+          carts: payload.carts
         }
       })
     }
