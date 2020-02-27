@@ -13,19 +13,10 @@
         transition="scale-transition"
         width="40"
       />
-
-      <!-- <v-img
-        alt="Vuetify Name"
-        class="shrink mt-1 hidden-sm-and-down"
-        contain
-        min-width="100"
-        src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-        width="100"
-      /> -->
-      Singkongpedia
+      SINGKONGPEDIA
     </div>
     <v-spacer></v-spacer>
-    <v-menu offset-y v-if="isLogin" :close-on-content-click="false">
+    <v-menu offset-y v-if="isLogin && route !== 'checkout'" :close-on-content-click="false">
       <template v-slot:activator="{ on }">
         <v-avatar class="pointer ophvr" v-on="on" size="48">
           <v-icon>mdi-cart-outline</v-icon>
@@ -39,7 +30,7 @@
               <tr>
                 <th>Image Product</th>
                 <th>Product Name</th>
-                <th>Stock</th>
+                <th style="text-align: center;">Quantity</th>
                 <th>Price</th>
                 <th></th>
               </tr>
@@ -48,9 +39,11 @@
               <cart-list :product="product" />
             </tbody>
             <tfoot>
-              <div class="d-flex justify-end">
-                <v-btn small color="primary" class="ml-2">checkout</v-btn>
-              </div>
+              <td style="text-align: right">Total :</td>
+              <td style="text-align: left">Rp {{ totalPrice.toLocaleString('id') }}</td>
+              <td></td>
+              <td></td>
+              <td><v-btn @click="checkout" small color="primary" class="ml-2">checkout</v-btn></td>
             </tfoot>
           </template>
         </v-simple-table>
@@ -65,14 +58,11 @@
       </template>
       <v-list min-width="8rem" class="text-center" elevation="12">
         <v-list-item @click="list">
-          <v-list-item-title>{{ username ? username : 'User' }}</v-list-item-title>
+          <v-list-item-title>{{ email ? email : 'User' }}</v-list-item-title>
         </v-list-item>
         <hr>
         <v-list-item @click="list">
           <v-list-item-title>History</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="list">
-          <v-list-item-title>Profile</v-list-item-title>
         </v-list-item>
         <v-list-item @click="logout">
           <v-list-item-title>Logout</v-list-item-title>
@@ -86,6 +76,9 @@ import cartList from './cartList'
 export default {
   name: 'NafNavbar',
   computed: {
+    route () {
+      return this.$route.name
+    },
     isLogin () {
       return this.$store.state.isLogin
     },
@@ -98,6 +91,14 @@ export default {
     username () {
       return this.currentUser.name
     },
+    totalPrice () {
+      return this.cartProducts.reduce(function (a, b) {
+        return a + (b.price * b.ProductTransaction.quantity)
+      }, 0)
+    },
+    email () {
+      return this.currentUser.email
+    },
     cartProducts () {
       return this.currentUser.Transactions[0].Products
     }
@@ -106,6 +107,9 @@ export default {
     cartList
   },
   methods: {
+    checkout () {
+      this.$router.push('/checkout')
+    },
     logout () {
       localStorage.clear()
       this.$router.push('/login')
@@ -124,10 +128,14 @@ export default {
         this.$router.push('/')
       }, 1000)
     }
+  },
+  watch: {
+    $route (to, from) {
+      console.log('ini route', this.$route)
+    }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>

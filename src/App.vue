@@ -1,10 +1,10 @@
 <template>
   <v-app id="bg-none">
     <n-navbar />
-    <notifications group="sign" position="top right" :width="600"/>
-      <v-content>
+    <notifications group="sign" position="top left" :width="600"/>
+      <v-content style="margin-bottom: 4rem">
         <router-view></router-view>
-      </v-content>\
+      </v-content>
     <v-card>
       <v-footer
         absolute

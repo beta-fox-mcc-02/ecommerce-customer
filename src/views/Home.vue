@@ -6,6 +6,9 @@
       </v-btn>
     </div> -->
     <v-card>
+      <loading :active.sync="isLoading"
+        :can-cancel="false"
+        :is-full-page="false"></loading>
       <v-container fluid>
         <v-row dense>
           <v-col
@@ -21,21 +24,18 @@
                 height="200px"
               ></v-img>
               <v-card-title v-text="product.name"></v-card-title>
-              <v-card-text>Rp {{ product.price.toLocaleString('id') }}</v-card-text>
+              <v-card-text>
+                Rp {{ product.price.toLocaleString('id') }} <br>
+                Stock: {{ product.stock }}
+              </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-
-                <v-btn icon>
-                  <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
-
-                <v-btn icon>
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-
-                <v-btn icon>
-                  <v-icon @click="addCart(product.id)">mdi-cart</v-icon>
-                </v-btn>
+                <div @click="addCart(product.id)">
+                  <span>Add to Cart</span>
+                  <v-btn icon>
+                    <v-icon>mdi-cart</v-icon>
+                  </v-btn>
+                </div>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -47,8 +47,8 @@
 
 <script>
 // @ is an alias to /src
-// import dialogDelete from '../components/PromptDelete'
-// import dialogUpdate from '../components/PromptUpdate'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 export default {
   name: 'Home',
   data () {
@@ -56,8 +56,7 @@ export default {
     }
   },
   components: {
-    // dialogDelete,
-    // dialogUpdate
+    Loading
   },
   methods: {
     toDetailProduct () {
@@ -96,6 +95,9 @@ export default {
     }
   },
   computed: {
+    isLoading () {
+      return this.$store.state.isLoading
+    },
     products () {
       return this.$store.state.products
     },

@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    isLoading: false,
     isLoginPage: true,
     isLogin: false,
     loadingForm: false,
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     runLoading (state, status) {
       state.loadingForm = status
+    },
+    setIsLoading (state, status) {
+      state.isLoading = status
     },
     addCurrentUser (state, data) {
       state.currentUser = data
@@ -76,7 +80,8 @@ export default new Vuex.Store({
           console.log(response)
         })
     },
-    fetchProducts (context) {
+    fetchProducts ({ commit }) {
+      commit('setIsLoading', true)
       axios({
         method: 'get',
         url: '/product',
@@ -85,10 +90,12 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          context.commit('storeProducts', data)
+          commit('setIsLoading', false)
+          commit('storeProducts', data)
         })
         .catch(({ response }) => {
           console.log(response)
+          commit('setIsLoading', false)
         })
     },
     deleteFromCart ({ state }, id) {
@@ -112,6 +119,18 @@ export default new Vuex.Store({
           token: localStorage.token
         },
         data
+      })
+    },
+    checkout ({ state }) {
+      return axios({
+        method: 'post',
+        url: '/checkout',
+        headers: {
+          token: localStorage.token
+        },
+        data: {
+          cart: state.currentUser.Transactions[0]
+        }
       })
     },
     uploadImage (context, payload) {
