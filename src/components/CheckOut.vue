@@ -13,14 +13,12 @@ export default {
   methods: {
     toPayment () {
       this.$vToastify.loader('Please Wait...')
-      // console.log(this.carts[0].User.id)
       const payload = {
         UserId: this.carts[0].User.id,
         carts: this.carts
       }
       this.$store.dispatch('payment', payload)
         .then(data => {
-          // console.log(data)
           this.$store.dispatch('fetchCart')
             .then(({ data }) => {
               this.$vToastify.stopLoader()
@@ -28,11 +26,21 @@ export default {
               this.$store.commit('FETCH_CART', data.msg)
             })
             .catch(err => {
-              console.log(err)
+              this.$vToastify.warning({
+                title: 'BRO',
+                body: `${err.response.data.msg}`,
+                type: 'warning',
+                duration: 3000
+              })
             })
         })
         .catch(err => {
-          console.log(err.response)
+          this.$vToastify.warning({
+            title: 'BRO',
+            body: `${err.response.data.msg}`,
+            type: 'warning',
+            duration: 3000
+          })
         })
     }
   },
