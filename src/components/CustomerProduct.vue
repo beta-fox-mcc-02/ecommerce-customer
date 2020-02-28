@@ -4,7 +4,6 @@
       <img :src="cart.Product.image_url" style="width: 100px; height: 100px">
     </td>
     <td>
-      <!-- {{ total }} -->
       <div class="input-group" style="max-width: 140px; margin-left: auto; margin-right: auto">
         <div class="input-group-prepend">
           <button class="btn btn-outline-primary js-btn-minus" type="button" @click.prevent="setJumlah(-1)">&minus;</button>
@@ -14,7 +13,7 @@
             type="number"
             min="1" :max="cart.Product.stock"
             class="form-control text-center"
-            v-model="total"
+            v-model="cart.quantity"
             placeholder
             aria-label="Example text with button addon"
             aria-describedby="button-addon1"
@@ -36,7 +35,9 @@
 <script>
 export default {
   name: 'CustomerProduct',
-  props: ['cart'],
+  props: {
+    cart: Object
+  },
   data () {
     return {
       total: this.cart.quantity

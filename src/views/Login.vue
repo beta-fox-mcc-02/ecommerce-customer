@@ -62,6 +62,13 @@ export default {
           })
         })
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (!localStorage.token) {
+      next()
+    } else {
+      next({ path: '/' })
+    }
   }
 }
 </script>

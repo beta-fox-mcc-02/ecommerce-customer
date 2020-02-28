@@ -17,18 +17,12 @@
       alt
       class="empat"
     />
-    <AllProduct/>
   </div>
 </template>
 
 <script>
-import AllProduct from './AllProduct'
-
 export default {
-  name: 'LandingPage',
-  components: {
-    AllProduct
-  }
+  name: 'LandingPage'
 }
 </script>
 

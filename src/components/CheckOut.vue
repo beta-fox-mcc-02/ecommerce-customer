@@ -14,8 +14,7 @@ export default {
     toPayment () {
       this.$vToastify.loader('Please Wait...')
       const payload = {
-        UserId: this.carts[0].User.id,
-        carts: this.carts
+        UserId: this.carts[0].User.id
       }
       this.$store.dispatch('payment', payload)
         .then(data => {
@@ -35,6 +34,7 @@ export default {
             })
         })
         .catch(err => {
+          this.$vToastify.stopLoader()
           this.$vToastify.warning({
             title: 'BRO',
             body: `${err.response.data.msg}`,
