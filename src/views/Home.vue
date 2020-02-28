@@ -24,6 +24,7 @@ export default {
   },
   created () {
     this.$store.commit('CHANGE_PAGE', 'home')
+    this.$store.dispatch('fetchCart')
   }
 }
 </script>

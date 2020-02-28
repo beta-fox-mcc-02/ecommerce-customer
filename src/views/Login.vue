@@ -52,11 +52,11 @@ export default {
         })
     }
   },
-  created () {
-    this.$store.commit('CHANGE_PAGE', 'login')
-    if (localStorage.getItem('token')) {
-      this.$store.commit('CHANGE_PAGE', 'home')
-      this.$router.push({ path: '/' })
+  beforeRouteEnter (to, from, next) {
+    if (!localStorage.getItem('token')) {
+      next()
+    } else {
+      next('/')
     }
   }
 }

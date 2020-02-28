@@ -17,12 +17,11 @@
         <div class="buttons">
           <b-button class="button is-success" icon-left="cart" @click="cart" v-if="page === 'home'" :disabled="disable" rounded>
             <strong>Cart</strong>
-            <!-- <router-link to="cart" style="color: white;"><strong>Cart</strong></router-link> -->
           </b-button>
-          <button class="button is-link" @click="login" v-if="page === 'register'">
+          <button class="button is-link" @click="login" v-if="$route.name === 'Register'">
             <router-link to="login" style="color: white;"><strong>Login</strong></router-link>
           </button>
-          <button class="button is-warning" @click="register" v-else-if="page === 'login'">
+          <button class="button is-warning" @click="register" v-else-if="$route.name === 'Login'">
             <router-link to="register" style="color: black;"><strong>Register</strong></router-link>
           </button>
           <button class="button is-danger" @click="logout" v-else>
@@ -59,7 +58,7 @@ export default {
       return this.$store.state.page
     },
     disable () {
-      if (this.$store.state.cart.length > 0) {
+      if (this.$store.state.cart[0] === undefined) {
         return true
       } else {
         return false

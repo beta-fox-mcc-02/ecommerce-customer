@@ -14,11 +14,14 @@
     justify-content: center;
     align-items: center;
     overflow: auto;
-    /* padding: 500px 100px; */
 }
 
 .table {
     margin: 55px 0;
+}
+
+table td:not([align]) {
+    text-align: center;
 }
 
 .cart .image {
@@ -46,6 +49,7 @@ a {
 
 .card {
     width: 250px;
+    margin: 30px 40px;
     display: flex;
     flex-direction: column;
 }
@@ -53,12 +57,6 @@ a {
 .home_card img {
     max-height: 350px;
     border-bottom: 1px;
-}
-
-.home_card .x {
-    width: 250px;
-    margin: 30px 40px;
-    transition: transform .4s;;
 }
 
 .home_card a:hover {

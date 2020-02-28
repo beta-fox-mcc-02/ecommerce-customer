@@ -54,6 +54,7 @@ export default {
             position: 'is-top',
             type: 'is-success'
           })
+          this.$store.dispatch('fetchCart')
         })
         .catch(err => {
           this.$buefy.toast.open({

@@ -1,7 +1,7 @@
 <template>
   <div class="home_card">
     <div class="x" v-for="{ id, name, author, image_url, price, stock } in product" :key="id" >
-      <div class="card">
+      <div class="card" v-if="stock > 0" >
         <div class="card-image">
           <figure class="image is-20x19">
             <img

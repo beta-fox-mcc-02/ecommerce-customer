@@ -10,7 +10,8 @@ export default new Vuex.Store({
     message: '',
     page: '',
     cart: [],
-    err: []
+    err: [],
+    amount: 0
   },
   mutations: {
     ADD_LIST (state, payload) {
@@ -33,7 +34,7 @@ export default new Vuex.Store({
     fetchProduct (context, payload) {
       axios({
         method: 'GET',
-        url: 'http://localhost:3000'
+        url: 'https://secure-reaches-76484.herokuapp.com'
       })
         .then(({ data }) => {
           context.commit('ADD_LIST', data.data)
@@ -45,7 +46,7 @@ export default new Vuex.Store({
     fetchLogin (context, payload) {
       return axios({
         method: 'POST',
-        url: 'http://localhost:3000/user/login',
+        url: 'https://secure-reaches-76484.herokuapp.com/user/login',
         data: {
           email: payload.email,
           password: payload.password
@@ -55,7 +56,7 @@ export default new Vuex.Store({
     fetchRegister (context, payload) {
       return axios({
         method: 'POST',
-        url: 'http://localhost:3000/user/register',
+        url: 'https://secure-reaches-76484.herokuapp.com/user/register',
         data: {
           username: payload.username,
           email: payload.email,
@@ -66,7 +67,7 @@ export default new Vuex.Store({
     fetchAddCart (context, payload) {
       return axios({
         method: 'POST',
-        url: `http://localhost:3000/${payload.id}`,
+        url: `https://secure-reaches-76484.herokuapp.com/${payload.id}`,
         data: {
           amount: payload.amount,
           price: payload.price
@@ -79,7 +80,7 @@ export default new Vuex.Store({
     fetchCart (context, payload) {
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/cart',
+        url: 'https://secure-reaches-76484.herokuapp.com/cart',
         headers: {
           token: localStorage.getItem('token')
         }
@@ -94,10 +95,28 @@ export default new Vuex.Store({
     fetchCheckout (context, payload) {
       return axios({
         method: 'PUT',
-        url: 'http://localhost:3000/cart',
+        url: 'https://secure-reaches-76484.herokuapp.com/cart',
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    updateAmount (context, payload) {
+      return axios({
+        method: 'PUT',
+        url: `https://secure-reaches-76484.herokuapp.com/cart/${payload.id}`,
         data: {
-          cart: payload
+          newAmount: payload.update
         },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    deleteCart (context, payload) {
+      return axios({
+        method: 'delete',
+        url: `https://secure-reaches-76484.herokuapp.com/cart/${payload.id}`,
         headers: {
           token: localStorage.getItem('token')
         }
