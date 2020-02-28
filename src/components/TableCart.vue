@@ -202,7 +202,6 @@ export default {
           this.$store.commit('setLogin', response.data);
         })
         .catch((err) => {
-          console.log(err.response);
           const error = Array.isArray(err.response.data.error)
             ? err.response.data.error[0] : err.response.data.error;
           this.$store.commit('setError', error);
@@ -228,7 +227,6 @@ export default {
           this.$store.commit('setLogin', response.data);
         })
         .catch((err) => {
-          console.log(err.response);
           const error = Array.isArray(err.response.data.error)
             ? err.response.data.error[0] : err.response.data.error;
           this.$store.commit('setError', error);
@@ -256,7 +254,7 @@ export default {
             this.$store.dispatch('fetchListOfProducts');
           })
           .catch((err) => {
-            console.log(err.response);
+            this.$store.commit('setError', err);
           })
           .finally(() => {
             this.$store.commit('stopLoading');

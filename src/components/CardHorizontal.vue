@@ -138,7 +138,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err.response);
           const error = Array.isArray(err.response.data.error)
             ? err.response.data.error[0] : err.response.data.error;
           this.$store.commit('setError', error);
@@ -174,7 +173,6 @@ export default {
             }
           })
           .catch((err) => {
-            console.log(err.response);
             const error = Array.isArray(err.response.data.error)
               ? err.response.data.error[0] : err.response.data.error;
             this.$store.commit('setError', error);

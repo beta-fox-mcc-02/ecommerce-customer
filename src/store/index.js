@@ -97,7 +97,7 @@ export default new Vuex.Store({
           context.commit('setListOfProducts', response.data);
         })
         .catch((err) => {
-          console.log(err.response);
+          context.commit('setError', err);
         })
         .finally(() => {
           context.commit('stopLoading');
