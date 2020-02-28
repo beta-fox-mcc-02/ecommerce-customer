@@ -21,6 +21,10 @@ export default new Vuex.Store({
       state.showLogin = !state.showLogin
     },
 
+    CART_TRIGGER (state) {
+      state.showCart = !state.showCart
+    },
+
     LOGIN_CHECK (state) {
       if (localStorage.token) state.isLogin = true
       else state.isLogin = false
@@ -42,20 +46,24 @@ export default new Vuex.Store({
       state.carts = payload
     },
 
+    SHOW_CARTS (state) {
+      state.showCart = !state.showCart
+    },
+
     PRODUCTS_FILTER (state, payload) {
       state.categoryId = payload
     },
 
     SUCCESS (state, payload) {
       M.toast({
-        html: `${payload.message}`,
+        html: `${payload}`,
         displayLength: 3000
       })
     },
 
     ERROR (state, payload) {
       M.toast({
-        html: `${payload.message}`,
+        html: `${payload}`,
         displayLength: 3000,
         classes: 'red'
       })
@@ -103,13 +111,60 @@ export default new Vuex.Store({
       Axios({
         url: 'http://localhost:3000/carts',
         method: 'GET',
-        headers: token
+        headers: { token }
       })
         .then(({ data }) => {
           commit('GET_CARTS', data)
         })
         .catch(err => {
           commit('ERROR', `${err}`)
+        })
+    },
+
+    addCart (context, payload) {
+      const token = localStorage.token
+      return Axios({
+        url: 'http://localhost:3000/carts',
+        method: 'POST',
+        data: {
+          productId: payload.productId,
+          quantity: payload.quantity,
+          total_price: payload.total_price
+        },
+        headers: { token }
+      })
+    },
+
+    deleteCart ({ commit, dispatch }, payload) {
+      const token = localStorage.token
+      const { ProductId } = payload
+      Axios({
+        url: `http://localhost:3000/carts/${ProductId}/delete`,
+        method: 'DELETE',
+        headers: { token }
+      })
+        .then(({ data }) => {
+          dispatch('fetchCarts')
+          commit('SUCCESS', data.message)
+        })
+        .catch(err => {
+          commit('ERROR', `${err}`)
+        })
+    },
+
+    checkout ({ commit, dispatch }) {
+      const token = localStorage.token
+      Axios({
+        url: 'http://localhost:3000/carts/checkout',
+        method: 'PUT',
+        headers: { token }
+      })
+        .then(({ data }) => {
+          dispatch('fetchCarts')
+          commit('SUCCESS', data.message)
+        })
+        .catch(err => {
+          commit('ERROR', err)
         })
     },
 

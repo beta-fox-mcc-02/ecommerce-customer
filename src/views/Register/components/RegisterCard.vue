@@ -59,14 +59,12 @@ export default {
         email: this.email,
         password: this.password
       }
-      console.log(payload)
       this.$store.dispatch('register', payload)
         .then(({ data }) => {
           M.toast({ html: `${data.message}` })
           this.$router.push('/')
         })
         .catch(err => {
-          console.log(err)
           this.username = ''
           this.email = ''
           this.password = ''

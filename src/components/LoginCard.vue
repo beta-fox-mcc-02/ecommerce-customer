@@ -77,6 +77,7 @@ export default {
           this.$store.commit('SUCCESS', { message: `Login successful! Welcome ${data.username}!` })
           this.$store.commit('LOGIN_CHECK')
           this.loginTrigger()
+          this.$router.push('/')
         })
         .catch(err => {
           let message = ''

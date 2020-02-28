@@ -7,6 +7,7 @@
         <li v-if="isLogin"><h5>{{ username }}</h5></li>
         <li v-if="!isLogin"><a @click.prevent="loginTrigger" class="waves-effect waves-blue btn-flat modal-trigger blue lighten-5">Login</a></li>
         <li v-if="isLogin"><a class="waves-effect waves-blue btn-flat blue lighten-5" @click.prevent="cartTrigger"><i class="material-icons">shopping_cart</i></a></li>
+        <li v-if="isLogin"><router-link class="waves-effect waves-blue btn-flat blue lighten-5" to="/history">History</router-link></li>
         <li v-if="isLogin"><a class="waves-effect waves-blue btn-flat blue lighten-5" @click.prevent="logout">Logout</a></li>
       </ul>
     </div>
@@ -27,17 +28,15 @@ export default {
       this.$store.commit('loginTrigger')
     },
     cartTrigger () {
-      this.$store.commit('cartTrigger')
+      this.$store.dispatch('fetchCarts')
+      this.$store.commit('SHOW_CARTS')
     },
     logout () {
       localStorage.removeItem('token')
       localStorage.removeItem('username')
       this.$store.commit('SUCCESS', { message: 'Logout success' })
       this.$store.commit('LOGIN_CHECK')
-      // this.$router.push('/')
-    },
-    seeCart () {
-      console.log('liat cart')
+      this.$router.push('/')
     }
   },
   computed: {

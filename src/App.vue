@@ -27,7 +27,7 @@ export default {
       this.$store.commit('loginTrigger')
     },
     cartTrigger () {
-      this.$store.commit('cartTrigger')
+      this.$store.commit('CART_TRIGGER')
     }
   },
   props: {
