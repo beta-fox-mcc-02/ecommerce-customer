@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const productAPI = axios.create({
-  baseURL: 'http://localhost:3000/products',
+  baseURL: 'https://powerful-taiga-55412.herokuapp.com/products',
 });
 
 module.exports = productAPI;

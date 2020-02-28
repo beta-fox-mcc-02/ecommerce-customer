@@ -4,7 +4,11 @@
       <b-card-title>{{ name }}</b-card-title>
       <b-card-img :src="image_url ? image_url : 'https://static.thenounproject.com/png/340719-200.png'">
       </b-card-img>
-      <b-button @click="clickDetails()" variant="outline-success">Details</b-button>
+      <b-button style="margin-top: 10px"
+      @click="clickDetails()"
+      variant="outline-success">
+      Details
+      </b-button>
       <b-card-text class="price">
         Rp. {{ price.toLocaleString() }}
       </b-card-text>
