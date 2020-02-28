@@ -103,6 +103,14 @@ export default {
       }
       return qty
     }
+  },
+  watch: {
+    cart: function (val) {
+      return val
+    }
+  },
+  created () {
+    this.$store.dispatch('fetchCart')
   }
 }
 </script>

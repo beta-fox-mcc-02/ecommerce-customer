@@ -55,6 +55,7 @@ export default new Vuex.Store({
         data: payload
       })
         .then(({ data }) => {
+          localStorage.cartId = data.cartId
           context.commit('SET_IS_NAV_LOGIN', 'login')
           context.commit('SET_SUCCESS_MESSAGE', 'Register is successfully')
           setTimeout(() => {
@@ -78,6 +79,7 @@ export default new Vuex.Store({
         .then(({ data }) => {
           localStorage.token = data.access_token
           router.push('/customer')
+          context.dispatch('fetchCart')
           context.commit('SET_SUCCESS_MESSAGE', 'Login is successfully')
           setTimeout(() => {
             context.commit('SET_SUCCESS_MESSAGE', '')
@@ -101,7 +103,102 @@ export default new Vuex.Store({
         })
     },
     addToCart (context, payload) {
-      context.commit('SET_CART', payload)
+      context.commit('SET_CART', payload.cart)
+    },
+    fetchCart (context) {
+      Axios({
+        method: 'GET',
+        url: 'http://localhost:3000/customers/products',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          context.commit('SET_CART', data.products)
+          localStorage.cartId = data.cartId
+        })
+        .catch(({ response }) => {
+          const messageErr = response.data.errors[0]
+          context.commit('SET_ERROR_HANDLER', messageErr)
+          setTimeout(() => {
+            context.commit('SET_ERROR_HANDLER', '')
+          }, 5000)
+        })
+    },
+    addNewProductToCart (context, payload) {
+      Axios({
+        method: 'POST',
+        url: 'http://localhost:3000/customers/products/' + payload.productId,
+        data: {
+          cartId: localStorage.cartId,
+          quantity: payload.cart.qty
+        },
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          context.dispatch('fetchCart')
+        })
+        .catch(({ response }) => {
+          const messageErr = response.data.errors[0]
+          context.commit('SET_ERROR_HANDLER', messageErr)
+          setTimeout(() => {
+            context.commit('SET_ERROR_HANDLER', '')
+          }, 5000)
+        })
+    },
+    updateQtyProduct (context, payload) {
+      Axios({
+        method: 'PUT',
+        url: 'http://localhost:3000/customers/products/' + payload.productId,
+        data: {
+          cartId: localStorage.cartId,
+          quantity: payload.cart.qty
+        },
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          context.dispatch('fetchCart')
+        })
+        .catch(({ response }) => {
+          const messageErr = response.data.errors[0]
+          context.commit('SET_ERROR_HANDLER', messageErr)
+          setTimeout(() => {
+            context.commit('SET_ERROR_HANDLER', '')
+          }, 5000)
+        })
+    },
+    deleteItemFromCart (context, payload) {
+      Axios({
+        method: 'DELETE',
+        url: 'http://localhost:3000/customers/products/' + payload,
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          console.log('MASUK DELETE ITEM FROM CART')
+          // context.dispatch('fetchCart')
+        })
+        .catch(({ response }) => {
+          const messageErr = response.data.errors[0]
+          context.commit('SET_ERROR_HANDLER', messageErr)
+          setTimeout(() => {
+            context.commit('SET_ERROR_HANDLER', '')
+          }, 5000)
+        })
+    },
+    checkoutAllItems (context) {
+      Axios({
+        method: 'POST',
+        url: 'http://localhost:3000/customers/checkout',
+        headers: {
+          token: localStorage.token
+        }
+      })
     }
   },
   modules: {

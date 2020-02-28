@@ -1,15 +1,16 @@
 <template>
   <div>
     <h1>Checkout</h1>
+    <button @click="checkoutProcess">Checkout</button>
     <table class="table table-hover">
       <caption class="text-right h3">
-        <b>Total: {{ cartTotal | currencyFormat}}</b>
+        <b>Total: {{ cartTotal | currencyFormat}}</b><br>
       </caption>
       <thead>
         <tr>
           <th scope="col"></th>
-          <th scope="col">Item</th>
-          <th scope="col" class="text-center">Img</th>
+          <th scope="col">Img</th>
+          <th scope="col" class="text-center">Item</th>
           <th scope="col" class="text-center">Qty</th>
           <th scope="col" class="text-right">Price</th>
           <th scope="col" class="text-right">Sub-total</th>
@@ -50,18 +51,30 @@ export default {
       for (let i = 0; i < cart.length; i++) {
         if (index === i) {
           cart[i].qty++
+          const payload = {
+            cart: cart[i],
+            productId: cart[i].product.id
+          }
+          this.$store.dispatch('updateQtyProduct', payload)
         }
       }
-      return this.$store.commit('SET_CART', cart)
     },
     minusProduct (index) {
       const cart = this.$store.state.cart
       for (let i = 0; i < cart.length; i++) {
         if (index === i) {
           cart[i].qty--
+          console.log(cart[i].qty, 'INI LOH =======>>>>>')
+          const payload = {
+            cart: cart[i],
+            productId: cart[i].product.id
+          }
+          this.$store.dispatch('updateQtyProduct', payload)
         }
       }
-      return this.$store.commit('SET_CART', cart)
+    },
+    checkoutProcess () {
+      this.$dispatch('checkoutAllItems')
     }
   },
   filters: {
