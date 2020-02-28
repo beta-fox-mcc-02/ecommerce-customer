@@ -9,6 +9,13 @@ export default {
   components: {
     TableCart,
   },
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.token) {
+      next();
+    } else {
+      next('/login');
+    }
+  },
 };
 </script>
 

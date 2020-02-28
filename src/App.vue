@@ -37,7 +37,7 @@ export default {
           this.$store.commit('setLogin', response.data);
         })
         .catch((err) => {
-          console.log(err.response);
+          this.$store.commit('setError', err);
         })
         .finally(() => {
           this.$store.commit('stopLoading');
